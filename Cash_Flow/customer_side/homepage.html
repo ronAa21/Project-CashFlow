@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project_S</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="homepage.css">
+  </head>
+  
+  <body>
+    <div class="web-structure">
+      <div class="navigation">
+        <nav>
+          <div class="left-contents"></div>
+          <div class="middle-contents">
+            <h1 class="website-title">Project S</h1>
+          </div>
+          <div class="right-contents">
+            <img src="/Portfolio_project/images/lug.jpg" alt="profile_pic" class="profile-pic">
+          </div>
+        </nav>
+      </div>
+      <div class="side-bar">
+        <div class="side-upper-content">
+          <div class="account">
+            <h2 class="side-bar-title">Account</h2>
+            <p class="side-bar-subtitle"><a href="#">Change Password</a></p>
+          </div>
+          <div class="support">
+            <h2 class="side-bar-title">Support</h2>
+            <p class="side-bar-sub-title"><a href="#">Feedback</a></p>
+          </div>
+        </div>
+        <div class="side-lower-content">
+          <button class="log-out">Logout</button>
+        </div>
+      </div>
+      <div class="main-contents">
+        <nav class="main-content-nav">
+          <div class="contents">
+            <section class="progress-page">
+              <h3 class="title-of-contents">Progress</h3>
+            </section>
+            <section class="chat-page">
+              <h3 class="title-of-contents">Chat</h3>
+            </section>
+          </div>
+        </nav>
+        <main>
+          <div class="main-content-container">
+
+            <!-- Progress Page -->
+            <div id="progress-tab" class="tab-pane">
+              <p class="placeholder">
+                No orders done yet <!--Will continue during javascript -->
+              </p>
+            </div>
+
+                <!--  THINGS TO DO (IN JULY) -->
+
+                <!-- add the scrollable orders that will show their progress--> 
+                <!-- upon clicking the customer name, it will display (can be a dropdown or a modal) the customer's order, fabric, the uniform they want --> 
+                <!-- Will also implement a toggle for the side bar --> 
+
+            <!-- Chat page here (Hidden as default)-->
+            <div id="chat-tab" class="tab-pane" style="display: none;">
+              <div class="chat-panel">
+                <div class="chat-messages">
+                  <p style="color: white; padding: 10px;">Hello! How can I help you?</p>
+                </div>
+                <div class="message-section">
+                  <textarea name="messenger" id="messenger"></textarea>
+                </div>
+              </div>
+            </div>
+
+          </div> 
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

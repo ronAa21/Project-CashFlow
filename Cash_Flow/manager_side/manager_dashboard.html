@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project S Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="manager_dashboard.css">
+
+  </head>
+  <body>
+    <div class="main-grid">
+      <div class="navigation-bar">
+        <nav>
+          <div class="left-contents"></div>
+          <div class="middle-contents">
+            <h1 class="web-title">Project S</h1>
+          </div>
+          <div class="right-contents">
+            <img src="/Portfolio_project/images/lug.jpg" alt="pfp" class="manager-pfp">
+          </div>
+        </nav>
+      </div>
+      <div class="side-bar">
+        <!-- This section would display the customers with inquiries or concerns --> 
+         <div class="flexi">
+          <!-- flexi is just temporary -->
+         </div>
+         <p class="placeholder">
+          No messages available.
+         </p>
+      </div>
+      <div class="separator">
+        <div class="main-contents">
+          <div class="nav-main-contents">
+            <ul class="nav-ul">
+              <li class="nav-li"><a href="#" class="options">Customer</a></li>
+              <li class="nav-li"><a href="#" class="options">Cashflow</a></li>
+              <li class="nav-li"><a href="#" class="options">Chat</a></li>
+            </ul>
+          </div>
+          <main>
+            <div id="customer" class="tab-pane"></div>
+            <!-- Display none for now, the logic will be added when learning javascript -->
+            <div id="cashflow" class="tab-pane" style="display: none;">
+             <div class="table-position">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>In</th>
+                    <th>Out</th>
+                    <th>Output</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input class="table-input" type="date" name="date" id="date"></td>
+                    <td><textarea class="table-input" name="description" id="description"></textarea></td>
+                    <td><input id="in" class="table-input"type="number"></td>
+                    <td><input type="number" class="table-input" id="out"></td>
+                    <td><output id="output" class="table-input"></output></td>
+                  </tr>
+                </tbody>
+              </table>
+             </div> 
+            </div>
+            <div id="chat" class="tab-pane" style="display: none;">
+              <div class="chat-panel">
+                <div class="chat-messages">
+                  <p style="color: white; padding: 10px; margin: 0px;">Hello How are you?</p>
+                </div>
+                <div class="message-section">
+                  <textarea name="chats" id="chats" class="chats"></textarea>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+        <div class="deadlines">
+          <div class="nav-dl">
+            <h2 class="due-this-week">
+              Due This Week
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- This button upon clicking will show a modal that contains a form that will include the sizes, type of fabric, and their info and requests -->
+    <button class="add-customer">
+      <span class="plus-icon">+</span>
+      <span class="button-text">Add Customer</span>
+    </button>
+  </body>
+</html>

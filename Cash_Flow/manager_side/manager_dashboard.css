@@ -1,0 +1,315 @@
+
+      /* General Structure */
+
+      body {
+        margin: 0px;
+      }
+
+      h1, ul, li, h2 {
+        font-family: 'Montserrat';
+        margin: 0;
+      }
+
+      ul {
+        list-style-type: none;
+      }
+
+      a {
+        text-decoration: none;
+        color: white;
+      }
+
+      p, button {
+        font-family: 'Roboto';
+      }
+
+      /* Website Main Structure */
+
+      .main-grid {
+        display: grid;
+        grid-template-columns: 250px 1fr 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 
+        "side nav nav"
+        "side sep sep";
+        height: 100vh;
+      }
+
+      .navigation-bar {
+        grid-area: nav;
+        background-color: #737373;
+      }
+
+      .side-bar {
+        grid-area: side;
+        background-color: #545454;
+      }
+
+      .separator {
+        grid-area: sep;
+        display: grid;
+        grid-template-columns: 1fr 250px;
+        grid-template-areas: 
+        "main due";
+        margin: 20px;
+        gap: 20px;
+      }
+
+      /* Separator */
+
+      .main-contents {
+        grid-area: main;
+        background-color: #737373;
+      }
+
+      .deadlines {
+        grid-area: due;
+        background-color: #737373;
+      }
+
+      .main-contents, .deadlines {
+        border-radius: 15px;
+      }
+
+      /* Navigation Contents */
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .web-title {
+        margin: 15px;
+      }
+
+      .right-contents {
+        display: flex;
+        margin-right: 5px;
+      }
+
+      .manager-pfp {
+        width: 40px;
+        align-self: center;
+        border-radius: 20px;
+      }
+
+      /* Side bar contents */
+      .side-bar {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .flexi {
+        flex: 1;
+      }
+
+      .placeholder {
+        margin: 0 35px;
+        margin-bottom: 10px;
+      }
+
+      /* Add Customer Button */
+      .add-customer {
+        display: flex;
+        position: fixed;
+        right: 20;
+        bottom: 15;
+        width: 30px;
+        height: 30px;
+        border: 2px solid black;
+        border-radius: 25px;
+        font-size: 30px;
+        cursor: pointer;
+        transition: width 0.3s ease, background-color 0.3s ease;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .plus-icon {
+        align-self: center;
+        margin: 0;
+      }
+
+      .button-text {
+        opacity: 0;
+        align-self: center;
+        margin: 0;
+        transition: opacity 0.3s ease;
+        font-size: 15px;
+        width: 100%;
+      }
+
+      .add-customer:hover {
+        width: 150px;
+      }
+
+      .button-text:hover {
+        opacity: 1;
+      } 
+
+      /* Main content (Navigation) */ 
+
+      .nav-main-contents {
+        background-color: #545454;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+      }
+
+      .nav-ul {
+        display: flex;
+        gap: 15px;
+        padding: 20px;
+      }
+
+      .nav-li {
+        display: inline-block;
+      }
+
+      .options {
+        font-weight: bolder;
+        font-size: 20px;
+        padding:10px;
+        border-radius: 15px;
+      }
+
+      .options:hover {
+        background-color: #bdbdbd;
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Main contents panel */
+      .tab-pane {
+        background-color: #363636;
+        margin: 15px;
+        border-radius: 15px;
+        height: 80vh;
+      }
+
+      /* Cashflow */
+
+      .table-position {
+        display: flex;
+        padding: 20px 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th {
+        font-family: 'Montserrat';
+        color: white;
+      }
+
+      th, td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+      }
+
+      .table-input {
+        padding: 5px;
+        height: 20px;
+        width: 100%;
+      }
+
+      /* Chat Page */
+
+      #chat {
+        display: flex;
+        height: auto;
+      }
+
+      .chat-panel {
+        display: flex;
+        margin: 20px;
+        border-radius: 15px;
+        width: 100%;
+        height: 500px;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .chat-messages {
+        background-color: #747474;
+        flex: 1;
+      }
+
+      .message-section {
+        background-color: #636363;
+        padding: 10px;
+      }
+
+      #chats {
+        width: 100%;
+        border-radius: 15px;
+      }
+
+
+      /* Deadline Section */
+
+      .nav-dl {
+        display: flex;
+        justify-content: center;
+        background-color: #545454;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 17px 0;
+      }
+
+      .due-this-week {
+        color: white;
+      }
+
+      /* Mobile Responsiveness */
+
+      @media (max-width:768px){
+
+       /* Main Structure */ 
+
+      .main-grid {
+        display: grid;
+        grid-template-columns: 15px 60px;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 
+        "side nav nav"
+        "side sep sep";
+        height: 100vh;
+      }
+
+      .separator {
+        grid-area: sep;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 350px;
+        grid-template-areas: 
+        "main"
+        "due";
+        margin: 20px;
+        gap: 15px;
+      }
+
+        /* side bar */
+
+        .side-bar {
+          width: 20px;
+          position: fixed;
+          height: 100vh;
+          transition: width 1s ease;
+        }
+
+        .side-bar p {
+          opacity: 0;
+        }
+
+        .side-bar:hover {
+          width: 250px;
+          transition: width 0.3 ease;
+        }
+
+        /* Navigation bar */
+        
+
+      }
