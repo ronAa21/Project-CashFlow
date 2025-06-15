@@ -194,11 +194,179 @@
       color: white;
     }
 
+    /* Modal UI */
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-container {
+      background-color: #545454;
+      display: flex;
+      width: 80%;
+      max-width: 1000px;
+      margin: 50px auto; 
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .unif-pic-type {
+      width: 150px;
+      height: 150px;
+    }
+
+    .unif-pic-type {
+      margin: 20px 15px 0 20px;
+    }
+
+    .info-panel {
+      margin-top: 20px;
+      background-color: #a6a6a6;
+      border-radius: 15px;
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 10px;
+      padding-bottom: 15px;
+    }
+
+    /* Modal Top section */
+
+    .top-info-panel {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .right-info {
+      align-self: center;
+      text-align: right;
+    }
+
+    .customer-name, .date-ordered {
+      font-size: 35px;
+      margin-bottom: 10px;
+    }
+
+    .customer-number, .date {
+      margin-top: 0;
+    }
+
+    /* Modal Middle Section */
+
+    .mid-info-panel {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mid-info-upper {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .order-label {
+      font-size: 25px;
+    }
+
+    .order-type {
+      height: 30px;
+      width: 130px;
+      align-self: center;
+    }
+
+    .sizes-form {
+      background-color: #545454;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto);
+      grid-template-areas: 
+      "box-one box-two box-three"
+      "foot foot foot";
+      gap: 5px;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 15px;
+    }
+
+    .grid-box-one {
+      grid-area: box-one;
+    }
+
+    .grid-box-two {
+      grid-area: box-two;
+    }
+
+    .grid-box-three {
+      grid-area: box-three;
+    }
+
+    .size-input {
+      height: 50px;
+      width: 250px;
+      margin-bottom: 10px;
+      font-size: 40px;
+    }
+
+    .footer-grid {
+      grid-area: foot;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #requests {
+      height: 200px;
+      width: 100%;
+    }
+
+    .remarks {
+      margin: 5;
+    }
+
+    .submit-save {
+      height: 30px;
+      border: none;
+      border-radius: 10px;
+      align-self: center;
+    }
+
     /* Mobile view */
     @media (max-width: 1068px) {
       
       .side-bar {
       width: 37.5%;
+    }
+
+    /* Ui Modal */
+
+    .modal-container {
+      padding: 0;
+    }
+
+    .unif-pic-type {
+      width: 100px;
+      height: 100px;
+    }
+
+    .info-panel {
+      width: 67%;
+    }
+
+    .size-input {
+      height: 45px;
+      width: 120px;
+      font-size: 40px;
+    }
+
+    .remarks {
+      margin: 0;
     }
 
     }
