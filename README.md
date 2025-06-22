@@ -6,4 +6,9 @@ My first project Project S
 - Started learning the flexbox, grid, position, and media query in depth.
 
 ### WEEK 2 (WEEK 4 of learning HTML & CSS) - no javascript yet - June 15, 2025
-- Added the UI modal that shows the details and the status of the order. 
+- Added the UI modal that shows the details and the status of the order.
+
+### WEEK 3 (WEEK 5 of learning HTML & CSS) - no javascript yet - June 22, 2025
+- Added the placeholder for the dynamic values on the website(i.e customers, messages, and due dates)
+- Added user friendly interfaces (Addtional confirmation modal and hover effects)
+- Added the Static version for the login & signup
