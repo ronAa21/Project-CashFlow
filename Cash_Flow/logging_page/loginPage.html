@@ -1,0 +1,208 @@
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <title>Welcome</title>
+  <style>
+    /* General traits */
+    body {
+      margin: 0;
+      background-color: #d9d9d9;
+      margin: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1, h2, p, label, a {
+      margin: 0;
+      color: white;
+    }
+
+    h1, h2 {
+      font-family: 'Montserrat';
+    }
+
+    p, label, input, button {
+      font-family: 'Roboto';
+    }
+
+    label {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      align-self: center;
+    }
+
+    input {
+      width: 80%;
+      border: none;
+      height: 30px;
+      padding: 0 0 0 10px;
+      font-size: 20px;
+      border-radius: 10px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    button {
+      border: none;
+      padding: 10px;
+      width: 200px;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+
+    /* Title Website */
+
+    .title-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .website-name {
+      color: black;
+      font-size: 50px;
+    }
+
+    /* Panel */
+
+    .login-panel {
+      background-color: #545454;
+      padding: 30px;
+      border-radius: 15px;
+      display: flex; 
+      justify-content: center;
+      width: 40%;  
+    }
+
+    .content-panel {
+      background-color: #363636;
+      display: inline-block;
+      border-radius: 15px;
+      padding: 30px 50px;
+      width: 100%;
+    }
+
+    /* Top section */ 
+    .top-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .title-page {
+      font-size: 50px;
+    }
+
+    /* Middle Section */ 
+    .mid-section {
+      margin-top: 30px;
+    }
+
+    .inputters {
+      display: flex;
+      gap: 60px;
+      margin-bottom: 20px;
+    }
+
+    /* Lower Section */
+    .lower-section {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width:768px) {
+
+    /* General */
+    label {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      align-self: center;
+    }
+
+    input {
+      font-size: 10px;
+    }
+
+    /* Panel */
+    .login-panel {
+      padding: 20px;
+      width: 90%;
+    }
+
+    .content-panel {
+      width: 100%;
+      padding: 30px 20px;
+    }
+
+    /* Top section */ 
+    .top-section {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+    }
+
+    .title-page {
+      font-size: 50px;
+    }
+
+    /* Middle Section */ 
+    .mid-section {
+      margin-top: 20px;
+    }
+      
+    }
+
+    /* For Phone */
+    @media (max-width:450px) {
+      
+      .inputters {
+        gap: 10px;
+      }
+
+      a {
+        display: block;
+      }
+      
+    }
+
+  </style>
+
+  <body>
+    <div class="title-container">
+      <h2 class="website-name">Project S</h2>
+    </div>
+    <div class="login-panel">
+      <div class="content-panel">
+        <div class="top-section">
+          <h1 class="title-page">Login</h1>
+          <p class="signup-link">Don't have an account? <span style="font-weight: bold;"><a href="signupPage.html">Sign Up!</a></span></p>
+        </div>
+        <div class="mid-section">
+          <div class="inputters">
+            <label for="email">Email:</label>
+            <input type="email" class="email">
+          </div>
+          <div class="inputters">
+            <label for="password">Password:</label>
+            <input type="password" class="password">
+          </div>
+        </div>
+        <div class="lower-section">
+          <button type="submit">Login</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

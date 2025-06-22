@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="manager_dashboard.css">
-
   </head>
   <body>
     <div class="main-grid">
@@ -25,12 +24,18 @@
       <div class="side-bar">
         <!-- This section would display the customers with inquiries or concerns --> 
         <!-- The side bar here will be similar to the messenger side bar  -->
-         <div class="flexi">
-          <!-- flexi is just temporary -->
-         </div>
-         <p class="placeholder">
-          No messages available.
-         </p>
+        <div class="customer-messages-panel">
+          <input type="search" name="search" id="customer-search">
+          <div class="customers">
+            <!-- the contents here for now is static but it should display the customers with inquiries, with the new messages being on top for attentio like on Messenger -->
+            <img src="/Major-Projects/Cash_Flow/projectS_images/no-profile.jpg" alt="" class="profile-customer">
+            <div class="customer-profile-info">
+              <!-- This section here is also just for placeholder, I'll add the dynamic version hopefully by july -->
+              <h3 class="name-of-customer">Juan Dela Cruz</h3>
+              <p class="recent-message">What's my update?</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="separator">
         <div class="main-contents">
@@ -42,7 +47,17 @@
             </ul>
           </div>
           <main>
-            <div id="customer" class="tab-pane"></div>
+            <div id="customer" class="tab-pane">
+              <!-- This section here is just for placeholder, I'll add the dynamic version hopefully by july -->
+              <div class="customer-name-order">
+                <h3 class="customer-info">Juan Dela Cruz</h3>
+                <div class="progress-track">
+                  <p class="progress-display">
+                    In-progress
+                  </p>
+                </div>
+              </div>
+            </div>
             <!-- Display none for now, the logic will be added when learning javascript -->
             <div id="cashflow" class="tab-pane" style="display: none;">
              <div class="table-position">
@@ -86,6 +101,13 @@
               Due This Week
             </h2>
           </div>
+          <!-- This section here is also just for placeholder, I'll add the dynamic version hopefully by july -->
+          <div class="customer-name-order" id="due-display">
+            <h3 class="customer-info" id="customer-due-info">Juan Dela Cruz</h3>
+            <div class="date-display">
+              <p class="due-date">June 19, 2025 Thursday</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -98,15 +120,18 @@
        <!-- Display: none; for now  -->
     <div class="modal-overlay" style="display: none;">
     <div class="modal-container">
-      <img src="/Major-Projects/Cash_Flow/projectS_images/unif.jpg" alt="uniform_type" class="unif-pic-type">
+      <img src="/Major-Projects/Cash_Flow/projectS_images/unif.jpg" alt="uniform_type" class="unif-pic-type"> <!-- Placeholder for now, will start implementing a dynamic version, while learning javascript -->
       <div class="info-panel">
         <div class="top-info-panel"> <!-- top position -->
           <div class="left-info">
             <h2 class="customer-name">
               Juan Dela Cruz <!-- Placeholder for now, will start implementing a dynamic version, while learning javascript -->
             </h2>
-            <p class="customer-number">
+            <p class="customer-credentials">
              09223457281 <!-- Placeholder for now, will start implementing a dynamic version, while learning javascript -->
+            </p>
+            <p class="customer-credentials">
+              juandelacruz@gmail.com <!-- Placeholder for now, will start implementing a dynamic version, while learning javascript -->
             </p>
           </div>
           <div class="right-info">
@@ -152,6 +177,25 @@
         </div>
       </div>
     </div>
+    </div>
+
+    <div class="modal-overlay" style="display: none;">
+      <div class="modal-confirmation">
+        <div class="top-confirm">
+          <h2 class="header-confirm">
+            Tag Update!!
+          </h2>
+        </div>
+        <div class="middle-confirm">
+          <h3 class="sub-header">
+            Is the product<br>already in progress or ready?
+          </h3>
+        </div>
+        <div class="lower-confirm">
+          <button class="no">No</button>
+          <button class="confirm-modal">Yes</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

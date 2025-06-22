@@ -5,7 +5,7 @@
         margin: 0px;
       }
 
-      h1, ul, li, h2 {
+      h1, ul, li, h2, h3 {
         font-family: 'Montserrat';
         margin: 0;
       }
@@ -48,7 +48,7 @@
       .separator {
         grid-area: sep;
         display: grid;
-        grid-template-columns: 1fr 250px;
+        grid-template-columns: 1fr 400px;
         grid-template-areas: 
         "main due";
         margin: 20px;
@@ -99,13 +99,49 @@
         flex-direction: column;
       }
 
-      .flexi {
-        flex: 1;
-      }
-
       .placeholder {
         margin: 0 35px;
         margin-bottom: 10px;
+      }
+
+      .customer-messages-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+        color: white;
+      }
+
+      .profile-customer {
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+      }
+
+      #customer-search {
+        height: 40px;
+        font-size: 15px;
+        border-radius: 15px;
+      }
+
+      .customers {
+        display: flex;
+        margin: 20px 0;
+        gap: 10px;
+        text-align:left;
+        padding: 10px;
+        border-radius: 15px;
+        transition: linear 0.1s;
+        cursor: pointer;
+      }
+
+      .customers:hover {
+        background-color: #363636;
+      }
+
+      .recent-message {
+        margin: 5px 0;
+        font-weight: 200;
       }
 
       /* Add Customer Button */
@@ -183,6 +219,49 @@
         margin: 15px;
         border-radius: 15px;
         height: 80vh;
+      }
+
+      /* Customer Panel */
+      #customer {
+        padding: 25px;
+      }
+
+      .customer-name-order {
+        background-color:#737373;
+        border-radius: 15px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: linear 0.1s;
+      }
+
+      .customer-info {
+        align-self: center;
+        font-size: 30px;
+      }
+
+      .progress-track {
+        width: 100px;
+        background-color: #bdbdbd;
+        clip-path: polygon(
+          0% 0%,
+          80% 0%,
+          100% 50%,
+          80% 100%,
+          0% 100%
+        );
+        display: flex;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .progress-display {
+        margin: 0;
+      }
+
+      .customer-name-order:hover {
+        background-color: #636363;
       }
 
       /* Cashflow */
@@ -263,6 +342,25 @@
         color: white;
       }
 
+      #due-display {
+        margin: 15px;
+        background-color: #363636;
+      }
+
+      #customer-due-info {
+        font-size: 20px;
+      }
+
+      .date-display {
+        background-color: #bdbdbd;
+        padding: 5px;
+        border-radius: 30px;
+      }
+
+      .due-date {
+        font-size: 15px;
+      }
+
     /* Modal UI */
 
     .modal-overlay {
@@ -294,7 +392,8 @@
     }
 
     .unif-pic-type {
-      margin: 20px 15px 0 20px;
+      margin-top: 20px;
+      margin-right: 20px;
     }
 
     .info-panel {
@@ -303,8 +402,9 @@
       border-radius: 15px;
       width: 100%;
       padding-right: 15px;
-      padding-left: 10px;
+      padding-left: 15px;
       padding-bottom: 15px;
+      padding-top: 15px;
     }
 
     /* Modal Top section */
@@ -324,8 +424,9 @@
       margin-bottom: 10px;
     }
 
-    .customer-number, .date {
+    .customer-credentials, .date {
       margin-top: 0;
+      margin-bottom: 5px;
     }
 
     /* Modal Middle Section */
@@ -333,6 +434,7 @@
     .mid-info-panel {
       display: flex;
       flex-direction: column;
+      gap: 10px;
     }
 
     .mid-info-upper {
@@ -406,6 +508,40 @@
       align-self: center;
     }
 
+    /* Confirm Modal */
+
+    .modal-confirmation {
+      background-color: #bdbdbd;
+      padding: 10px;
+      border-radius: 15px;
+    }
+
+    .header-confirm {
+      font-size: 50px;
+    }
+
+    .middle-confirm, .top-confirm {
+      margin: 20px;
+    }
+
+    .lower-confirm {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .lower-confirm button {
+      padding: 10px 30px;
+      border: none;
+      color: white;
+      background-color: #363636;
+    }
+
+    .sub-header {
+      text-align: center;
+      font-size: 20px;
+    }
+
       /* Mobile Responsiveness */
 
       @media (max-width:768px){
@@ -444,14 +580,14 @@
           transition: width 1s ease;
         }
 
-        .side-bar p {
-          opacity: 0;
-        }
-
         .side-bar:hover {
           width: 250px;
           transition: width 0.3 ease;
         }
+
+        .customer-messages-panel {
+        overflow: hidden;
+      }
 
         /* Navigation bar */
 
@@ -459,16 +595,17 @@
     /* Ui Modal */
 
     .modal-container {
-      padding: 0;
+      padding: 10px;
     }
 
     .unif-pic-type {
       width: 100px;
       height: 100px;
+      margin-right: 10px;
     }
 
     .info-panel {
-      width: 67%;
+      width: 100%;
     }
 
     .size-input {
@@ -481,5 +618,4 @@
       margin: 0;
     }
         
-
       }

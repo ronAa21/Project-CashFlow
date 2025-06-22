@@ -1,0 +1,255 @@
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <title>Sign Up Now!!!</title>
+  <style>
+    /* General traits */
+    body {
+      background-color: #d9d9d9;
+      margin: 50px;
+    }
+
+    h1, h2, p, label, a {
+      margin: 0;
+      color: white;
+    }
+
+    h1, h2 {
+      font-family: 'Montserrat';
+    }
+
+    p, label, input, button {
+      font-family: 'Roboto';
+    }
+
+    label {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      align-self: center;
+    }
+
+    input {
+      width: 80%;
+      border: none;
+      height: 30px;
+      padding: 0 0 0 10px;
+      font-size: 20px;
+      border-radius: 10px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    button {
+      border: none;
+      padding: 10px;
+      width: 200px;
+      border-radius: 15px;
+    }
+
+    /* Title Website */
+
+    .title-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .website-name {
+      color: black;
+      font-size: 50px;
+    }
+
+    /* Panel */
+
+    .signup-panel {
+      background-color: #545454;
+      padding: 30px 50px;
+      border-radius: 15px;
+      display: flex; 
+      gap: 50px;     
+    }
+
+    .content-panel {
+      background-color: #363636;
+      display: inline-block;
+      width: 50%;
+      border-radius: 15px;
+      padding: 30px 50px;
+    }
+
+    /* Top section */ 
+    .top-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .title-page {
+      font-size: 50px;
+    }
+
+    /* Middle Section */ 
+    .mid-section {
+      margin-top: 30px;
+    }
+
+    .inputters {
+      display: flex;
+      gap: 60px;
+      margin-bottom: 20px;
+    }
+
+    #re-confirm {
+      width: 20%;
+    }
+
+    /* Lower Section */
+    .lower-section {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Brand - Maybe the Place */
+    .brand {
+      align-self: center;
+    }
+
+    .brand-name {
+      width: 500px;
+      border-radius: 15px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width:768px) {
+
+    /* Image */
+    .brand {
+      display: none;
+    }
+
+    /* Panel */
+    .signup-panel {
+      background-color: #545454;
+      padding: 20px 20px;
+      border-radius: 15px;
+      display: flex; 
+      gap: 50px;     
+    }
+
+    .content-panel {
+      width: 100%;
+      padding: 30px 50px;
+    }
+      
+    }
+
+    @media (max-width:500px) {
+
+    /* General */
+    body {
+      margin: 20px;
+    }
+
+    label {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 2px;
+    }
+
+    input {
+      font-size: 10px;
+    }
+
+    /* Panel */ 
+    .content-panel {
+      width: 100%;
+      padding: 15px 25px;
+    }
+
+    /* Top section */ 
+    .top-section {
+      text-align: center;
+      flex-direction: column-reverse;
+      gap: 5px;
+    }
+
+    .motto {
+      font-size: 15px;
+      font-weight: 200;
+    }
+
+    /* Middle Section */ 
+    .mid-section {
+      margin-top: 30px;
+    }
+
+    .inputters {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .email {
+      margin-left: 12%;
+    }
+
+    #re-confirm {
+      width: 40%;
+    }
+
+    /* Lower Section */
+    .lower-section {
+      margin-top: 30px;
+      display: flex;
+      gap: 20px;
+      flex-direction: column-reverse;
+      justify-content: center;
+      align-items: center;
+    }
+
+    }
+
+  </style>
+
+  <body>
+    <div class="title-container">
+      <h2 class="website-name">Project S</h2>
+    </div>
+    <div class="signup-panel">
+      <div class="content-panel">
+        <div class="top-section">
+          <p class="motto">Keep track of your order</p>
+          <h1 class="title-page">Sign Up</h1>
+        </div>
+        <div class="mid-section">
+          <div class="inputters">
+            <label for="email">Email:</label>
+            <input type="email" class="email">
+          </div>
+          <div class="inputters">
+            <label for="password">Password:</label>
+            <input type="password" class="password">
+          </div>
+          <div class="inputters">
+            <label for="password" id="re-confirm">Re-enter:</label>
+            <input type="password" class="password" placeholder="re-enter password">
+          </div>
+        </div>
+        <div class="lower-section">
+          <p class="login-link">Have an account already? <span style="font-weight: bold;"><a href="loginPage.html">Log in</a></span></p>
+          <button type="submit">Sign Up</button>
+        </div>
+      </div>
+      <div class="brand">
+        <img src="/Major-Projects/Cash_Flow/projectS_images/placeholder-image.webp" alt="temporary" class="brand-name">
+      </div>
+    </div>
+  </body>
+</html>
