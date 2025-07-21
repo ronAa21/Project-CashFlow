@@ -22,6 +22,7 @@
           </div>
         </nav>
       </div>
+      <!-- Added the functional side bar 7/17/2025  -->
       <div class="side-bar">
         <div class="side-upper-content">
           <div class="account">
@@ -39,6 +40,7 @@
       </div>
       <div class="main-contents">
         <nav class="main-content-nav">
+          <!-- Added the changing panels dynamically 7/17/2025  -->
           <div class="contents">
             <section class="progress-page">
               <h3 class="title-of-contents">Progress</h3>
@@ -49,18 +51,12 @@
           </div>
         </nav>
         <main>
+          <!-- Added the navigation dynamically 7/17/2025  -->
           <div class="main-content-container">
 
             <!-- Progress Page -->
             <div id="progress-tab" class="tab-pane">
-              <div class="customer-name-order">
-                <h3 class="customer-info">Uniform 1</h3>
-                  <div class="progress-track">
-                    <p class="progress-display">
-                    In-progress
-                  </p>
-                </div>
-              </div>
+              <!-- Contents Displayed dynamically 7/21/2025 -->
             </div>
 
                 <!--  THINGS TO DO (IN JULY) -->
@@ -70,7 +66,7 @@
                 <!-- Will also implement a toggle for the side bar --> 
 
             <!-- Chat page here (Hidden as default)-->
-            <div id="chat-tab" class="tab-pane" style="display: none;">
+            <div id="chat-tab" class="tab-pane">
               <div class="chat-panel">
                 <div class="chat-messages">
                   <p style="color: white; padding: 10px;">Hello! How can I help you?</p>
@@ -86,32 +82,24 @@
       </div>
     </div>
 
-    <!-- Display: none; for now  -->
-    <div class="modal-overlay" style="display: none;">
+    <!-- Display: none; for now, Added dynamically 7/17/2025 -->
+    <div class="modal-overlay">
     <div class="modal-container">
       <img src="/Major-Projects/Cash_Flow/projectS_images/unif.jpg" alt="uniform_type" class="unif-pic-type">
       <div class="info-panel">
         <div class="top-info-panel"> <!-- top position -->
           <div class="left-info">
-            <h2 class="customer-name">
-              Juan Dela Cruz <!-- Placeholder for now, will start implementing a dynamic version, while learning javascript -->
-            </h2>
-            <p class="customer-number">
-             09223457281 <!-- Placeholder for now, will start implementing a dynamic version, while learning javascript -->
-            </p>
+            <!-- Displayed Dynamically 7/21/2025 -->
           </div>
           <div class="right-info">
-            <h2 class="date-ordered">
-              Ordered in:
-            </h2>
-            <p class="date">6/11/2025</p> <!-- Placeholder for now, will start implementing a dynamic version, while learning javascript -->
+            <!-- Displayed Dynamically 7/21/2025 -->
           </div>
         </div>
         <div class="mid-info-panel">
           <div class="mid-info-upper">
-            <h2 class="order-label">
-              1 Set <!-- Placeholder for now, will start implementing a dynamic version, while learning javascript -->
-            </h2>
+            <div class="set-wrapper">
+              <!-- Displayed Dynamically 7/21/2025 -->
+            </div>
             <select name="order-type" id="order-type" class="order-type">
               <option value="Short Sleeve">Short Sleeve</option>
               <option value="Long Sleeve">Long Sleeve</option>
@@ -120,23 +108,17 @@
           </div>
           <div class="sizes-form"> <!--Grid possible here-->
             <div class="grid-box-one">
-              <input type="text" class="size-input">
-              <input type="text" class="size-input">
-              <input type="text" class="size-input">
-              <input type="text" class="size-input">
+
             </div>
             <div class="grid-box-two">
-              <input type="text" class="size-input">
-              <input type="text" class="size-input">
-              <input type="text" class="size-input">
-              <input type="text" class="size-input">
+
             </div>
             <div class="grid-box-three">
               <p class="remarks">Remarks:</p>
               <textarea name="request" id="requests"></textarea>
             </div>
             <div class="footer-grid">
-              <input type="text" class="size-input">
+              <div class="empty"></div>
               <button class="submit-save">Done</button>
             </div>
           </div>
@@ -145,4 +127,248 @@
     </div>
     </div>
   </body>
+
+  <script>
+
+    // side-bar
+    let initialSideBar = document.querySelector(".side-bar"); 
+    let initialSideUpper = document.querySelector(".side-upper-content");
+    let initialSideLower = document.querySelector(".side-lower-content"); 
+
+    initialSideBar.addEventListener("click", function() {
+      initialSideBar.classList.toggle("side-bar-extend");
+      initialSideUpper.classList.toggle("side-upper-extend");
+      initialSideLower.classList.toggle("side-lower-extend");
+    });
+
+    // switching between progress-tab & chat-tab
+
+    // PROGRESS TAB
+    let progressTab = document.querySelector(".progress-page");
+    let progressPanel = document.getElementById("progress-tab");
+
+     // CHAT TAB
+    let chatTab = document.querySelector(".chat-page");
+    let chatPanel = document.getElementById("chat-tab");
+
+    progressTab.addEventListener("click", function() {
+      progressTab.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+      chatTab.style.backgroundColor = ""
+      progressPanel.style.display = "flex";
+      chatPanel.style.display = "none"
+    })
+
+    chatTab.addEventListener("click", function() {
+      chatTab.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+      progressTab.style.backgroundColor = ""
+      chatPanel.style.display = "flex";
+      progressPanel.style.display = "none";
+    })
+
+    // customer data JavaScript for now
+let customerOrders = [
+  {
+    name: "Juan Dela Cruz",
+    contact: "09223457281",
+    status: "Completed",
+    dateOfPurchase: "6/20/2025",
+    orderSet: 2,
+    orderType: "TTMD",
+    order1: "Pants",
+    order2: "Long Sleeve",
+    order1Measurement: {
+      crotch: 2,
+      length: 40,
+      Waistline: 34,
+      Hips: 38,
+      thigh: 20,
+      knee: 16,
+      bottom: 14
+    },
+    order2Measurement: {
+      shoulder: 17,
+      sleeveLength: 23,
+      sleeveOpening: 11,
+      length: 32,
+      waistline: 30,
+      hips: 36,
+      collar: 16
+    }
+  },
+
+  {
+    name: "Juan Dela Cruz",
+    contact: "09223457281",
+    status: "Urgent",
+    dateOfPurchase: "7/1/2025",
+    orderSet: 1,
+    orderType: "Uniform",
+    order1: "Short Sleeve",
+    order2: "Pants",
+    order1Measurement: {
+      shoulder: 16,
+      sleeveLength: 22,
+      sleeveOpening: 10,
+      length: 30,
+      waistline: 31,
+      hips: 37,
+      collar: 15
+    },
+    order2Measurement: {
+      crotch: 10,
+      length: 38,
+      Waistline: 33,
+      Hips: 37,
+      thigh: 21,
+      knee: 17,
+      bottom: 13
+    }
+  },
+
+  {
+    name: "Juan Dela Cruz",
+    contact: "09223457281",
+    status: "Pending",
+    dateOfPurchase: "7/15/2025",
+    orderSet: 0,
+    orderType: "Uniform",
+    order1: "Short Sleeve",
+    order2: "",
+    order1Measurement: {
+      shoulder: 15,
+      sleeveLength: 21,
+      sleeveOpening: 9,
+      length: 28,
+      waistline: 29,
+      hips: 35,
+      collar: 14
+    }
+  }
+];
+
+
+  // displays the customer 
+  for(let i = 0; i < customerOrders.length; i++) {
+        
+    let customerDetails = document.createElement("div"); // for appending
+    customerDetails.className = "customer-name-order";
+
+    let orderInfo = document.createElement("h3");
+    orderInfo.className = "customer-info";
+    orderInfo.textContent = `${customerOrders[i].orderType}`;
+
+    let progressTrack = document.createElement("div");
+    progressTrack.className = "progress-track";
+
+    let progressDisplay = document.createElement("p");
+    progressDisplay.className = "progress-display";
+    progressDisplay.textContent = `${customerOrders[i].status}`;
+
+    customerDetails.appendChild(orderInfo);
+    progressPanel.appendChild(customerDetails);
+
+    progressTrack.appendChild(progressDisplay);
+    customerDetails.appendChild(progressTrack);
+
+    // customer order modal
+    let customerModal= document.querySelector(".modal-overlay");
+    let doneBtn = document.querySelector(".submit-save");
+
+    customerDetails.addEventListener("click", function() {
+      customerModal.style.display = "flex";
+
+      // modal top-left
+      let leftInfo = document.querySelector(".left-info");
+      leftInfo.innerHTML = "";
+
+      let customerName = document.createElement("h2");
+      customerName.className = "customer-name";
+      customerName.textContent = `${customerOrders[i].name}`;
+
+      let customerContact = document.createElement("p");
+      customerContact.className = "customer-number";
+      customerContact.textContent = `${customerOrders[i].contact}`;
+
+      leftInfo.appendChild(customerName);
+      leftInfo.appendChild(customerContact);
+
+      // modal top-right
+      let rightInfo = document.querySelector(".right-info");
+
+      rightInfo.innerHTML = "";
+
+      let orderedIn = document.createElement("h2");
+      orderedIn.className = "date-ordered";
+      orderedIn.textContent = "Ordered In: ";
+
+      let date = document.createElement("p");
+      date.className = "date";
+      date.textContent = `${customerOrders[i].dateOfPurchase}`;
+
+      rightInfo.appendChild(orderedIn);
+      rightInfo.appendChild(date);
+
+      // modal middle content
+      let setWrapper = document.querySelector(".set-wrapper");
+
+      setWrapper.innerHTML = "";
+
+      let orderLabel = document.createElement("h2");
+      orderLabel.className = "order-label";
+      orderLabel.textContent = `${customerOrders[i].orderSet} Set`;
+
+      setWrapper.append(orderLabel);
+
+      // dropdown logic
+      let dropdown = document.querySelector(".order-type");
+
+      let sizeForm = document.querySelector(".sizes-form");
+
+      let gridOne = document.querySelector(".grid-box-one");
+      let gridTwo = document.querySelector(".grid-box-two");
+      let gridThree = document.querySelector(".grid-box-three");
+      let footerGrid = document.querySelector(".footer-grid");
+
+      let customer = customerOrders[i];
+
+      dropdown.addEventListener("change", function() {
+        let selectedVal = this.value;
+        let measurements = {};
+
+        if(selectedVal === customer.order1) {
+          measurements = customer.order1Measurement;
+        } else if (selectedVal === customer.order2) {
+          measurements = customer.order2Measurement;
+        }
+
+        gridOne.innerHTML = "";
+        gridTwo.innerHTML = "";
+
+        let keys = Object.keys(measurements);
+
+        for(let i = 0; i < keys.length; i++) {
+          let keyVal = keys[i];
+          let textBox = document.createElement("input");
+          textBox.type = "text";
+          textBox.className = "size-input";
+
+          textBox.value = `${keyVal}: ${measurements[keyVal]}`;
+
+          if(i % 2 === 0) {
+            gridOne.appendChild(textBox);
+          } else {
+            gridTwo.appendChild(textBox)
+          }
+        }
+
+      })
+      
+    })
+
+    doneBtn.addEventListener("click", function() {
+      customerModal.style.display = "none";
+    })
+  }
+
+  </script>
 </html>

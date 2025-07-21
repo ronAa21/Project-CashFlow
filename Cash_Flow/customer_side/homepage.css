@@ -26,16 +26,17 @@
     .progress-page:hover, .chat-page:hover, .side-bar a:hover {
       background-color: #bdbdbd;
       background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); 
     }
 
     /* Website Main Structure */
 
     .web-structure {
       display: grid;
-      grid-template-columns: 250px 1fr;
+      grid-template-columns: 50px 1fr; /* adjusted to 50px */
       grid-template-rows: auto 1fr;
       grid-template-areas: 
-      "side nav"
+      "nav nav" /* change to nav to extend it to the left */
       "side main";
       height: 100vh;
     }
@@ -61,7 +62,7 @@
     nav {
       display: flex;
       justify-content: space-between;
-      padding: 5px;
+      padding: 5px; 
     }
 
     .right-contents, .middle-contents {
@@ -77,12 +78,11 @@
     /* Side bar contents */
 
     .side-bar {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       position: fixed;
       height: 100vh;
-      width: 19vw;
+      width: 50px; /* initial size for side-bar */
+      transition: 0.3s ease-out;
+      z-index: 1;
     }
 
     .side-bar a, .side-bar h2{
@@ -98,11 +98,13 @@
       transition: background-color 0.3s ease;
       padding: 10px;
       border-radius: 15px;
+      font-size: 20px;
     }
 
     .log-out:hover {
       background-color: #737373;
       color: #ffffff;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .log-out:active {
@@ -110,8 +112,29 @@
       color: #bdbdbd;
     }
 
+    /* initial display */
+    .side-upper-content, .side-lower-content {
+      visibility: hidden;
+    }
+
     .side-lower-content {
       margin-top: 10%;
+    }
+
+    /* Side bar javascript */
+    .side-bar-extend {
+      width: 30%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .side-upper-extend, .side-lower-extend {
+      visibility: visible;
+      margin-left: 20px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     }
 
     /* Main Contents */
@@ -164,6 +187,9 @@
     /* Progress tab */
       #progress-tab {
         padding: 25px;
+        display: flex;
+        gap: 15px;
+        flex-direction: column;
       }
 
       .customer-name-order {
@@ -173,6 +199,13 @@
         display: flex;
         justify-content: space-between;
         cursor: pointer;
+        transition: 0.1s linear;
+        height: 50px;
+        width: 100%;
+      }
+
+      .customer-name-order:hover {
+        background-color: #636363;
       }
 
       .customer-info {
@@ -202,7 +235,7 @@
     /* Chat page */
 
     #chat-tab {
-      display: flex;
+      display: none;
       height: auto;
     }
 
@@ -239,6 +272,10 @@
 
     /* Modal UI */
 
+    .modal-container, .modal-overlay {
+      display: none;
+    }
+
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -246,7 +283,6 @@
       width: 100vw;
       height: 100vh;
       background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
-      display: flex;
       justify-content: center;
       align-items: center;
       z-index: 999;
@@ -260,6 +296,7 @@
       margin: 50px auto; 
       padding: 20px;
       border-radius: 15px;
+      gap: 20px;
     }
 
     .unif-pic-type {
@@ -355,7 +392,7 @@
       height: 50px;
       width: 250px;
       margin-bottom: 10px;
-      font-size: 40px;
+      font-size: 20px;
     }
 
     .footer-grid {
@@ -378,13 +415,22 @@
       border: none;
       border-radius: 10px;
       align-self: center;
+      cursor: pointer;
     }
+
 
     /* Mobile view */
     @media (max-width: 1068px) {
-      
-      .side-bar {
-      width: 37.5%;
+
+    /* Side bar Initial */
+    .side-bar { 
+      width: 5%;
+    }
+
+    /* Javascript Side bar */
+    .side-bar-extend {
+      width: 100%;
+      z-index: 1;
     }
 
     /* Ui Modal */
@@ -399,13 +445,13 @@
     }
 
     .info-panel {
-      width: 67%;
+      margin: 10px;
     }
 
     .size-input {
       height: 45px;
       width: 120px;
-      font-size: 40px;
+      font-size: 20px;
     }
 
     .remarks {
