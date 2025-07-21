@@ -12,3 +12,11 @@ My first project Project S
 - Added the placeholder for the dynamic values on the website(i.e customers, messages, and due dates)
 - Added user friendly interfaces (Addtional confirmation modal and hover effects)
 - Added the Static version for the login & signup
+
+### WEEK 4 (A month after learning JavaScript) - July 17, 2025
+- Made the side bar of the customer-side dynamic (for both mobile & PC)
+- Added the modal popup
+
+### WEEK 5 (WEEK 10 - LEARNING JAVASCRIPT) - July 21, 2025
+- Made the customer orders to be displayed dynamically (Retrieved through an object array)
+- Added the functions for the dropdown, dynamically displaying the customers order data
