@@ -420,11 +420,54 @@
 
 
     /* Mobile view */
-    @media (max-width: 1068px) {
+    @media (max-width: 500px) {
+
+    /* Main Contents Structure */
+    .main-contents {
+      height: 88%;
+    }
+
+    .title-of-contents {
+      font-size: 15px;
+    }
+
+    .tab-pane {
+      height: 65%;
+    }
+
+    /* Chat tab */
+    #chat-tab {
+      height: 75%;
+    }
+
+    .chat-panel {
+      height: 230px;
+    }
+
+    /* Progress tab */
+    #progress-tab {
+      height: 60%;
+    }
+
+    .customer-name-order {
+      height: 30px;
+      width: 90%;
+    }
+
+    .customer-info {
+      font-size: 15px;
+    }
+
+      .progress-track {
+        width: 50px;
+        padding-left: 2px;
+        font-size: 10px;
+      }
 
     /* Side bar Initial */
     .side-bar { 
-      width: 5%;
+      width: 10%;
+      height: 100%;
     }
 
     /* Javascript Side bar */
@@ -437,21 +480,71 @@
 
     .modal-container {
       padding: 0;
+      width: 100%;
+      flex-direction: column;
     }
 
     .unif-pic-type {
       width: 100px;
       height: 100px;
+      top: 2px;
+      position: absolute;
+      border-radius: 15px;
     }
 
     .info-panel {
       margin: 10px;
+      width: 88%;
+    }
+
+    .top-info-panel {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .left-info {
+      margin-top: 50px;
+    }
+
+    .customer-name {
+      font-size: 25px;
+    }
+
+    .customer-name, .customer-number {
+      padding-left: 110px;
+    }
+
+    .right-info {
+      text-align: center;
+    }
+
+    .date-ordered {
+      margin-top: 10px;
+    }
+
+    .date {
+      margin-bottom: 5px;
+    }
+
+    /* mid info */
+    .order-label {
+      margin: 10px 0;
+    }
+
+    /* Sizes form */
+    .sizes-form {
+      padding: 10px;
     }
 
     .size-input {
       height: 45px;
-      width: 120px;
-      font-size: 20px;
+      width: 90px;
+      font-size: 10px;
+    }
+
+    .submit-save {
+      width: 70px;
+      height: 20px;
     }
 
     .remarks {

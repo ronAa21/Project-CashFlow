@@ -1,6 +1,10 @@
 
       /* General Structure */
 
+      * {
+        font-family: sans-serif;
+      }
+
       body {
         margin: 0px;
       }
@@ -223,7 +227,10 @@
 
       /* Customer Panel */
       #customer {
+        display: flex;
+        flex-direction: column;
         padding: 25px;
+        gap: 15px;
       }
 
       .customer-name-order {
@@ -266,14 +273,54 @@
 
       /* Cashflow */
 
+      #cashflow {
+        display: none;
+        overflow: hidden;
+        position: relative;
+      }
+
       .table-position {
         display: flex;
+        flex-direction: column;
         padding: 20px 10px;
+        gap: 20px;
+        max-height: 380px;
+        overflow-y: auto;
+      }
+
+      .total-contain {
+        display: flex;
+        color: white;
+        gap: 20px;
+        background-color: #545454;
+        padding: 20px;
+        border-radius: 15px;
+      }
+
+      .total-display {
+        align-self: center;
+      }
+
+      .number-input {
+        border: none;
+        width: 100%;
+        height: 40px;
+        border-radius: 15px;
+        font-size: 20px;
+        padding-left: 15px;
+      }
+
+      .number-input::-webkit-outer-spin-button,
+      .number-input::-webkit-inner-spin-button,
+      .table-input::-webkit-outer-spin-button,
+      .table-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
+        height: 20px;
       }
 
       th {
@@ -291,12 +338,37 @@
         padding: 5px;
         height: 20px;
         width: 100%;
+        color: white;
+        background-color: transparent;
+        border: none;
+        font-family: sans-serif;
+      }
+
+      .add-rows {
+        width: 100px;
+        border-radius: 10px;
+        border: none;
+        position: absolute;
+        bottom: 20;
+        right: 20;
+        cursor: pointer;
+      }
+
+      #total-val {
+        align-self: center;
+        font-size: 20px;
+        font-weight: 700;
+        background-color: white;
+        color: black;
+        width: 100%;
+        padding: 10px;
+        border-radius: 15px;
       }
 
       /* Chat Page */
 
       #chat {
-        display: flex;
+        display: none;
         height: auto;
       }
 
@@ -345,6 +417,7 @@
       #due-display {
         margin: 15px;
         background-color: #363636;
+        padding: 10px;
       }
 
       #customer-due-info {
