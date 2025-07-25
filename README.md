@@ -20,3 +20,8 @@ My first project Project S
 ### WEEK 5 (WEEK 10 - LEARNING JAVASCRIPT) - July 21, 2025
 - Made the customer orders to be displayed dynamically (Retrieved through an object array)
 - Added the functions for the dropdown, dynamically displaying the customers order data
+
+### WEEK 5 (still in the same week (:) - July 25, 2025
+- Added the cashflow functions(can calculate, add rows, and display the total)
+- Made the customer to be displayed dynamically on the progress panel
+- The due date is able to display orders that are of due (orders that are 3 days due)
