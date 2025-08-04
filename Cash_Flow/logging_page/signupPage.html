@@ -101,12 +101,28 @@
 
     .inputters {
       display: flex;
-      gap: 60px;
       margin-bottom: 20px;
+      gap: 60px;
+    }
+
+    /* This is for the error confirm password display */
+
+    .wrapper {
+      display: flex;
+      gap: 10px;
+    }
+
+    #re-pass-enter {
+      flex-direction: column;
+      gap: 20px;
     }
 
     #re-confirm {
       width: 20%;
+    }
+
+    .re-password {
+      align-self: center;
     }
 
     /* Lower Section */
@@ -125,6 +141,30 @@
       width: 500px;
       border-radius: 15px;
     }
+
+    /* Modal Popup */
+    .modal-wrapper {
+      display: none;
+      position: fixed;
+      background-color: rgba(0, 0, 0, 0.8); 
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-popup {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      font-size: 25px;
+    }
+
+
 
     /* Mobile Responsiveness */
     @media (max-width:768px) {
@@ -237,19 +277,35 @@
             <label for="password">Password:</label>
             <input type="password" class="password">
           </div>
-          <div class="inputters">
+          <div class="inputters" id="re-pass-enter">
+            <div class="wrapper">
             <label for="password" id="re-confirm">Re-enter:</label>
-            <input type="password" class="password" placeholder="re-enter password">
+            <input type="password" class="re-password" placeholder="re-enter password">
+            </div>
+            <!-- Error display here -->
           </div>
         </div>
         <div class="lower-section">
           <p class="login-link">Have an account already? <span style="font-weight: bold;"><a href="loginPage.html">Log in</a></span></p>
-          <button type="submit">Sign Up</button>
+          <button type="submit" class="submit">Sign Up</button>
         </div>
       </div>
       <div class="brand">
         <img src="/Major-Projects/Cash_Flow/projectS_images/placeholder-image.webp" alt="temporary" class="brand-name">
       </div>
     </div>
+    <div class="modal-wrapper" id="loading">
+      <div class="modal-popup">
+        <h2 class="loading-text">Loading...</h2>
+        <p class="loading-p">Please wait</p>
+      </div>
+    </div>
+    <div class="modal-wrapper"  id="success">
+      <div class="modal-popup">
+        <h2 class="loading-text">Success</h2>
+        <button class="success-btn">ok</button>
+      </div>
+    </div>
   </body>
+  <script src="credentials-retriever.js"></script>
 </html>

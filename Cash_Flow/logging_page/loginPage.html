@@ -112,6 +112,21 @@
       margin-bottom: 20px;
     }
 
+    #password-section {
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .wrapper {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+    }
+
+    .login-password {
+      width: 100%;
+    }
+
     /* Lower Section */
     .lower-section {
       margin-top: 30px;
@@ -168,7 +183,7 @@
     @media (max-width:450px) {
       
       .inputters {
-        gap: 10px;
+        gap: 20px;
       }
 
       a {
@@ -192,17 +207,57 @@
         <div class="mid-section">
           <div class="inputters">
             <label for="email">Email:</label>
-            <input type="email" class="email">
+            <input type="email" class="login-email">
           </div>
-          <div class="inputters">
-            <label for="password">Password:</label>
-            <input type="password" class="password">
+          <div class="inputters" id="password-section">
+            <div class="wrapper">
+              <label for="password">Password:</label>
+              <input type="password" class="login-password">
+            </div>
+            <div class="error-display">
+              <!-- Display the error text here -->
+            </div>
           </div>
         </div>
         <div class="lower-section">
-          <button type="submit">Login</button>
+          <button type="submit" class="log-submit">Login</button>
         </div>
       </div>
     </div>
   </body>
+  <script>
+
+// logic for login
+let loginEmail = document.querySelector(".login-email");
+let loginPass = document.querySelector(".login-password");
+
+let errorDisplay = document.querySelector(".error-display");
+let errorContent = document.createElement("p");
+errorContent.className = "error-text";
+errorContent.style.color = "red";
+
+// login process
+
+document.querySelector(".log-submit").addEventListener("click", function() {
+
+  let logEmail = loginEmail.value.trim().toLowerCase();
+  let logPass = loginPass.value.trim();
+
+  let managerEmail = "manager", managerPass = "manager123";
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  console.log(users);
+  if(users[logEmail] && users[logEmail] === logPass) {
+    window.location.href = "../customer_side/homepage.html";
+  } else if (logEmail === managerEmail && logPass === managerPass) {
+    window.location.href = "../manager_side/manager_dashboard.html"
+  } else {
+    errorContent.textContent = "Invalid email or password";
+    errorDisplay.appendChild(errorContent);
+  }
+
+})
+
+  </script>
 </html>

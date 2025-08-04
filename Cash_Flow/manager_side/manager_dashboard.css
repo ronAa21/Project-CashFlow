@@ -443,7 +443,7 @@
       width: 100vw;
       height: 100vh;
       background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
-      display: flex;
+      display: none;
       justify-content: center;
       align-items: center;
       z-index: 999;
@@ -512,8 +512,19 @@
 
     .mid-info-upper {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 10px;
+    }
+
+    .status-update-dropdown {
+      font-size: 25px;
+      border: none;
+      background-color: transparent;
+    }
+
+    .mid-info-right {
+      display: flex;
+      gap: 15px;
     }
 
     .order-label {
@@ -556,7 +567,7 @@
       height: 50px;
       width: 250px;
       margin-bottom: 10px;
-      font-size: 40px;
+      font-size: 25px;
     }
 
     .footer-grid {
@@ -579,6 +590,38 @@
       border: none;
       border-radius: 10px;
       align-self: center;
+      cursor: pointer;
+    }
+
+    /* Status update */
+    .progress-bar-contain {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .status-title {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .status {
+      margin: 0;
+    }
+
+    .progress-bar {
+      height: 40px;
+      background-color: aqua;
+      width: 0;
+      border-radius: 15px;
+      display: flex;
+    }
+
+    .percent-text {
+      align-self: center;
+      position: absolute;
+      left: 50%;
     }
 
     /* Confirm Modal */
@@ -684,7 +727,7 @@
     .size-input {
       height: 45px;
       width: 120px;
-      font-size: 40px;
+      font-size: 15px;
     }
 
     .remarks {
