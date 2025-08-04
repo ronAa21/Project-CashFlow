@@ -25,3 +25,8 @@ My first project Project S
 - Added the cashflow functions(can calculate, add rows, and display the total)
 - Made the customer to be displayed dynamically on the progress panel
 - The due date is able to display orders that are of due (orders that are 3 days due)
+
+### WEEK 6 (WEEK 11 - WEEK 12 - LEARNING JAVASCRIPT) - August 4, 2025
+- Able to update the status for customers through the modal
+- Added the progress bar below the modal (progress depends on the status)
+- Added local storage for login and signup
