@@ -30,3 +30,8 @@ My first project Project S
 - Able to update the status for customers through the modal
 - Added the progress bar below the modal (progress depends on the status)
 - Added local storage for login and signup
+
+### WEEK 7 (WEEK 13 - 14/LEARNING JAVASCRIPT) - August 18, 2025
+- Updated the logic for logging in and signing-up, retrieving the email value from the local storage of the manager side's customer array.
+- Fixed the issue on the modal for the mobile view of the customer side.
+- Refined the customer array for both the customer/manager side to be retrieved on the local storage.
