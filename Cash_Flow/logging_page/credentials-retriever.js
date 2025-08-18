@@ -20,7 +20,11 @@ let successBtn = document.querySelector(".success-btn")
 
 // initially this bit right here should check an email on the database(this is for the backend) to check if it is existing
 
-let users = JSON.parse(localStorage.getItem("users")) || {};
+let customerOrders = JSON.parse(localStorage.getItem("customerOrders")) || []
+
+console.log(customerOrders)
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
 
 document.querySelector(".submit").addEventListener("click", function() {
 
@@ -30,22 +34,38 @@ document.querySelector(".submit").addEventListener("click", function() {
   if (email.value === "") {
     errorText.textContent = "Email cannot be empty";
     rePassEnter.appendChild(errorText);
+    return;
   } else if(password.value === "") {
     errorText.textContent = "Password cannot be empty";
     rePassEnter.appendChild(errorText);
+    return;
   } else if(document.querySelector(".re-password").value === ""){
     errorText.textContent = "Please re-enter password";
     rePassEnter.appendChild(errorText);
+    return;
   } else if(password.value !== document.querySelector(".re-password").value) {
     errorText.textContent = "password do not match";
     rePassEnter.appendChild(errorText);
-  } else {
-    users[signEmail] = signPass;
-    console.log(users);
-    localStorage.setItem("users", JSON.stringify(users));
-    verification(successDisplay);
+    return;
+  }
+
+  let found = customerOrders.some(co => co.email.toLowerCase() === signEmail);
+
+    if(found){
+      let existed = users.some(u => u.email === signEmail);
+      if(!existed) {
+        users.push({email: signEmail, password: signPass});
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+      verification(successDisplay);
+    } else {
+    errorText.textContent = "Non existent credentials";
+    rePassEnter.appendChild(errorText);
   }
 })
+
+console.log(users)
+
 
 // this is just a mock loading;
 function verification(success) {

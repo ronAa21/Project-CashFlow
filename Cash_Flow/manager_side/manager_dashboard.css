@@ -9,7 +9,7 @@
         margin: 0px;
       }
 
-      h1, ul, li, h2, h3 {
+      h1, ul, li, h2, h3, h4 {
         font-family: 'Montserrat';
         margin: 0;
       }
@@ -656,6 +656,78 @@
     .sub-header {
       text-align: center;
       font-size: 20px;
+    }
+
+    /* Add customer modal */
+        .forms {
+      background-color: white;
+      width: 40%;
+      border-radius: 15px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .head-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    hr {
+      width: 70%;
+    }
+
+    .date-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+      width: 100%;
+    }
+
+    .add-form-date {
+      margin: 0;
+    }
+
+    .body-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+    }
+
+    .fill-up {
+      font-size: 15px;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 5px;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .add-forms {
+      border: none;
+      background-color: aliceblue;
+      padding: 5px;
+      width: 130px;
+    }
+
+    #contact, #set {
+      align-self: flex-start;
+    }
+
+    .measurement-header {
+      display: flex;
+      justify-content: space-between;
     }
 
       /* Mobile Responsiveness */

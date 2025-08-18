@@ -165,110 +165,30 @@
       progressPanel.style.display = "none";
     })
 
-    // customer data JavaScript for now
-let customerOrders = [
-  {
-    name: "Juan Dela Cruz",
-    contact: "09223457281",
-    status: "Completed",
-    dateOfPurchase: "6/20/2025",
-    orderSet: 2,
-    orderType: "TTMD",
-    order1: "Pants",
-    order2: "Long Sleeve",
-    order1Measurement: {
-      crotch: 2,
-      length: 40,
-      Waistline: 34,
-      Hips: 38,
-      thigh: 20,
-      knee: 16,
-      bottom: 14
-    },
-    order2Measurement: {
-      shoulder: 17,
-      sleeveLength: 23,
-      cuff: 11,
-      ArmHole: 10,
-      length: 32,
-      bust: 10,
-      waistline: 30,
-      hips: 36,
-      collar: 16
-    }
-  },
-
-  {
-    name: "Juan Dela Cruz",
-    contact: "09223457281",
-    status: "Urgent",
-    dateOfPurchase: "7/1/2025",
-    orderSet: 1,
-    orderType: "Uniform",
-    order1: "Short Sleeve",
-    order2: "Pants",
-    order1Measurement: {
-      shoulder: 16,
-      sleeveLength: 22,
-      sleeveOpening: 10,
-      ArmHole: 15,
-      length: 30,
-      Bust: 12,
-      waistline: 31,
-      hips: 37,
-      collar: 15
-    },
-    order2Measurement: {
-      crotch: 10,
-      length: 38,
-      Waistline: 33,
-      Hips: 37,
-      thigh: 21,
-      knee: 17,
-      bottom: 13
-    }
-  },
-
-  {
-    name: "Juan Dela Cruz",
-    contact: "09223457281",
-    status: "Pending",
-    dateOfPurchase: "7/15/2025",
-    orderSet: 0,
-    orderType: "Uniform",
-    order1: "Short Sleeve",
-    order2: "",
-    order1Measurement: {
-      shoulder: 15,
-      sleeveLength: 21,
-      sleeveOpening: 9,
-      ArmHole: 12,
-      length: 28,
-      Bust: 10,
-      waistline: 29,
-      hips: 35,
-      collar: 14
-    }
-  }
-];
+    // call the customerOrder localStorage
+    let customerOrders = JSON.parse(localStorage.getItem("customerOrders")) || [];
 
 
-  // displays the customer 
-  for(let i = 0; i < customerOrders.length; i++) {
+    let currentUser  = localStorage.getItem("currentUser");
+
+    let myOrders = customerOrders.filter(o => o.email === currentUser);
+
+  // displays the customer order
+  for(let i = 0; i < myOrders.length; i++) {
         
     let customerDetails = document.createElement("div"); // for appending
     customerDetails.className = "customer-name-order";
 
     let orderInfo = document.createElement("h3");
     orderInfo.className = "customer-info";
-    orderInfo.textContent = `${customerOrders[i].orderType}`;
+    orderInfo.textContent = `${myOrders[i].orderType}`;
 
     let progressTrack = document.createElement("div");
     progressTrack.className = "progress-track";
 
     let progressDisplay = document.createElement("p");
     progressDisplay.className = "progress-display";
-    progressDisplay.textContent = `${customerOrders[i].status}`;
+    progressDisplay.textContent = `${myOrders[i].status}`;
 
     customerDetails.appendChild(orderInfo);
     progressPanel.appendChild(customerDetails);
@@ -289,11 +209,11 @@ let customerOrders = [
 
       let customerName = document.createElement("h2");
       customerName.className = "customer-name";
-      customerName.textContent = `${customerOrders[i].name}`;
+      customerName.textContent = `${myOrders[i].name}`;
 
       let customerContact = document.createElement("p");
       customerContact.className = "customer-number";
-      customerContact.textContent = `${customerOrders[i].contact}`;
+      customerContact.textContent = `${myOrders[i].contact}`;
 
       leftInfo.appendChild(customerName);
       leftInfo.appendChild(customerContact);
@@ -309,7 +229,7 @@ let customerOrders = [
 
       let date = document.createElement("p");
       date.className = "date";
-      date.textContent = `${customerOrders[i].dateOfPurchase}`;
+      date.textContent = `${myOrders[i].dateOfPurchase}`;
 
       rightInfo.appendChild(orderedIn);
       rightInfo.appendChild(date);
@@ -321,7 +241,7 @@ let customerOrders = [
 
       let orderLabel = document.createElement("h2");
       orderLabel.className = "order-label";
-      orderLabel.textContent = `${customerOrders[i].orderSet} Set`;
+      orderLabel.textContent = `${myOrders[i].orderSet} Set`;
 
       setWrapper.append(orderLabel);
 
@@ -335,7 +255,7 @@ let customerOrders = [
       let gridThree = document.querySelector(".grid-box-three");
       let footerGrid = document.querySelector(".footer-grid");
 
-      let customer = customerOrders[i];
+      let customer = myOrders[i];
 
       dropdown.addEventListener("change", function() {
         let selectedVal = this.value;

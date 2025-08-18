@@ -202,7 +202,136 @@
         </div>
       </div>
     </div>
+
+    <!-- Add customer -->
+     <div class="modal-overlay" id="add-customer-form">
+      <div class="forms">
+        <div class="head-section">
+          <h3 class="title-form">
+            Customer Form
+          </h3>
+          <hr>
+          <div class="date-section">
+            <h4 class="add-form-ordered">Ordered In</h2>
+            <p class="add-form-date"></p><!-- this one is automatic, depending on the date the customer is added -->
+          </div>
+        </div>
+        <div class="body-section">
+          <div class="customer-info">
+            <h4 class="fill-up">Customer Info*</h4>
+            <div class="input-container">
+              <div class="wrapper">
+                <input type="text" class="add-forms" id="name" placeholder="name">
+                <input type="email"  class="add-forms" id="email" placeholder="email">
+              </div>
+                <input type="text"  class="add-forms" id="contact" placeholder="contact">
+            </div>
+          </div>
+          <div class="order-info">
+            <h4 class="fill-up">Order Info*</h4>
+              <div class="input-container">
+                <div class="wrapper">
+                  <input type="text" class="add-forms" id="product-order" placeholder="Order Type">
+                  <input type="email"  class="add-forms" id="fabric-type" placeholder="Fabric Type">
+                </div>
+                <input type="number" min="0"  class="add-forms" id="set" placeholder="set">
+              </div>
+          </div>
+        </div>
+        <div class="measurement-section">
+          <div class="measurement-header">
+            <h4 class="measurements">Measurements</h4>
+            <div class="measurements-wrapper">
+              <select name="order-pick" id="order-pick">
+                <option value="order1">Order 1</option>
+                <option value="order2">Order 2</option>
+              </select>
+              <select id="ord-type">
+                <option value="Short Sleeve">Short Sleeve</option>
+                <option value="Long Sleeve">Long Sleeve</option>
+                <option value="Pants">Pants</option>
+              </select>
+            </div>
+          </div>
+          <div class="forms-input-display">
+            <div class="first">
+              <!-- this is where the input box will be displayed -->
+            </div>
+            <div class="second">
+              <!-- this is where the input box will be displayed -->
+            </div>
+          </div>
+          <div class="button-section">
+            <div class="top-deck">
+              <button id="save-order" class="btns">Save Order</button>
+            </div>
+            <div class="low-deck">
+              <button id="confirm-add" class="btns">Add Customer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
   </body>
+  <style>
+
+    #add-customer-form {
+      display: none;
+    }
+
+    .measurements-wrapper {
+      display: flex;
+      gap: 10px;
+    }
+
+    .forms-input-display {
+      display: flex;
+      gap: 5px;
+    }
+
+    #order-pick {
+      padding: 5px;
+    }
+
+    .button-section {
+      margin-top: 15px;
+    }
+
+    #save-order {
+      background-color: rgb(79, 255, 79);
+      color: white;
+      border: none;
+      padding: 5px;
+    }
+
+    #confirm-add {
+      border: none;
+      padding: 5px;
+    }
+
+    .top-deck {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .low-deck {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .first, .second {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .add-size-input {
+      background-color: aliceblue;
+      border: none;
+      padding: 5px;
+    }
+
+  </style>
   <script>
 
     // 7/22/2025 - Navigation bar/Switching panels
@@ -259,8 +388,9 @@
     let deadline = document.querySelector(".deadlines"); // append the dueDisplay
 
     // Customer data (JavaScript for now)
-    let customerOrders = [
-  {
+    // transfer this in a local storage
+    /* // customerOrders Data 
+      {
     name: "Juan Dela Cruz",
     contact: "09223457281",
     email: "juan.delacruz@example.com",
@@ -349,12 +479,15 @@
       collar: 14
     }
   }
-];
+    */
+    let customerOrders = JSON.parse(localStorage.getItem("customerOrders")) || [];
 
-     
-    for(let i = 0; i < customerOrders.length; i++) {
+    displayer(customerOrders);
 
-      let convertToDate = new Date(customerOrders[i].dateOfPurchase);
+    function displayer(array){  
+    for(let i = 0; i < array.length; i++) {
+
+      let convertToDate = new Date(array[i].dateOfPurchase);
 
       convertToDate.setDate(convertToDate.getDate() + 7); // formula for setting a due date for an order
 
@@ -364,22 +497,22 @@
 
       let dueDateStr = `${month}/${day}/${year}`;
 
-      customerOrders[i].dueDate = dueDateStr;
+      array[i].dueDate = dueDateStr;
 
       let orderContain = document.createElement("div");
       orderContain.className = "customer-name-order";
 
       let customerInfo = document.createElement("h3");
       customerInfo.className = "customer-info";
-      customerInfo.textContent = `${customerOrders[i].orderType}`;
+      customerInfo.textContent = `${array[i].orderType}`;
 
       let progressTrack = document.createElement("div");
       progressTrack.className = "progress-track";
-      customerInfo.textContent = `${customerOrders[i].orderType}`;
+      customerInfo.textContent = `${array[i].orderType}`;
 
       let progressDisplay = document.createElement("div");
       progressDisplay.className = "progress-display";
-      progressDisplay.textContent = `${customerOrders[i].status}`;
+      progressDisplay.textContent = `${array[i].status}`;
 
       let dueDateDisplay = document.createElement("div");
        dueDateDisplay.id = "due-display";
@@ -389,7 +522,7 @@
       orderContain.appendChild(progressTrack)
       customerPanel.appendChild(orderContain);
 
-      let due = new Date(customerOrders[i].dueDate);
+      let due = new Date(array[i].dueDate);
 
       let today = new Date();
 
@@ -412,7 +545,7 @@
     let progressTrack = orderContain.querySelector(".progress-track");
 
     let progressBar = document.querySelector(".progress-bar");
-    let currentStatus = customerOrders[i].status
+    let currentStatus = array[i].status
     progressBarLogic(currentStatus, progressBar)
 
     // customer modal (left-side upper)
@@ -421,15 +554,15 @@
 
      let customerName = document.createElement("h2");
      customerName.className = "customer-name";
-     customerName.textContent = `${customerOrders[i].name}`
+     customerName.textContent = `${array[i].name}`
      
      let customerCredentials = document.createElement("p");
      customerCredentials.className = "customer-credentials";
-     customerCredentials.textContent = `${customerOrders[i].contact}`;
+     customerCredentials.textContent = `${array[i].contact}`;
 
      let customerEmail = document.createElement("p");
      customerEmail.className = "customer-credentials";
-     customerEmail.textContent = `${customerOrders[i].email}`;
+     customerEmail.textContent = `${array[i].email}`;
      
      leftInfo.appendChild(customerName);
      leftInfo.appendChild(customerCredentials);
@@ -445,7 +578,7 @@
 
      let date = document.createElement("p");
      date.className = "date";
-     date.textContent = `${customerOrders[i].dateOfPurchase}`;
+     date.textContent = `${array[i].dateOfPurchase}`;
       
      rightInfo.appendChild(dateOrdered);
      rightInfo.appendChild(date);
@@ -456,7 +589,7 @@
     oldDropdown.replaceWith(newDropdown);
 
     let dropdown = newDropdown;
-    dropdown.value = customerOrders[i].status;
+    dropdown.value = array[i].status;
     let prevVal = dropdown.value;
     let updatedstatus = null;
 
@@ -501,7 +634,7 @@
       if(selectedVal === "not-started" || selectedVal === "started" || selectedVal === "in-progress" || selectedVal === "ready") {
        updatedstatus = selectedVal;
        confirmExit();
-       customerOrders[i].status = selectedVal;
+       array[i].status = selectedVal;
        progressBarLogic(selectedVal, progressBar);
         progressTrack.innerHTML = ""
         progressDisplay.textContent = `${selectedVal}`;
@@ -515,7 +648,7 @@
 
      let orderLabel = document.createElement("h2")
      orderLabel.className = "order-label";
-     orderLabel.textContent = `${customerOrders[i].orderSet} set`;
+     orderLabel.textContent = `${array[i].orderSet} set`;
 
      setWrapper.appendChild(orderLabel);
 
@@ -527,7 +660,7 @@
      let gridTwo = document.querySelector(".grid-box-two");
      let gridThree = document.querySelector(".grid-box-three");
 
-     let customer = customerOrders[i];
+     let customer = array[i];
 
      orderDropdown.addEventListener("change", function() {
       let selectedVal = this.value;
@@ -568,7 +701,7 @@
      })
 
     }
-
+  }
     // adding cashflow functions
      let tablePosition = document.querySelector(".table-position"); // parent 
 
@@ -624,7 +757,196 @@
      addBtn.addEventListener("click", function() {
       addRow();
      })
+
+     // Add customer function
+     let customerForm = document.getElementById("add-customer-form");
+     let orderPick = document.getElementById("order-pick");
+     let type = document.getElementById("ord-type");
+     let formDate = document.querySelector(".add-form-date");
+     let first = document.querySelector(".first");
+     let second = document.querySelector(".second");
+     let now = new Date();
+     let tempOrder1 = { name: "", measurements: {} };
+     let tempOrder2 = { name: "", measurements: {} };
+
+     let month = now.getMonth() + 1;
+     let day = now.getDate();
+     let year = now.getFullYear();
+
+     let format = `${month}/${day}/${year}`
+
+     formDate.textContent = format
+
+    // temporary save
+    const measurementTemplates = {
+    "Short Sleeve": {
+      shoulder: "",
+      sleeveLength: "",
+      sleeveOpening: "",
+      ArmHole: "",
+      length: "",
+      Bust: "",
+      waistline: "",
+      hips: "",
+      collar: ""
+    },
+    "Long Sleeve": {
+      shoulder: "",
+      sleeveLength: "",
+      cuff: "",
+      ArmHole: "",
+      length: "",
+      Bust: "",
+      waistline: "",
+      hips: "",
+      collar: ""
+    },
+    "Pants": {
+      crotch: "",
+      ptslength: "",
+      ptsWaistline: "",
+      ptsHips: "",
+      thigh: "",
+      knee: "",
+      bottom: ""
+    }
+  }
+
+     document.querySelector(".add-customer").addEventListener("click", function() {
+      customerForm.style.display = "flex"
+     })
+
+     document.getElementById("confirm-add").addEventListener("click", function() {
+      // this is where the try catch will occur in saving the customers to local storage
+      let named = document.getElementById("name");
+      let contacted = document.getElementById("contact");
+      let emailed = document.getElementById("email");
+      let orderTyped = document.getElementById("product-order");
+      let orderSet = document.getElementById("set");
+      let fabricType = document.getElementById("fabric-type");
+      let inputs = document.querySelectorAll(".add-size-input");
+
+      let measurements1 = {}, measurement2 = {};
+
+      inputs.forEach(input => {
+        let [prefix, key] = input.getAttribute("data-key").split("|");
+        let value = input.value.trim();
+
+        if(prefix === "order1") measurements1[key] = value;
+        else if(prefix === "order2") measurement2[key] = value;
+      })
+
+      let injector = {
+        name: named.value,
+        contact: contacted.value,
+        email: emailed.value,
+        status: "not-started",
+        dateOfPurchase: format,
+        orderSet: orderSet.value,
+        orderType: orderTyped.value,
+        fabricType: fabricType.value,
+        order1: tempOrder1.name,
+        order2: tempOrder2.name,
+        dueDate: "",
+        order1Measurement: tempOrder1.measurements,
+        order2Measurement: tempOrder2.measurements
+      }
+
+      customerOrders.push(injector);
+      localStorage.setItem("customerOrders", JSON.stringify(customerOrders));
+      customerPanel.innerHTML = "";
+      displayer(customerOrders);
+      console.log(customerOrders)
+      alert("added successfully"); // replace this with modal
+
+      named.value = "", contacted.value = "", emailed.value = "", orderTyped.value = "", orderSet.value = "", fabricType.value = "";
+
+      tempOrder1 = { name: "", measurements: {} };
+      tempOrder2 = { name: "", measurements: {} };
+
+      customerForm.style.display = "none";
+    })
  
+     document.getElementById("save-order").addEventListener("click", function() {
+      let inputs = document.querySelectorAll(".add-size-input");
+      let orderPicked = orderPick.value; 
+      let typeOrderVal = document.getElementById("ord-type").value;
+
+      let newMeasurements = {}
+
+      inputs.forEach(input => {
+        let [prefix, key] = input.getAttribute("data-key").split("|");
+        newMeasurements[key] = input.value.trim();
+      });
+
+      if(orderPicked === "order1") {
+        tempOrder1.name = typeOrderVal;
+        tempOrder1.measurements = newMeasurements;
+        alert("Order 1 saved"); // replace with modal
+      } else if(orderPicked === "order2") {
+        tempOrder2.name = typeOrderVal;
+        tempOrder2.measurements = newMeasurements;
+        alert("Order 2 saved"); // replace with modal
+      }
+
+      inputs.forEach(input => input.value = "");
+     })
+
+     type.addEventListener("change", function() {
+      let selectedVal = this.value;
+      let orderPicked = orderPick.value;
+
+      let template = measurementTemplates[selectedVal]; 
+      
+      if(!template) return;
+
+      if(orderPicked === "order1") {
+        renderMeasurementFields(
+          first,
+          second,
+          template,
+          orderPicked
+        )
+      } else if(orderPicked === "order2") {
+        renderMeasurementFields(
+          first,
+          second,
+          template,
+          orderPicked
+        )
+      }
+     })
+
+     // display the input boxes in the add form
+     function renderMeasurementFields(container1, container2, template, prefix) {
+        container1.innerHTML = "";
+        container2.innerHTML = "";
+
+        let keys = Object.keys(template);
+
+        for(let i = 0; i < keys.length; i++) {
+          let keysVal = keys[i];
+
+          let wrapper = document.createElement("div");
+          wrapper.className = "input-group";
+
+          let input = document.createElement("input");
+          input.type = "text";
+          input.className = "add-size-input";
+          input.placeholder = keysVal,
+          input.value = template[keysVal],
+          input.setAttribute("data-key", `${prefix}|${keysVal}`);
+
+          wrapper.appendChild(input);
+
+          if(i % 2 === 0) {
+            container1.appendChild(wrapper);
+          } else {
+            container2.appendChild(wrapper);
+          } 
+        }
+     }
+
      // add row function
      function addRow() {
       let newRow = document.createElement("tr");

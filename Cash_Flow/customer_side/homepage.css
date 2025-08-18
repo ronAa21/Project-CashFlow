@@ -481,33 +481,38 @@
     .modal-container {
       padding: 0;
       width: 100%;
+      height: 80%;
       flex-direction: column;
+      margin: auto;
     }
 
     .unif-pic-type {
       width: 100px;
       height: 100px;
-      top: 2px;
       position: absolute;
       border-radius: 15px;
     }
 
     .info-panel {
       margin: 10px;
-      width: 88%;
+      width: 90%;
+      height: 90%;
     }
 
     .top-info-panel {
       display: flex;
-      flex-direction: column;
     }
 
     .left-info {
-      margin-top: 50px;
+      margin-top: auto;
     }
 
     .customer-name {
-      font-size: 25px;
+      font-size: 15px;
+    }
+
+    .customer-number {
+      font-size: 10px;
     }
 
     .customer-name, .customer-number {
@@ -515,15 +520,16 @@
     }
 
     .right-info {
+      margin: auto;
       text-align: center;
     }
 
     .date-ordered {
-      margin-top: 10px;
+      font-size: 15px;
     }
 
     .date {
-      margin-bottom: 5px;
+      font-size: 10px;
     }
 
     /* mid info */
@@ -537,7 +543,7 @@
     }
 
     .size-input {
-      height: 45px;
+      height: 25px;
       width: 90px;
       font-size: 10px;
     }

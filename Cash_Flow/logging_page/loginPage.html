@@ -243,19 +243,31 @@ document.querySelector(".log-submit").addEventListener("click", function() {
   let logEmail = loginEmail.value.trim().toLowerCase();
   let logPass = loginPass.value.trim();
 
+  // this is for a meantime, this should be placed inside a database for security 
   let managerEmail = "manager", managerPass = "manager123";
 
-  let users = JSON.parse(localStorage.getItem("users")) || {};
+  let users = JSON.parse(localStorage.getItem("users")) || [];
 
-  console.log(users);
-  if(users[logEmail] && users[logEmail] === logPass) {
+  console.log(users)
+  let found = users.some(u => u.email.toLowerCase() === logEmail && u.password === logPass);
+
+  if(found) {
+    localStorage.setItem("currentUser", logEmail);
+    alert("Welcome " + logEmail)
     window.location.href = "../customer_side/homepage.html";
-  } else if (logEmail === managerEmail && logPass === managerPass) {
+  } else {
+    errorContent.textContent = "Invalid email or password";
+    errorDisplay.appendChild(errorContent);
+  }
+
+  /*
+  else if (logEmail === managerEmail && logPass === managerPass) {
     window.location.href = "../manager_side/manager_dashboard.html"
   } else {
     errorContent.textContent = "Invalid email or password";
     errorDisplay.appendChild(errorContent);
   }
+  */
 
 })
 
