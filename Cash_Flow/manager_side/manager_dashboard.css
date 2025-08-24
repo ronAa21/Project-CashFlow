@@ -386,6 +386,10 @@
       .chat-messages {
         background-color: #747474;
         flex: 1;
+        display: flex;
+        overflow-y: auto;
+        padding: 10px;
+        color: white;
       }
 
       .message-section {
@@ -398,6 +402,43 @@
         border-radius: 15px;
       }
 
+      .customer-chat {
+        width: 100%;
+     } 
+
+     .manager-chat {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+      padding-right: 10px;
+     }
+
+    .message-wrap {
+      display: flex;
+      gap: 10px;
+    }
+
+     .message-bubble {
+      background-color: rgb(161, 158, 158);
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-weight: 300;
+      color: black;
+      margin: 10px;
+      align-self: center;
+      font-size: 15px;
+     }
+
+    .message-date {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 5px 10px;
+      border-radius: 15px;
+      display: none;
+      font-size: 10px;
+      align-self: center;
+    }
 
       /* Deadline Section */
 
@@ -729,6 +770,64 @@
       display: flex;
       justify-content: space-between;
     }
+
+    /* customer form */
+    #add-customer-form {
+      display: none;
+    }
+
+    .measurements-wrapper {
+      display: flex;
+      gap: 10px;
+    }
+
+    .forms-input-display {
+      display: flex;
+      gap: 5px;
+    }
+
+    #order-pick {
+      padding: 5px;
+    }
+
+    .button-section {
+      margin-top: 15px;
+    }
+
+    #save-order {
+      background-color: rgb(79, 255, 79);
+      color: white;
+      border: none;
+      padding: 5px;
+    }
+
+    #confirm-add {
+      border: none;
+      padding: 5px;
+    }
+
+    .top-deck {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .low-deck {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .first, .second {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .add-size-input {
+      background-color: aliceblue;
+      border: none;
+      padding: 5px;
+    }
+
 
       /* Mobile Responsiveness */
 

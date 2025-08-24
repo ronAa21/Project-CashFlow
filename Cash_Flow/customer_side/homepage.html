@@ -31,7 +31,7 @@
           </div>
           <div class="support">
             <h2 class="side-bar-title">Support</h2>
-            <p class="side-bar-sub-title"><a href="#">Feedback</a></p>
+            <p class="side-bar-sub-title"><a href="#" class="feedback">Feedback</a></p>
           </div>
         </div>
         <div class="side-lower-content">
@@ -69,7 +69,12 @@
             <div id="chat-tab" class="tab-pane">
               <div class="chat-panel">
                 <div class="chat-messages">
-                  <p style="color: white; padding: 10px; font-size: 10px;">Hello! How can I help you?</p>
+                  <div class="manager-chat">
+                    <!-- this is the chat of manager -->
+                  </div>
+                  <div class="customer-chat">
+                    <!-- this is the chat of customer -->
+                  </div>
                 </div>
                 <div class="message-section">
                   <textarea name="messenger" id="messenger"></textarea>
@@ -126,8 +131,38 @@
       </div>
     </div>
     </div>
-  </body>
 
+    <div class="modal-overlay" id="logout-overlay" style="display: none;">
+      <div class="logout-modal">
+        <div class="text-container">
+          <h2 class="logout-text">
+            Log out of your account?
+          </h2>
+          <p class="sub-text">You will need to log in again to continue</p>
+        </div>
+        <div class="button-wrapper">
+          <button class="out-btn" id="cancel">Cancel</button>
+          <button class="out-btn" id="logout">Log Out</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="change-overlay">
+      <div class="change-modal">
+        <div class="top-section">
+          <h2 class="logout-text" id="change-pass">Change Password</h2>
+        </div>
+        <div class="mid-section">
+          <input type="text" class="pass" id="new-pass" placeholder="New password">
+          <input type="text" class="pass" id="confirm-pass" placeholder="Confirm new password">
+        </div>
+        <div class="low-section">
+          <button class="out-btn" id="cancel-pass">Cancel</button>
+          <button class="out-btn" id="confirm-pass">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </body>
   <script>
 
     // side-bar
@@ -168,10 +203,9 @@
     // call the customerOrder localStorage
     let customerOrders = JSON.parse(localStorage.getItem("customerOrders")) || [];
 
+    let currentUser  = JSON.parse(localStorage.getItem("currentUser")) || [];
 
-    let currentUser  = localStorage.getItem("currentUser");
-
-    let myOrders = customerOrders.filter(o => o.email === currentUser);
+    let myOrders = customerOrders.filter(o => o.email === currentUser.email);
 
   // displays the customer order
   for(let i = 0; i < myOrders.length; i++) {
@@ -295,6 +329,144 @@
       customerModal.style.display = "none";
     })
   }
+
+  document.querySelector(".log-out").addEventListener("click", function() {
+    let logoutModal = document.getElementById("logout-overlay");
+
+    logoutModal.style.display = "flex";
+
+    exit(logoutModal);
+  })
+
+  document.querySelector("a").addEventListener("click", function() {
+    let changeModal = document.getElementById("change-overlay");
+
+    changeModal.style.display = "flex";
+
+    changed(changeModal);
+
+  })
+
+  function changed(passChange) {
+    let pass = document.getElementById("new-pass");
+    let confPass = document.getElementById("confirm-pass");
+
+    document.querySelector(".low-section").addEventListener("click", function() {
+      const action = event.target.id;
+
+      if(action === "cancel-pass") {
+        passChange.style.display = "none"
+      } else if (action === "confirm-pass") {
+        try {
+          if(pass.value === "" || confPass.value === "" && pass.value !== confPass.value) {
+            throw new Error("password does not match")
+          } 
+
+          let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+          let usersUpdated = JSON.parse(localStorage.getItem("users"));
+
+          currentUser.pass = pass.value;
+          localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+          let userIndex = usersUpdated.findIndex(u => u.email === currentUser.email);
+          if(userIndex !== -1) {
+            usersUpdated[userIndex].password = pass.value;
+          }
+          localStorage.setItem("users", JSON.stringify(usersUpdated));
+          
+          alert("Changed Successfully");
+        }catch (error) {
+          console.error("Error ", error);
+        } finally {
+          passChange.style.display = "none"
+        }
+      }
+    })
+  }
+
+  function exit(logModal) {
+    let cancel = document.getElementById("cancel");
+    let logout = document.getElementById("logout");
+
+    document.querySelector(".logout-modal").addEventListener("click", function(e) {
+      const action = event.target.id;
+
+      if(action === "cancel") {
+        logModal.style.display = "none"
+      } else if (action === "logout") {
+        window.location.href = "../logging_page/loginPage.html";
+      }
+    })
+  }
+
+  // this is for the manager chats
+  let managerChat = document.querySelector(".manager-chat");
+
+  // this is for the customer chat
+  let customerChat = document.querySelector(".customer-chat");
+
+  document.getElementById("messenger").addEventListener("keydown", function(e) {
+    if(e.key === "Enter" && this.value.trim() !== "") {
+      e.preventDefault
+      let textVal = this.value;
+
+      let messageWrap = document.createElement("div");
+      messageWrap.className = "message-wrap";
+
+      let messageBubble = document.createElement("h4");
+      messageBubble.className = "message-bubble";
+
+      messageBubble.textContent = textVal;
+
+      let date = document.createElement("p");
+      date.className = "message-date";
+      date.textContent = formattedDate();
+
+      messageWrap.append(date);
+      messageWrap.append(messageBubble);
+      customerChat.appendChild(messageWrap);
+
+      this.value = "";
+    }
+  });
+
+  function formattedDate() {
+    let now = new Date();
+
+    let hrs = now.getHours();
+    let mins = now.getMinutes();
+    let ampm = hrs >= 12 ? "PM" : "AM";
+
+    hrs = hrs % 12;
+    hrs = hrs ? hrs : 12;
+
+    mins = mins < 10 ? "0" + mins : mins;
+
+    let month = now.getMonth();
+    let day = now.getDate();
+    let year = now.getFullYear();
+
+    return `${hrs}:${mins} ${ampm} ${month}/${day}/${year}`;    
+  }
+
+  document.querySelector(".customer-chat").addEventListener("mouseover", function(e) {
+    let action = e.target;
+
+    if(action.classList.contains("message-bubble")){
+      let messageWrap = action.closest(".message-wrap");
+      let date = messageWrap.querySelector(".message-date");
+
+      let timer = setTimeout(() => {
+        date.style.display = "flex";
+      }, 2000)
+
+      action.addEventListener("mouseout", () => {
+        clearTimeout(timer);
+        date.style.display = "none";
+      })
+    }
+  })
+    
 
   </script>
 </html>

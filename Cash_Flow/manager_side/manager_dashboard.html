@@ -91,7 +91,12 @@
             <div id="chat" class="tab-pane">
               <div class="chat-panel">
                 <div class="chat-messages">
-                  <p style="color: white; padding: 10px; margin: 0px;">Hello How are you?</p>
+                  <div class="customer-chat">
+                    <!-- this the chat of customer -->
+                  </div>
+                  <div class="manager-chat">
+                    <!-- this is the chat of manager -->
+                  </div>
                 </div>
                 <div class="message-section">
                   <textarea name="chats" id="chats" class="chats"></textarea>
@@ -273,65 +278,6 @@
       </div>
      </div>
   </body>
-  <style>
-
-    #add-customer-form {
-      display: none;
-    }
-
-    .measurements-wrapper {
-      display: flex;
-      gap: 10px;
-    }
-
-    .forms-input-display {
-      display: flex;
-      gap: 5px;
-    }
-
-    #order-pick {
-      padding: 5px;
-    }
-
-    .button-section {
-      margin-top: 15px;
-    }
-
-    #save-order {
-      background-color: rgb(79, 255, 79);
-      color: white;
-      border: none;
-      padding: 5px;
-    }
-
-    #confirm-add {
-      border: none;
-      padding: 5px;
-    }
-
-    .top-deck {
-      display: flex;
-      justify-content: flex-start;
-    }
-
-    .low-deck {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .first, .second {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .add-size-input {
-      background-color: aliceblue;
-      border: none;
-      padding: 5px;
-    }
-
-  </style>
   <script>
 
     // 7/22/2025 - Navigation bar/Switching panels
@@ -774,6 +720,7 @@
      let year = now.getFullYear();
 
      let format = `${month}/${day}/${year}`
+     console.log(format)
 
      formDate.textContent = format
 
@@ -992,6 +939,73 @@
       tableBody.appendChild(newRow);
        
      }
+
+     // this is for the customer chats
+     let customerChat = document.querySelector(".customer-chat");
+
+     // this is for the manager chats
+     let managerChat = document.querySelector(".manager-chat");
+
+     document.getElementById("chats").addEventListener("keydown", function(e) {
+      if(e.key === "Enter" && this.value.trim() !== "") {
+        e.preventDefault();
+        let testVal = this.value;
+
+        let messageWrap = document.createElement("div");
+        messageWrap.className = "message-wrap";
+
+        let messageBubble = document.createElement("h4");
+        messageBubble.className = "message-bubble";
+        messageBubble.textContent = testVal;
+
+        let date = document.createElement("p");
+        date.className = "message-date";
+        date.textContent = formattedDate();
+
+        messageWrap.append(date);
+        messageWrap.append(messageBubble);
+        managerChat.appendChild(messageWrap);
+
+        this.value = "";
+      }
+     })
+
+    function formattedDate() {
+      let now = new Date();
+
+      let hrs = now.getHours();
+      let mins = now.getMinutes();
+      let ampm = hrs >= 12 ? "PM" : "AM";
+
+      hrs = hrs % 12;
+      hrs = hrs ? hrs : 12;
+
+      mins = mins < 10 ? "0" + mins : mins;
+
+      let month = now.getMonth();
+      let day = now.getDate();
+      let year = now.getFullYear();
+
+      return `${hrs}:${mins} ${ampm} ${month}/${day}/${year}`;    
+    }
+
+    document.querySelector(".manager-chat").addEventListener("mouseover", function(e) {
+      let action = e.target;
+
+      if(action.classList.contains("message-bubble")) {
+        let messageWrap = action.closest(".message-wrap");
+        let date = messageWrap.querySelector(".message-date");
+
+        let timer = setTimeout(() => {
+          date.style.display = "flex";
+        }, 2000)
+
+        action.addEventListener("mouseout", () => {
+          clearTimeout(timer);
+          date.style.display = "none";
+        })
+      }
+    })
 
   </script>
 </html>

@@ -252,7 +252,8 @@ document.querySelector(".log-submit").addEventListener("click", function() {
   let found = users.some(u => u.email.toLowerCase() === logEmail && u.password === logPass);
 
   if(found) {
-    localStorage.setItem("currentUser", logEmail);
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    localStorage.setItem("currentUser", JSON.stringify({email: logEmail, pass: logPass}));
     alert("Welcome " + logEmail)
     window.location.href = "../customer_side/homepage.html";
   } else {
