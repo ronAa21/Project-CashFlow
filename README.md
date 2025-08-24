@@ -35,3 +35,8 @@ My first project Project S
 - Updated the logic for logging in and signing-up, retrieving the email value from the local storage of the manager side's customer array.
 - Fixed the issue on the modal for the mobile view of the customer side.
 - Refined the customer array for both the customer/manager side to be retrieved on the local storage.
+
+### WEEK 8 (WEEK 15 - August 25, 2025)
+- Added the logic for the logout on the customer side
+- Added the logic for change password on the customer side
+- Added the mock messenger logic (able to send a message although just a mock) in manager and customer side
