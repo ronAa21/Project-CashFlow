@@ -266,6 +266,9 @@
               <!-- this is where the input box will be displayed -->
             </div>
           </div>
+          <div class="remarks-section">
+            <textarea name="request-remarks" id="request-remarks"></textarea>
+          </div>
           <div class="button-section">
             <div class="top-deck">
               <button id="save-order" class="btns">Save Order</button>
@@ -278,6 +281,8 @@
       </div>
      </div>
   </body>
+  <style>
+  </style>
   <script>
 
     // 7/22/2025 - Navigation bar/Switching panels
@@ -333,99 +338,6 @@
     // making the progress panel dynamic
     let deadline = document.querySelector(".deadlines"); // append the dueDisplay
 
-    // Customer data (JavaScript for now)
-    // transfer this in a local storage
-    /* // customerOrders Data 
-      {
-    name: "Juan Dela Cruz",
-    contact: "09223457281",
-    email: "juan.delacruz@example.com",
-    status: "not-started",
-    dateOfPurchase: "6/12/2025",
-    orderSet: 2,
-    orderType: "TTMD",
-    order1: "Pants",
-    order2: "Long Sleeve",
-    dueDate: "",
-    order1Measurement: {
-      crotch: 2,
-      length: 40,
-      Waistline: 34,
-      Hips: 38,
-      thigh: 20,
-      knee: 16,
-      bottom: 14
-    },
-    order2Measurement: {
-      shoulder: 17,
-      sleeveLength: 23,
-      cuff: 11,
-      ArmHole: 10,
-      length: 32,
-      bust: 10,
-      waistline: 30,
-      hips: 36,
-      collar: 16
-    }
-  },
-
-  {
-    name: "Maki The Rapper",
-    contact: "09223457282",
-    email: "maki.therapper@example.com",
-    status: "not-started",
-    dateOfPurchase: "7/1/2025",
-    orderSet: 2,
-    orderType: "Uniform",
-    order1: "Short Sleeve",
-    order2: "Pants",
-    dueDate: "",
-    order1Measurement: {
-      shoulder: 16,
-      sleeveLength: 22,
-      sleeveOpening: 10,
-      ArmHole: 15,
-      length: 30,
-      Bust: 12,
-      waistline: 31,
-      hips: 37,
-      collar: 15
-    },
-    order2Measurement: {
-      crotch: 10,
-      length: 38,
-      Waistline: 33,
-      Hips: 37,
-      thigh: 21,
-      knee: 17,
-      bottom: 13
-    }
-  },
-
-  {
-    name: "Likitung",
-    contact: "09223457283",
-    email: "likitung@example.com",
-    status: "not-started",
-    dateOfPurchase: "7/27/2025",
-    orderSet: 0,
-    orderType: "Uniform",
-    order1: "Short Sleeve",
-    order2: "",
-    dueDate: "",
-    order1Measurement: {
-      shoulder: 15,
-      sleeveLength: 21,
-      sleeveOpening: 9,
-      ArmHole: 12,
-      length: 28,
-      Bust: 10,
-      waistline: 29,
-      hips: 35,
-      collar: 14
-    }
-  }
-    */
     let customerOrders = JSON.parse(localStorage.getItem("customerOrders")) || [];
 
     displayer(customerOrders);
@@ -605,6 +517,8 @@
      let gridOne = document.querySelector(".grid-box-one");
      let gridTwo = document.querySelector(".grid-box-two");
      let gridThree = document.querySelector(".grid-box-three");
+     let remarksVal = document.getElementById("requests");
+     remarksVal.textContent = array[i].remarks;
 
      let customer = array[i];
 
@@ -641,7 +555,7 @@
      })
 
      })
-
+     
      document.querySelector(".submit-save").addEventListener("click", () => {
       customerModal.style.display = "none";
      })
@@ -771,6 +685,7 @@
       let orderTyped = document.getElementById("product-order");
       let orderSet = document.getElementById("set");
       let fabricType = document.getElementById("fabric-type");
+      let requests = document.getElementById("request-remarks");
       let inputs = document.querySelectorAll(".add-size-input");
 
       let measurements1 = {}, measurement2 = {};
@@ -796,7 +711,8 @@
         order2: tempOrder2.name,
         dueDate: "",
         order1Measurement: tempOrder1.measurements,
-        order2Measurement: tempOrder2.measurements
+        order2Measurement: tempOrder2.measurements,
+        remarks: requests.value
       }
 
       customerOrders.push(injector);
@@ -1005,6 +921,25 @@
           date.style.display = "none";
         })
       }
+    })
+
+    // side bar
+    let customersChat = document.querySelector(".customers");
+    let customerSearch = document.getElementById("customer-search");
+
+    document.querySelector(".side-bar").addEventListener("click", function() {
+      this.classList.toggle("side-bar-expand");
+      customersChat.classList.toggle("customers-expand");
+      customerSearch.classList.toggle("customers-expand");
+    })
+
+    customersChat.addEventListener("click", function() {
+      chatPanel.style.display = "flex";
+      chatId.style.backgroundColor = "grey";
+      customerId.style.backgroundColor = "";
+      cashflowId.style.backgroundColor = ""
+      customerPanel.style.display = "none";
+      cashflowPanel.style.display = "none";
     })
 
   </script>

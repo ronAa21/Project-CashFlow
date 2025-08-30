@@ -34,8 +34,8 @@
         grid-template-columns: 250px 1fr 1fr;
         grid-template-rows: auto 1fr;
         grid-template-areas: 
-        "side nav nav"
-        "side sep sep";
+        "nav nav nav"
+        "sep sep sep";
         height: 100vh;
       }
 
@@ -56,6 +56,7 @@
         grid-template-areas: 
         "main due";
         margin: 20px;
+        margin-left: 30px;
         gap: 20px;
       }
 
@@ -98,9 +99,22 @@
       }
 
       /* Side bar contents */
+
+      /* Initial Side bar */
       .side-bar {
-        display: flex;
+        position: fixed;
+        height: 100vh;
+        width: 10px;
         flex-direction: column;
+        z-index: 999;
+        transition: 0.8s ease-out;
+      }
+
+
+      /* Side bar after click */
+      .side-bar-expand {
+        width: 20%;
+        transition: 0.8s ease;
       }
 
       .placeholder {
@@ -123,13 +137,14 @@
       }
 
       #customer-search {
+        display: none;
         height: 40px;
         font-size: 15px;
         border-radius: 15px;
       }
 
       .customers {
-        display: flex;
+        display: none;
         margin: 20px 0;
         gap: 10px;
         text-align:left;
@@ -137,6 +152,14 @@
         border-radius: 15px;
         transition: linear 0.1s;
         cursor: pointer;
+      }
+
+      .customers.customers-expand {
+        display: flex;
+      }
+
+      #customer-search.customers-expand {
+        display: flex;
       }
 
       .customers:hover {
@@ -790,6 +813,16 @@
       padding: 5px;
     }
 
+    .remarks-section {
+      margin: 20px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #request-remarks {
+      height: 40px;
+    }
+
     .button-section {
       margin-top: 15px;
     }
@@ -867,13 +900,21 @@
           transition: width 1s ease;
         }
 
-        .side-bar:hover {
-          width: 250px;
-          transition: width 0.3 ease;
-        }
+        .side-bar-expand {
+        width: 100%;
+        transition: 0.8s ease;
+      }
 
-        .customer-messages-panel {
+      .customer-messages-panel {
         overflow: hidden;
+      }
+
+      .customers.customers-expand {
+        display: flex;
+      }
+
+      #customer-search.customers-expand {
+        display: flex;
       }
 
         /* Navigation bar */

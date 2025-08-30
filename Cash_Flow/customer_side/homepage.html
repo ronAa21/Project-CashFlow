@@ -287,7 +287,10 @@
       let gridOne = document.querySelector(".grid-box-one");
       let gridTwo = document.querySelector(".grid-box-two");
       let gridThree = document.querySelector(".grid-box-three");
+      let requests = document.getElementById("requests");
       let footerGrid = document.querySelector(".footer-grid");
+
+      requests.textContent = myOrders[i].remarks;
 
       let customer = myOrders[i];
 
