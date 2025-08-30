@@ -40,3 +40,6 @@ My first project Project S
 - Added the logic for the logout on the customer side
 - Added the logic for change password on the customer side
 - Added the mock messenger logic (able to send a message although just a mock) in manager and customer side
+
+### WEEK 9 (WEEK 15 - August 30, 2025)
+- Added the logic where the remarks can be saved for both customers and manager
