@@ -43,3 +43,11 @@ My first project Project S
 
 ### WEEK 9 (WEEK 15 - August 30, 2025)
 - Added the logic where the remarks can be saved for both customers and manager
+
+### WEEK 10 (WEEK 29 - December 26-29, 2025)
+(On a hiatus (: Studied react and backend during that time)
+- Removed the logic of localStorage for signup and replaced with Auth backend
+- Removed the logic of localStorage for login and replaced with Auth backend
+- Removed the logic of localStorage for customer dashboard and display data through database
+- Successfully connected the signup, logic, and customer dashboard
+- UI overhaul for signup, logic, and customer dashboard
