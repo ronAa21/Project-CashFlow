@@ -20,16 +20,14 @@ let successBtn = document.querySelector(".success-btn")
 
 // initially this bit right here should check an email on the database(this is for the backend) to check if it is existing
 
-let customerOrders = JSON.parse(localStorage.getItem("customerOrders")) || []
-
-console.log(customerOrders)
-
-let users = JSON.parse(localStorage.getItem("users")) || [];
-
-document.querySelector(".submit").addEventListener("click", function() {
+document.querySelector(".submit").addEventListener("click", function(e) {
+  e.preventDefault();
 
   let signEmail = email.value.trim().toLowerCase()
   let signPass = password.value.trim();
+  let rePass = document.querySelector(".re-password").value;
+
+  errorText.remove();
 
   if (email.value === "") {
     errorText.textContent = "Email cannot be empty";
@@ -49,22 +47,33 @@ document.querySelector(".submit").addEventListener("click", function() {
     return;
   }
 
-  let found = customerOrders.some(co => co.email.toLowerCase() === signEmail);
+  fetch("http://localhost:4001/project/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({email: signEmail, password: signPass})
+  })
+  .then(async (response) => {
+    const text = await response.text();
+    
+    if(!text) {
+      throw new Error("Empty response");
+    }
 
-    if(found){
-      let existed = users.some(u => u.email === signEmail);
-      if(!existed) {
-        users.push({email: signEmail, password: signPass});
-        localStorage.setItem("users", JSON.stringify(users));
-      }
-      verification(successDisplay);
-    } else {
-    errorText.textContent = "Non existent credentials";
-    rePassEnter.appendChild(errorText);
-  }
-})
+    const data = JSON.parse(text);
+    
+    if(!response.ok) {
+      throw new Error(data.message || "Signup failed");
+    }
 
-console.log(users)
+    verification(successDisplay);
+  })
+  .catch(error => {
+    errorText.textContent = error.message;
+    rePassEnter.appendChild(errorText); 
+  })  
+});
 
 
 // this is just a mock loading;
@@ -80,6 +89,6 @@ function successDisplay() {
   success.style.display = "flex";
   document.querySelector(".success-btn").addEventListener("click", () => {
     success.style.display = "none";
-    window.location.href = "loginPage.html";
+    window.location.href = "/";
   })
 }

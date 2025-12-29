@@ -1,0 +1,501 @@
+   <html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project_S</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="homepage.css">
+  </head>
+  
+<body>
+  <div class="web-structure">
+    <div class="navigation">
+      <nav>
+        <div class="left-contents"></div>
+        <div class="middle-contents">
+          <h1 class="website-title">Project S</h1>
+        </div>
+        <div class="right-contents">
+          <svg class="profile-pic" width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="25" cy="25" r="25" fill="url(#grad1)"/>
+            <circle cx="25" cy="18" r="8" fill="white" opacity="0.9"/>
+            <path d="M 10 40 Q 10 30 25 30 Q 40 30 40 40 Z" fill="white" opacity="0.9"/>
+            <defs>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#6a6a6a;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#4a4a4a;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </nav>
+    </div>
+
+    <div class="side-bar">
+      <div class="side-upper-content">
+        <div class="account">
+          <h2 class="side-bar-title">Account</h2>
+          <p class="side-bar-subtitle"><a href="#">Change Password</a></p>
+        </div>
+        <div class="support">
+          <h2 class="side-bar-title">Support</h2>
+          <p class="side-bar-sub-title"><a href="#" class="feedback">Feedback</a></p>
+        </div>
+      </div>
+      <div class="side-lower-content">
+        <button class="log-out">Logout</button>
+      </div>
+    </div>
+
+    <div class="main-contents">
+      <nav class="main-content-nav">
+        <div class="contents">
+          <section class="progress-page">
+            <h3 class="title-of-contents">Progress</h3>
+          </section>
+          <section class="chat-page">
+            <h3 class="title-of-contents">Chat</h3>
+          </section>
+        </div>
+      </nav>
+      <main>
+        <div class="main-content-container">
+          <div id="progress-tab" class="tab-pane">
+            <!-- Contents Displayed dynamically -->
+          </div>
+
+          <div id="chat-tab" class="tab-pane">
+            <div class="chat-panel">
+              <div class="chat-messages">
+                <div class="manager-chat">
+                  <!-- this is the chat of manager -->
+                </div>
+                <div class="customer-chat">
+                  <!-- this is the chat of customer -->
+                </div>
+              </div>
+              <div class="message-section">
+                <textarea name="messenger" id="messenger" placeholder="Type your message..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </main>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="order-modal">
+    <div class="modal-container">
+      <svg class="unif-pic-type" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="250" fill="url(#unifGrad)"/>
+        <path d="M 60 80 L 60 220 L 80 220 L 80 80 Z" fill="white" opacity="0.3"/>
+        <path d="M 120 80 L 120 220 L 140 220 L 140 80 Z" fill="white" opacity="0.3"/>
+        <rect x="50" y="60" width="100" height="30" rx="5" fill="white" opacity="0.4"/>
+        <defs>
+          <linearGradient id="unifGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#6a6a6a;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#4a4a4a;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="info-panel">
+        <div class="top-info-panel">
+          <div class="left-info"></div>
+          <div class="right-info"></div>
+        </div>
+        <div class="mid-info-panel">
+          <div class="mid-info-upper">
+            <div class="set-wrapper"></div>
+            <select name="order-type" id="order-type" class="order-type">
+              <option value="short_sleeve">Short Sleeve</option>
+              <option value="long_sleeve">Long Sleeve</option>
+              <option value="pants">Pants</option>
+            </select>
+          </div>
+          <div class="sizes-form">
+            <div class="grid-box-one"></div>
+            <div class="grid-box-two"></div>
+            <div class="grid-box-three">
+              <p class="remarks">Remarks:</p>
+              <textarea name="request" id="requests"></textarea>
+            </div>
+            <div class="footer-grid">
+              <button class="submit-save">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="logout-overlay">
+    <div class="logout-modal">
+      <div class="text-container">
+        <h2 class="logout-text">Log out of your account?</h2>
+        <p class="sub-text">You will need to log in again to continue</p>
+      </div>
+      <div class="button-wrapper">
+        <button class="out-btn" id="cancel">Cancel</button>
+        <button class="out-btn" id="logout">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="change-overlay">
+    <div class="change-modal">
+      <div class="top-section">
+        <h2 class="logout-text">Change Password</h2>
+      </div>
+      <div class="mid-section">
+        <input type="password" class="pass" id="new-pass" placeholder="New password">
+        <input type="password" class="pass" id="confirm-pass-input" placeholder="Confirm new password">
+      </div>
+      <div class="low-section">
+        <button class="out-btn" id="cancel-pass">Cancel</button>
+        <button class="out-btn" id="confirm-pass">Confirm</button>
+      </div>
+    </div>
+  </div>
+  </body>
+  <script>
+
+    // side-bar
+    let initialSideBar = document.querySelector(".side-bar"); 
+    let initialSideUpper = document.querySelector(".side-upper-content");
+    let initialSideLower = document.querySelector(".side-lower-content"); 
+
+    initialSideBar.addEventListener("click", function() {
+      initialSideBar.classList.toggle("side-bar-extend");
+      initialSideUpper.classList.toggle("side-upper-extend");
+      initialSideLower.classList.toggle("side-lower-extend");
+    });
+
+    // switching between progress-tab & chat-tab
+
+    // PROGRESS TAB
+    let progressTab = document.querySelector(".progress-page");
+    let progressPanel = document.getElementById("progress-tab");
+
+     // CHAT TAB
+    let chatTab = document.querySelector(".chat-page");
+    let chatPanel = document.getElementById("chat-tab");
+
+    progressTab.addEventListener("click", function() {
+      progressTab.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+      chatTab.style.backgroundColor = ""
+      progressPanel.style.display = "flex";
+      chatPanel.style.display = "none"
+    })
+
+    chatTab.addEventListener("click", function() {
+      chatTab.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+      progressTab.style.backgroundColor = ""
+      chatPanel.style.display = "flex";
+      progressPanel.style.display = "none";
+    })
+
+    // Retrieve token
+    const token = localStorage.getItem("token");
+
+    fetch("http://localhost:4001/project/vieworders", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if(res.status === 401) {
+          alert("Session expired. Please login again.");
+          window.location.href = "/";
+        }
+        return res.json();
+      })
+        .then(myOrders => {
+          
+           // displays the customer order
+          for(let i = 0; i < myOrders.length; i++) {
+                
+            let customerDetails = document.createElement("div"); // for appending
+            customerDetails.className = "customer-name-order";
+
+            let orderInfo = document.createElement("h3");
+            orderInfo.className = "customer-info";
+            orderInfo.textContent = `${myOrders[i].order_type}`;
+
+            let progressTrack = document.createElement("div");
+            progressTrack.className = "progress-track";
+
+            let progressDisplay = document.createElement("p");
+            progressDisplay.className = "progress-display";
+            progressDisplay.textContent = `${myOrders[i].status}`;
+
+            customerDetails.appendChild(orderInfo);
+            progressPanel.appendChild(customerDetails);
+
+            progressTrack.appendChild(progressDisplay);
+            customerDetails.appendChild(progressTrack);
+
+            modalPopup(customerDetails, myOrders[i]);
+
+          }
+
+        })
+
+  document.querySelector(".log-out").addEventListener("click", function() {
+    let logoutModal = document.getElementById("logout-overlay");
+
+    logoutModal.style.display = "flex";
+
+    exit(logoutModal);
+  })
+
+  document.querySelector("a").addEventListener("click", function() {
+    let changeModal = document.getElementById("change-overlay");
+
+    changeModal.style.display = "flex";
+
+    changed(changeModal);
+
+  }) 
+
+  // replace the textContent with parameter values
+  function modalPopup(container, orders) {
+    // customer order modal
+    let customerModal= document.getElementById("order-modal");
+    let doneBtn = document.querySelector(".submit-save");
+
+    container.addEventListener("click", function() {
+      customerModal.style.display = "flex";
+
+      // modal top-left
+      let leftInfo = document.querySelector(".left-info");
+      leftInfo.innerHTML = "";
+
+      let customerName = document.createElement("h2");
+      customerName.className = "customer-name";
+      customerName.textContent = `${orders.full_name}`;
+
+      let customerContact = document.createElement("p");
+      customerContact.className = "customer-number";
+      customerContact.textContent = `${orders.phone_number}`;
+
+      leftInfo.appendChild(customerName);
+      leftInfo.appendChild(customerContact);
+
+      // modal top-right
+      let rightInfo = document.querySelector(".right-info");
+
+      rightInfo.innerHTML = "";
+
+      let orderedIn = document.createElement("h2");
+      orderedIn.className = "date-ordered";
+      orderedIn.textContent = "Ordered In: ";
+
+      let date = document.createElement("p");
+      date.className = "date";
+      date.textContent = `${orders.created_at}`;
+
+      rightInfo.appendChild(orderedIn);
+      rightInfo.appendChild(date);
+
+      // modal middle content
+      let setWrapper = document.querySelector(".set-wrapper");
+
+      setWrapper.innerHTML = "";
+
+      let orderLabel = document.createElement("h2");
+      orderLabel.className = "order-label";
+      orderLabel.textContent = `${orders.sets} Set`;
+
+      setWrapper.append(orderLabel);
+
+      // dropdown logic
+      let dropdown = document.querySelector(".order-type");
+
+      let sizeForm = document.querySelector(".sizes-form");
+
+      let gridThree = document.querySelector(".grid-box-three");
+      let requests = document.getElementById("requests");
+      let footerGrid = document.querySelector(".footer-grid");
+
+      requests.textContent = orders.remarks;
+
+      let customer = orders;
+
+      console.log("ORDER ID:", orders.order_id);
+
+      fetch(`http://localhost:4001/project/orders/${orders.order_id}/measurements`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(measurements => {
+          console.log("MEASUREMENTS:", measurements);
+
+          if (!measurements || Object.keys(measurements).length === 0) return;
+          renderMeasurements(measurements);
+        })
+          .catch(error => {
+              console.error("Error fetching measurements:", error);
+          })
+    })
+
+    doneBtn.addEventListener("click", function() {
+      customerModal.style.display = "none";
+    })
+  }
+
+  function renderMeasurements(measurements) {
+    let gridOne = document.querySelector(".grid-box-one");
+    let gridTwo = document.querySelector(".grid-box-two");
+
+    gridOne.innerHTML = "";
+    gridTwo.innerHTML = "";
+
+    const { id, order_id, ...measurementFields } = measurements;
+
+    const entries = Object.entries(measurementFields);
+
+    entries.forEach(([key, value], index) => {
+      const formattedKey = key.split('_').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' ');
+      const measurementElement = document.createElement('div');
+      measurementElement.className = 'measurement-item';
+      measurementElement.innerHTML = `
+        <span class="measurement-label">${formattedKey}:</span>
+        <span class="measurement-value">${value}</span>
+      `;
+      if (index % 2 === 0) {
+        gridOne.appendChild(measurementElement);
+      } else {
+        gridTwo.appendChild(measurementElement);
+      }
+    });
+  }
+
+  function changed(passChange) {
+    let pass = document.getElementById("new-pass");
+    let confPass = document.getElementById("confirm-pass");
+
+    document.querySelector(".low-section").addEventListener("click", function() {
+      const action = event.target.id;
+
+      if(action === "cancel-pass") {
+        passChange.style.display = "none"
+      } else if (action === "confirm-pass") {
+        try {
+          if(pass.value === "" || confPass.value === "" && pass.value !== confPass.value) {
+            throw new Error("password does not match")
+          } 
+
+          let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+          let usersUpdated = JSON.parse(localStorage.getItem("users"));
+
+          currentUser.pass = pass.value;
+          localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+          let userIndex = usersUpdated.findIndex(u => u.email === currentUser.email);
+          if(userIndex !== -1) {
+            usersUpdated[userIndex].password = pass.value;
+          }
+          localStorage.setItem("users", JSON.stringify(usersUpdated));
+          
+          alert("Changed Successfully");
+        }catch (error) {
+          console.error("Error ", error);
+        } finally {
+          passChange.style.display = "none"
+        }
+      }
+    })
+  }
+
+  function exit(logModal) {
+    let cancel = document.getElementById("cancel");
+    let logout = document.getElementById("logout");
+
+    document.querySelector(".logout-modal").addEventListener("click", function(e) {
+      const action = event.target.id;
+
+      if(action === "cancel") {
+        logModal.style.display = "none"
+      } else if (action === "logout") {
+        window.location.href = "/";
+      }
+    })
+  }
+
+  // this is for the manager chats
+  let managerChat = document.querySelector(".manager-chat");
+
+  // this is for the customer chat
+  let customerChat = document.querySelector(".customer-chat");
+
+  document.getElementById("messenger").addEventListener("keydown", function(e) {
+    if(e.key === "Enter" && this.value.trim() !== "") {
+      e.preventDefault
+      let textVal = this.value;
+
+      let messageWrap = document.createElement("div");
+      messageWrap.className = "message-wrap";
+
+      let messageBubble = document.createElement("h4");
+      messageBubble.className = "message-bubble";
+
+      messageBubble.textContent = textVal;
+
+      let date = document.createElement("p");
+      date.className = "message-date";
+      date.textContent = formattedDate();
+
+      messageWrap.append(date);
+      messageWrap.append(messageBubble);
+      customerChat.appendChild(messageWrap);
+
+      this.value = "";
+    }
+  });
+
+  function formattedDate() {
+    let now = new Date();
+
+    let hrs = now.getHours();
+    let mins = now.getMinutes();
+    let ampm = hrs >= 12 ? "PM" : "AM";
+
+    hrs = hrs % 12;
+    hrs = hrs ? hrs : 12;
+
+    mins = mins < 10 ? "0" + mins : mins;
+
+    let month = now.getMonth();
+    let day = now.getDate();
+    let year = now.getFullYear();
+
+    return `${hrs}:${mins} ${ampm} ${month}/${day}/${year}`;    
+  }
+
+  document.querySelector(".customer-chat").addEventListener("mouseover", function(e) {
+    let action = e.target;
+
+    if(action.classList.contains("message-bubble")){
+      let messageWrap = action.closest(".message-wrap");
+      let date = messageWrap.querySelector(".message-date");
+
+      let timer = setTimeout(() => {
+        date.style.display = "flex";
+      }, 2000)
+
+      action.addEventListener("mouseout", () => {
+        clearTimeout(timer);
+        date.style.display = "none";
+      })
+    }
+  })
+    
+
+  </script>
+</html>

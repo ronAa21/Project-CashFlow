@@ -308,6 +308,7 @@
         padding: 20px 10px;
         gap: 20px;
         max-height: 380px;
+        width: 100%;
         overflow-y: auto;
       }
 

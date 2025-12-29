@@ -22,14 +22,17 @@
         </nav>
       </div>
       <div class="side-bar">
+
         <!-- This section would display the customers with inquiries or concerns --> 
         <!-- The side bar here will be similar to the messenger side bar  -->
         <div class="customer-messages-panel">
           <input type="search" name="search" id="customer-search">
           <div class="customers">
+
             <!-- the contents here for now is static but it should display the customers with inquiries, with the new messages being on top for attentio like on Messenger -->
             <img src="/Major-Projects/Cash_Flow/projectS_images/no-profile.jpg" alt="" class="profile-customer">
             <div class="customer-profile-info">
+
               <!-- This section here is also just for placeholder, I'll add the dynamic version hopefully by july -->
               <h3 class="name-of-customer">Juan Dela Cruz</h3>
               <p class="recent-message">What's my update?</p>
@@ -49,10 +52,10 @@
           <main>
             <div id="customer" class="tab-pane">
 
-              <!-- Add the dynamic customer info here -->
+              <!-- customers is displayed here -->
 
             </div>
-            <!-- Display none for now, the logic will be added when learning javascript -->
+
             <div id="cashflow" class="tab-pane">
              <div class="table-position">
               <div class="total-contain">
@@ -88,6 +91,7 @@
               </div>
              </div> 
             </div>
+
             <div id="chat" class="tab-pane">
               <div class="chat-panel">
                 <div class="chat-messages">
@@ -111,7 +115,7 @@
               Due This Week
             </h2>
           </div>
-          <!-- This section here is also just for placeholder, I'll add the dynamic version hopefully by july -->
+          <!-- Displays the due here -->
         </div>
       </div>
     </div>
@@ -125,6 +129,7 @@
     <div class="modal-overlay">
     <div class="modal-container">
       <img src="/Major-Projects/Cash_Flow/projectS_images/unif.jpg" alt="uniform_type" class="unif-pic-type"> <!-- Placeholder for now, will start implementing a dynamic version, while learning javascript -->
+      <!-- Note: the picture here should be uploadable when adding a customer -->
       <div class="info-panel">
         <div class="top-info-panel"> <!-- top position -->
           <div class="left-info">
@@ -462,7 +467,20 @@
 
        document.querySelector(".confirm-modal").addEventListener("click", () => {
         confirmModal.style.display = "none";
+
+        // gets the status
+        let updatedStats = JSON.parse(localStorage.getItem("customerOrders")) || [];
+        
         prevVal = updatedstatus;
+
+        for(let i = 0; i < updatedStats.length; i++) {
+          updatedStats[i].status = prevVal;
+        }
+
+        console.log(updatedStats);
+
+        localStorage.setItem("customerOrders", JSON.stringify(updatedStats));
+
         updatedstatus = null;
        })
     }
@@ -562,7 +580,8 @@
 
     }
   }
-    // adding cashflow functions
+  
+            // ===== CASH FLOW FUNCTIONS ===== //
      let tablePosition = document.querySelector(".table-position"); // parent 
 
      let initialTotal = document.getElementById("initial-state"); // initial
@@ -677,7 +696,8 @@
       customerForm.style.display = "flex"
      })
 
-     document.getElementById("confirm-add").addEventListener("click", function() {
+     document.getElementById("confirm-add").addEventListener("click", async function() {
+
       // this is where the try catch will occur in saving the customers to local storage
       let named = document.getElementById("name");
       let contacted = document.getElementById("contact");
@@ -698,36 +718,74 @@
         else if(prefix === "order2") measurement2[key] = value;
       })
 
-      let injector = {
-        name: named.value,
-        contact: contacted.value,
-        email: emailed.value,
-        status: "not-started",
-        dateOfPurchase: format,
-        orderSet: orderSet.value,
-        orderType: orderTyped.value,
-        fabricType: fabricType.value,
-        order1: tempOrder1.name,
-        order2: tempOrder2.name,
-        dueDate: "",
-        order1Measurement: tempOrder1.measurements,
-        order2Measurement: tempOrder2.measurements,
-        remarks: requests.value
+      const token = localStorage.getItem("token"); 
+
+      // replaced the injector variable with payload for backend
+      const payload = {
+        customer: {
+          name: named.value,
+          phone: contacted.value,
+          email: emailed.value,
+        },
+        orders: []
+      };
+
+      if(tempOrder1.name) {
+        payload.orders.push({
+          name: tempOrder1.name,
+          type: tempOrder1.name.toLocaleLowerCase().replace(" ", "_"),
+          fabric: fabricType.value,
+          measurements: tempOrder1.measurements
+        })
       }
 
-      customerOrders.push(injector);
-      localStorage.setItem("customerOrders", JSON.stringify(customerOrders));
-      customerPanel.innerHTML = "";
-      displayer(customerOrders);
-      console.log(customerOrders)
-      alert("added successfully"); // replace this with modal
+      if(tempOrder2.name) {
+        payload.orders.push({
+          name: tempOrder2.name,
+          type: tempOrder2.name.toLocaleLowerCase().replace(" ", "_"),
+          fabric: fabricType.value,
+          measurements: tempOrder2.measurements
+        })
+      }
 
-      named.value = "", contacted.value = "", emailed.value = "", orderTyped.value = "", orderSet.value = "", fabricType.value = "";
+      try {
+        const res = await fetch("http://localhost:4001/project/addcustomers", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        })
+          .then(async (res) => {
+            const text = await res.text();
+            try {
+              const data = JSON.parse(text);
 
-      tempOrder1 = { name: "", measurements: {} };
-      tempOrder2 = { name: "", measurements: {} };
+              if(!res.ok) {
+                throw new Error(data.message || "Something went wrong");
+              }
 
-      customerForm.style.display = "none";
+              return data;
+            } catch (error) {
+              throw new Error(text || "request failed");
+            }
+          })
+           .then((data) => {
+              alert("added successfully"); // replace this with modal
+
+              // clears the value from the inputs
+              named.value = "", contacted.value = "", emailed.value = "", orderTyped.value = "", orderSet.value = "", fabricType.value = "";
+
+              tempOrder1 = { name: "", measurements: {} };
+              tempOrder2 = { name: "", measurements: {} };
+          })
+
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        customerForm.style.display = "none";
+      }
     })
  
      document.getElementById("save-order").addEventListener("click", function() {

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <title>Welcome</title>
+  <style>
+    /* General traits */
+    body {
+      margin: 0;
+      background: linear-gradient(-45deg, #d9d9d9, #c5c5c5, #b8b8b8, #cacaca);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      margin: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    h1, h2, p, label, a {
+      margin: 0;
+      color: white;
+    }
+
+    h1, h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+    }
+
+    p, label, input, button {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    label {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      align-self: center;
+      text-transform: uppercase;
+    }
+
+    input {
+      width: 80%;
+      border: none;
+      height: 45px;
+      padding: 0 15px;
+      font-size: 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+      background: white;
+    }
+
+    a {
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+
+    a:hover {
+      opacity: 0.8;
+    }
+
+    button {
+      border: none;
+      padding: 14px 28px;
+      width: 200px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
+      color: white;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #7a7a7a 0%, #5a5a5a 100%);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* Title Website */
+
+    .title-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .website-name {
+      color: #2c2c2c;
+      font-size: 56px;
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      letter-spacing: 2px;
+    }
+
+    /* Panel */
+
+    .login-panel {
+      background: rgba(84, 84, 84, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 24px;
+      display: flex; 
+      justify-content: center;
+      width: 40%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .content-panel {
+      background: linear-gradient(145deg, #3d3d3d 0%, #2e2e2e 100%);
+      display: inline-block;
+      border-radius: 20px;
+      padding: 40px 50px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Top section */ 
+    .top-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .title-page {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .signup-link {
+      font-size: 15px;
+      opacity: 0.9;
+    }
+
+    .signup-link a {
+      color: #a8d8ff;
+      font-weight: bold;
+    }
+
+    .signup-link a:hover {
+      color: #8ac9ff;
+    }
+
+    /* Middle Section */ 
+    .mid-section {
+      margin-top: 40px;
+    }
+
+    .inputters {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 25px;
+      align-items: center;
+    }
+
+    #password-section {
+      flex-direction: column;
+      gap: 25px;
+      align-items: flex-start;
+    }
+
+    .wrapper {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .login-password {
+      width: 100%;
+    }
+
+    .error-display {
+      color: #ff6b6b;
+      font-size: 14px;
+      font-weight: 500;
+      min-height: 20px;
+    }
+
+    /* Lower Section */
+    .lower-section {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width:768px) {
+
+      /* General */
+      body {
+        margin: 30px 20px;
+      }
+
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      input {
+        font-size: 15px;
+        height: 44px;
+        padding: 0 14px;
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 15px;
+      }
+
+      /* Panel */
+      .login-panel {
+        padding: 25px;
+        width: 100%;
+        max-width: 500px;
+      }
+
+      .content-panel {
+        width: 100%;
+        padding: 30px 25px;
+      }
+
+      /* Top section */ 
+      .top-section {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+      }
+
+      .title-page {
+        font-size: 40px;
+      }
+
+      .website-name {
+        font-size: 44px;
+      }
+
+      /* Middle Section */ 
+      .mid-section {
+        margin-top: 35px;
+      }
+
+      .inputters {
+        gap: 12px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .wrapper {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .login-password {
+        width: 100%;
+      }
+
+      label {
+        align-self: flex-start;
+      }
+    }
+
+    /* For Phone */
+    @media (max-width:450px) {
+      
+      body {
+        margin: 15px 10px;
+      }
+
+      .website-name {
+        font-size: 38px;
+      }
+
+      .title-page {
+        font-size: 34px;
+      }
+
+      .signup-link {
+        font-size: 13px;
+      }
+
+      .login-panel {
+        padding: 20px;
+      }
+
+      .content-panel {
+        padding: 25px 18px;
+      }
+
+      input {
+        font-size: 14px;
+        height: 42px;
+      }
+
+      button {
+        padding: 13px 18px;
+        font-size: 14px;
+      }
+
+      a {
+        display: block;
+        margin-top: 3px;
+      }
+
+      .lower-section {
+        margin-top: 35px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="title-container">
+    <h2 class="website-name">Project S</h2>
+  </div>
+  <div class="login-panel">
+    <div class="content-panel">
+      <div class="top-section">
+        <h1 class="title-page">Login</h1>
+        <p class="signup-link">Don't have an account? <span style="font-weight: bold;"><a href="signupPage.html">Sign Up!</a></span></p>
+      </div>
+      <div class="mid-section">
+        <div class="inputters">
+          <label for="email">Email:</label>
+          <input type="email" class="login-email">
+        </div>
+        <div class="inputters" id="password-section">
+          <div class="wrapper">
+            <label for="password">Password:</label>
+            <input type="password" class="login-password">
+          </div>
+          <div class="error-display">
+            <!-- Display the error text here -->
+          </div>
+        </div>
+      </div>
+      <div class="lower-section">
+        <button class="log-submit">Login</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  <script>
+
+// logic for login
+let loginEmail = document.querySelector(".login-email");
+let loginPass = document.querySelector(".login-password");
+
+let errorDisplay = document.querySelector(".error-display");
+let errorContent = document.createElement("p");
+errorContent.className = "error-text";
+errorContent.style.color = "red";
+
+// login process
+
+document.querySelector(".log-submit").addEventListener("click", function(e) {
+  e.preventDefault();
+
+  let logEmail = loginEmail.value.trim().toLowerCase();
+  let logPass = loginPass.value.trim();
+
+  errorDisplay.remove();
+
+  fetch("http://localhost:4001/project/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: logEmail,
+      password: logPass
+    })
+  })
+    .then(async (response) => {
+      const text = await response.text();
+
+      if(!text) {
+        throw new Error("Invalid email or password");
+      }
+
+      const data = JSON.parse(text);
+
+      if(!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+      localStorage.setItem("token", data.token);   // ✅ STORE TOKEN
+      alert("Welcome " + logEmail)
+      window.location.href = "/customer";
+    })
+      .catch((error) => {
+        errorContent.textContent = error.message;
+        errorDisplay.appendChild(errorContent);
+    });
+  
+  /* this is for a meantime, this should be placed inside a database for security 
+  let managerEmail = "manager", managerPass = "manager123";
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  console.log(users)
+  let found = users.some(u => u.email.toLowerCase() === logEmail && u.password === logPass);
+
+  if(found) {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    localStorage.setItem("currentUser", JSON.stringify({email: logEmail, pass: logPass}));
+    alert("Welcome " + logEmail)
+    window.location.href = "../customer_side/homepage.html";
+  } else {
+    errorContent.textContent = "Invalid email or password";
+    errorDisplay.appendChild(errorContent);
+  }
+
+  /*
+  else if (logEmail === managerEmail && logPass === managerPass) {
+    window.location.href = "../manager_side/manager_dashboard.html"
+  } else {
+    errorContent.textContent = "Invalid email or password";
+    errorDisplay.appendChild(errorContent);
+  }
+  */
+
+})
+
+  </script>
+</html>
