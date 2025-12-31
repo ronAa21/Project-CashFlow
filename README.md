@@ -51,3 +51,9 @@ My first project Project S
 - Removed the logic of localStorage for customer dashboard and display data through database
 - Successfully connected the signup, logic, and customer dashboard
 - UI overhaul for signup, logic, and customer dashboard
+
+### WEEK 10 (WEEK 29 - December 31, 2025)
+- Removed the logic of localStorage for manager dashboard and display customer data through database
+- Able to add customer through manager dashboard and save through database.
+- Able to update status through database
+- Able to display due orders
