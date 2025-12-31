@@ -393,15 +393,16 @@ errorContent.style.color = "red";
 
 // login process
 
-document.querySelector(".log-submit").addEventListener("click", function(e) {
+document.querySelector(".log-submit").addEventListener("click", async function(e) {
   e.preventDefault();
 
   let logEmail = loginEmail.value.trim().toLowerCase();
   let logPass = loginPass.value.trim();
 
-  errorDisplay.remove();
+  errorDisplay.innerHTML = "";
 
-  fetch("http://localhost:4001/project/login", {
+  try {
+    const res = await fetch("http://localhost:4001/project/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -410,54 +411,28 @@ document.querySelector(".log-submit").addEventListener("click", function(e) {
       email: logEmail,
       password: logPass
     })
-  })
-    .then(async (response) => {
-      const text = await response.text();
+  });
 
-      if(!text) {
-        throw new Error("Invalid email or password");
-      }
+    const data = await res.json();
 
-      const data = JSON.parse(text);
-
-      if(!response.ok) {
+      if(!res.ok) {
         throw new Error(data.message || "Something went wrong");
       }
+
       localStorage.setItem("token", data.token);   // ✅ STORE TOKEN
-      alert("Welcome " + logEmail)
-      window.location.href = "/customer";
-    })
-      .catch((error) => {
-        errorContent.textContent = error.message;
-        errorDisplay.appendChild(errorContent);
-    });
-  
-  /* this is for a meantime, this should be placed inside a database for security 
-  let managerEmail = "manager", managerPass = "manager123";
+      alert("Welcome " + logEmail);
 
-  let users = JSON.parse(localStorage.getItem("users")) || [];
+      // ✅ role-based redirect
+      if (data.user.role === "manager") {
+        window.location.href = "/manager";
+      } else {
+        window.location.href = "/customer";
+      }
 
-  console.log(users)
-  let found = users.some(u => u.email.toLowerCase() === logEmail && u.password === logPass);
-
-  if(found) {
-    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    localStorage.setItem("currentUser", JSON.stringify({email: logEmail, pass: logPass}));
-    alert("Welcome " + logEmail)
-    window.location.href = "../customer_side/homepage.html";
-  } else {
-    errorContent.textContent = "Invalid email or password";
-    errorDisplay.appendChild(errorContent);
+  } catch (error) {
+      errorContent.textContent = error.message;
+      errorDisplay.appendChild(errorContent);
   }
-
-  /*
-  else if (logEmail === managerEmail && logPass === managerPass) {
-    window.location.href = "../manager_side/manager_dashboard.html"
-  } else {
-    errorContent.textContent = "Invalid email or password";
-    errorDisplay.appendChild(errorContent);
-  }
-  */
 
 })
 

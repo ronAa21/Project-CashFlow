@@ -13,7 +13,7 @@ function managerOnly(req, res, next) {
   if(req.user.role === "manager") {
     next();
   } else {
-    return res.status(500).json({ error: "Unauthorized" });
+    return res.status(403).json({ error: "Unauthorized" });
   }
 }
 
@@ -119,7 +119,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// display orders 
+// display orders (For Customer view)
 router.get("/vieworders", check, async (req, res) => {
   try {
     const customerId = req.user.customerId;
@@ -160,9 +160,15 @@ router.get("/orders/:orderId/measurements", check, async (req, res) => {
     return res.status(404).json({ message: "Order not found" });
   }
 
+  const rawName = order[0].order_name || "";
+  const normalizedOrderName = rawName.toLowerCase().trim().replace(/ /g, "_");
+  
+  console.log("Database says:", rawName); // Useful for debugging
+  console.log("Switching on:", normalizedOrderName);
+
   let measurements;
 
-  switch(order[0].order_name) {
+  switch(normalizedOrderName) {
     case "short_sleeve":
       [measurements] = await pool.query(
         'select * from short_sleeve_measurements where order_id = ?', [orderId]
@@ -186,6 +192,54 @@ router.get("/orders/:orderId/measurements", check, async (req, res) => {
   }
 
   res.json(measurements[0] || {});
+})
+
+// updates status
+router.put("/updateorders/:id/status", check, managerOnly, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const [order] = await pool.query(
+      "UPDATE orders SET status = ? WHERE id = ?", [status, id]
+    )
+
+    res.json({ 
+      message: "Status updated successfully", 
+      orderId: id, 
+      newStatus: status 
+    });
+  } catch (error) {
+    console.error(error); 
+    return res.status(400).json({ error: error});
+  }
+});
+
+// view orders (For Manager view)
+router.get("/viewallorders", check, managerOnly, async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT 
+        o.id AS order_id,
+        o.order_name,
+        o.order_type,
+        o.fabric_type,
+        o.status,
+        o.created_at,
+        c.full_name,
+        c.email,
+        c.phone_number,
+        c.sets,
+        c.remarks
+      FROM orders o
+      JOIN customers c ON o.customer_id = c.id
+    `);
+
+    res.json(rows)
+  } catch (error) {
+      console.error("Retrieve error", error);
+      res.status(500).json({ error: "failed" });
+  }
 })
 
 // add customers
@@ -266,7 +320,8 @@ router.post("/addcustomers", check, managerOnly, async (req, res) => {
   } catch (error) {
     await connection.rollback();
     console.error("Insert error", error);
-    res.status(500).json({ error: "failed" });
+    res.status(500).json({   error: error.message,
+  sql: error.sqlMessage });
   } finally {
     connection.release();
   }

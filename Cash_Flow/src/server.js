@@ -15,7 +15,7 @@ dotenv.config();
 // Enable CORS
 app.use(cors({
   origin: 'http://localhost:4001',
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', "PUT", "DELETE"],
   credentials: true
 }));
 

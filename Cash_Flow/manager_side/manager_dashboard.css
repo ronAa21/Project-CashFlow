@@ -1,664 +1,853 @@
+ * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      /* General Structure */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(-45deg, #d9d9d9, #c5c5c5, #b8b8b8, #cacaca);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      min-height: 100vh;
+    }
 
-      * {
-        font-family: sans-serif;
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes progressShimmer {
+      0% {
+        background-position: 200% 0;
       }
-
-      body {
-        margin: 0px;
+      100% {
+        background-position: -200% 0;
       }
-
-      h1, ul, li, h2, h3, h4 {
-        font-family: 'Montserrat';
-        margin: 0;
-      }
-
-      ul {
-        list-style-type: none;
-      }
-
-      a {
-        text-decoration: none;
-        color: white;
-      }
-
-      p, button {
-        font-family: 'Roboto';
-      }
-
-      /* Website Main Structure */
-
-      .main-grid {
-        display: grid;
-        grid-template-columns: 250px 1fr 1fr;
-        grid-template-rows: auto 1fr;
-        grid-template-areas: 
-        "nav nav nav"
-        "sep sep sep";
-        height: 100vh;
-      }
-
-      .navigation-bar {
-        grid-area: nav;
-        background-color: #737373;
-      }
-
-      .side-bar {
-        grid-area: side;
-        background-color: #545454;
-      }
-
-      .separator {
-        grid-area: sep;
-        display: grid;
-        grid-template-columns: 1fr 400px;
-        grid-template-areas: 
-        "main due";
-        margin: 20px;
-        margin-left: 30px;
-        gap: 20px;
-      }
-
-      /* Separator */
-
-      .main-contents {
-        grid-area: main;
-        background-color: #737373;
-      }
-
-      .deadlines {
-        grid-area: due;
-        background-color: #737373;
-      }
-
-      .main-contents, .deadlines {
-        border-radius: 15px;
-      }
-
-      /* Navigation Contents */
-
-      nav {
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .web-title {
-        margin: 15px;
-      }
-
-      .right-contents {
-        display: flex;
-        margin-right: 5px;
-      }
-
-      .manager-pfp {
-        width: 40px;
-        align-self: center;
-        border-radius: 20px;
-      }
-
-      /* Side bar contents */
-
-      /* Initial Side bar */
-      .side-bar {
-        position: fixed;
-        height: 100vh;
-        width: 10px;
-        flex-direction: column;
-        z-index: 999;
-        transition: 0.8s ease-out;
-      }
-
-
-      /* Side bar after click */
-      .side-bar-expand {
-        width: 20%;
-        transition: 0.8s ease;
-      }
-
-      .placeholder {
-        margin: 0 35px;
-        margin-bottom: 10px;
-      }
-
-      .customer-messages-panel {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 10px;
-        color: white;
-      }
-
-      .profile-customer {
-        width: 50px;
-        height: 50px;
-        border-radius: 50px;
-      }
-
-      #customer-search {
-        display: none;
-        height: 40px;
-        font-size: 15px;
-        border-radius: 15px;
-      }
-
-      .customers {
-        display: none;
-        margin: 20px 0;
-        gap: 10px;
-        text-align:left;
-        padding: 10px;
-        border-radius: 15px;
-        transition: linear 0.1s;
-        cursor: pointer;
-      }
-
-      .customers.customers-expand {
-        display: flex;
-      }
-
-      #customer-search.customers-expand {
-        display: flex;
-      }
-
-      .customers:hover {
-        background-color: #363636;
-      }
-
-      .recent-message {
-        margin: 5px 0;
-        font-weight: 200;
-      }
-
-      /* Add Customer Button */
-      .add-customer {
-        display: flex;
-        position: fixed;
-        right: 20;
-        bottom: 15;
-        width: 30px;
-        height: 30px;
-        border: 2px solid black;
-        border-radius: 25px;
-        font-size: 30px;
-        cursor: pointer;
-        transition: width 0.3s ease, background-color 0.3s ease;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-
-      .plus-icon {
-        align-self: center;
-        margin: 0;
-      }
-
-      .button-text {
-        opacity: 0;
-        align-self: center;
-        margin: 0;
-        transition: opacity 0.3s ease;
-        font-size: 15px;
-        width: 100%;
-      }
-
-      .add-customer:hover {
-        width: 150px;
-      }
-
-      .button-text:hover {
-        opacity: 1;
-      } 
-
-      /* Main content (Navigation) */ 
-
-      .nav-main-contents {
-        background-color: #545454;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-      }
-
-      .nav-ul {
-        display: flex;
-        gap: 15px;
-        padding: 20px;
-      }
-
-      .nav-li {
-        display: inline-block;
-      }
-
-      .options {
-        font-weight: bolder;
-        font-size: 20px;
-        padding:10px;
-        border-radius: 15px;
-      }
-
-      .options:hover {
-        background-color: #bdbdbd;
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-
-      /* Main contents panel */
-      .tab-pane {
-        background-color: #363636;
-        margin: 15px;
-        border-radius: 15px;
-        height: 80vh;
-      }
-
-      /* Customer Panel */
-      #customer {
-        display: flex;
-        flex-direction: column;
-        padding: 25px;
-        gap: 15px;
-      }
-
-      .customer-name-order {
-        background-color:#737373;
-        border-radius: 15px;
-        padding: 10px;
-        display: flex;
-        justify-content: space-between;
-        cursor: pointer;
-        transition: linear 0.1s;
-      }
-
-      .customer-info {
-        align-self: center;
-        font-size: 30px;
-      }
-
-      .progress-track {
-        width: 100px;
-        background-color: #bdbdbd;
-        clip-path: polygon(
-          0% 0%,
-          80% 0%,
-          100% 50%,
-          80% 100%,
-          0% 100%
-        );
-        display: flex;
-        align-items: center;
-        padding: 10px;
-      }
-
-      .progress-display {
-        margin: 0;
-      }
-
-      .customer-name-order:hover {
-        background-color: #636363;
-      }
-
-      /* Cashflow */
-
-      #cashflow {
-        display: none;
-        overflow: hidden;
-        position: relative;
-      }
-
-      .table-position {
-        display: flex;
-        flex-direction: column;
-        padding: 20px 10px;
-        gap: 20px;
-        max-height: 380px;
-        width: 100%;
-        overflow-y: auto;
-      }
-
-      .total-contain {
-        display: flex;
-        color: white;
-        gap: 20px;
-        background-color: #545454;
-        padding: 20px;
-        border-radius: 15px;
-      }
-
-      .total-display {
-        align-self: center;
-      }
-
-      .number-input {
-        border: none;
-        width: 100%;
-        height: 40px;
-        border-radius: 15px;
-        font-size: 20px;
-        padding-left: 15px;
-      }
-
-      .number-input::-webkit-outer-spin-button,
-      .number-input::-webkit-inner-spin-button,
-      .table-input::-webkit-outer-spin-button,
-      .table-input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        height: 20px;
-      }
-
-      th {
-        font-family: 'Montserrat';
-        color: white;
-      }
-
-      th, td {
-        padding: 12px;
-        border: 1px solid #ccc;
-        text-align: left;
-      }
-
-      .table-input {
-        padding: 5px;
-        height: 20px;
-        width: 100%;
-        color: white;
-        background-color: transparent;
-        border: none;
-        font-family: sans-serif;
-      }
-
-      .add-rows {
-        width: 100px;
-        border-radius: 10px;
-        border: none;
-        position: absolute;
-        bottom: 20;
-        right: 20;
-        cursor: pointer;
-      }
-
-      #total-val {
-        align-self: center;
-        font-size: 20px;
-        font-weight: 700;
-        background-color: white;
-        color: black;
-        width: 100%;
-        padding: 10px;
-        border-radius: 15px;
-      }
-
-      /* Chat Page */
-
-      #chat {
-        display: none;
-        height: auto;
-      }
-
-      .chat-panel {
-        display: flex;
-        margin: 20px;
-        border-radius: 15px;
-        width: 100%;
-        height: 500px;
-        flex-direction: column;
-        overflow: hidden;
-        position: relative;
-      }
-
-      .chat-messages {
-        background-color: #747474;
-        flex: 1;
-        display: flex;
-        overflow-y: auto;
-        padding: 10px;
-        color: white;
-      }
-
-      .message-section {
-        background-color: #636363;
-        padding: 10px;
-      }
-
-      #chats {
-        width: 100%;
-        border-radius: 15px;
-      }
-
-      .customer-chat {
-        width: 100%;
-     } 
-
-     .manager-chat {
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    a {
+      text-decoration: none;
+      color: white;
+      transition: opacity 0.3s ease;
+    }
+
+    a:hover {
+      opacity: 0.8;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+    /* Main Grid Structure */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas: 
+        "nav nav"
+        "side sep";
+      min-height: 100vh;
+    }
+
+    /* Navigation Bar */
+    .navigation-bar {
+      grid-area: nav;
+      background: rgba(84, 84, 84, 0.85);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .web-title {
+      color: white;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .right-contents {
+      display: flex;
+      align-items: center;
+    }
+
+    .manager-pfp {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .manager-pfp:hover {
+      transform: scale(1.1);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Sidebar */
+    .side-bar {
+      grid-area: side;
+      position: fixed;
+      height: 100vh;
+      width: 60px;
+      background: linear-gradient(145deg, #3d3d3d, #2e2e2e);
+      backdrop-filter: blur(10px);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .side-bar-expand {
+      width: 300px;
+    }
+
+    .customer-messages-panel {
+      padding: 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .placeholder {
+      font-weight: 600;
+      font-size: 18px;
+      opacity: 0;
+      transition: opacity 0.3s ease 0.2s;
+    }
+
+    .side-bar-expand .placeholder {
+      opacity: 1;
+    }
+
+    #customer-search {
+      display: none;
+      height: 45px;
+      font-size: 14px;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      padding: 0 15px;
+      transition: all 0.3s ease;
+    }
+
+    #customer-search.customers-expand {
+      display: block;
+    }
+
+    #customer-search:focus {
+      outline: none;
+      border-color: rgba(168, 216, 255, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    #customer-search::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .customers {
+      display: none;
+      gap: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .customers.customers-expand {
+      display: flex;
+    }
+
+    .customers:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+    }
+
+    .profile-customer {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .recent-message {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-top: 5px;
+    }
+
+    /* Add Customer Button */
+    .add-customer {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, #6a6a6a, #4a4a4a);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      z-index: 100;
+      color: white;
+      font-weight: 600;
+      overflow: hidden;
+      width: 60px;
+    }
+
+    .add-customer:hover {
+      width: 180px;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .plus-icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .button-text {
+      opacity: 0;
+      white-space: nowrap;
+      font-size: 14px;
+      transition: opacity 0.3s ease;
+    }
+
+    .add-customer:hover .button-text {
+      opacity: 1;
+    }
+
+    /* Separator / Main Content Area */
+    .separator {
+      grid-area: sep;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      grid-template-areas: "main due";
+      margin: 30px;
+      margin-left: 90px;
+      gap: 30px;
+    }
+
+    .main-contents {
+      grid-area: main;
+      background: rgba(84, 84, 84, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .deadlines {
+      grid-area: due;
+      background: rgba(48, 48, 48, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .due-wrapper {
+      padding: 10px;
+    }
+
+    /* Navigation Tabs */
+    .nav-main-contents {
+      background: linear-gradient(145deg, #3d3d3d, #2e2e2e);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 10px;
+    }
+
+    .nav-ul {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .nav-li {
+      display: inline-block;
+    }
+
+    .options {
+      font-weight: 600;
+      font-size: 16px;
+      padding: 15px 25px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+
+    .options:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* Tab Content */
+    .tab-pane {
+      background: linear-gradient(145deg, #3d3d3d, #2e2e2e);
+      margin: 15px;
+      border-radius: 20px;
+      min-height: 500px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Customer Panel */
+    #customer {
+      display: flex;
+      flex-direction: column;
+      padding: 25px;
+      gap: 20px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .customer-name-order {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-left: 4px solid #a8d8ff;
+    }
+
+    .customer-name-order:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .customer-info {
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .progress-track {
+      background: rgba(168, 216, 255, 0.2);
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: 2px solid #a8d8ff;
+    }
+
+    .progress-display {
+      color: #a8d8ff;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Cashflow Tab */
+    #cashflow {
+      display: none;
+      padding: 25px;
+    }
+
+    .table-position {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .total-contain {
+      display: flex;
+      gap: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 16px;
+      align-items: center;
+      border-left: 4px solid #a8d8ff;
+    }
+
+    .total-display {
+      color: white;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .number-input {
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.95);
+      width: 100%;
+      height: 45px;
+      border-radius: 12px;
+      font-size: 16px;
+      padding: 0 15px;
+      transition: all 0.3s ease;
+    }
+
+    .number-input:focus {
+      outline: none;
+      border-color: rgba(168, 216, 255, 0.5);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .number-input::-webkit-outer-spin-button,
+    .number-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 15px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .table-input {
+      background: transparent;
+      border: none;
+      color: white;
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .table-input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+    }
+
+    .add-rows {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #6a6a6a, #4a4a4a);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    .add-rows:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    #total-val {
+      color: #2c2c2c;
+      font-size: 20px;
+      font-weight: 700;
+      background: white;
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    /* Chat Tab */
+    #chat {
+      display: none;
+      padding: 20px;
+    }
+
+    .chat-panel {
+      background: linear-gradient(145deg, #3d3d3d, #2e2e2e);
+      border-radius: 20px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .customer-chat,
+    .manager-chat {
       width: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      gap: 15px;
+    }
+
+    .manager-chat {
       align-items: flex-end;
-      padding-right: 10px;
-     }
+    }
 
     .message-wrap {
       display: flex;
-      gap: 10px;
+      flex-direction: column;
+      gap: 5px;
+      max-width: 70%;
     }
 
-     .message-bubble {
-      background-color: rgb(161, 158, 158);
-      padding: 5px 10px;
-      border-radius: 15px;
-      font-weight: 300;
-      color: black;
-      margin: 10px;
-      align-self: center;
-      font-size: 15px;
-     }
+    .message-bubble {
+      background: rgba(168, 216, 255, 0.9);
+      padding: 12px 18px;
+      border-radius: 18px 18px 4px 18px;
+      color: #2c2c2c;
+      font-weight: 400;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      word-wrap: break-word;
+    }
 
     .message-date {
-      background-color: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
       padding: 5px 10px;
-      border-radius: 15px;
+      border-radius: 10px;
       display: none;
-      font-size: 10px;
-      align-self: center;
+      font-size: 11px;
+      align-self: flex-end;
     }
 
-      /* Deadline Section */
+    .message-section {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-      .nav-dl {
-        display: flex;
-        justify-content: center;
-        background-color: #545454;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        padding: 17px 0;
-      }
+    #chats {
+      width: 100%;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      resize: vertical;
+      min-height: 45px;
+      transition: all 0.3s ease;
+    }
 
-      .due-this-week {
-        color: white;
-      }
+    #chats:focus {
+      outline: none;
+      border-color: rgba(168, 216, 255, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+    }
 
-      #due-display {
-        margin: 15px;
-        background-color: #363636;
-        padding: 10px;
-      }
+    /* Deadlines Section */
+    .nav-dl {
+      background: linear-gradient(145deg, #3d3d3d, #2e2e2e);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 20px;
+      text-align: center;
+    }
 
-      #customer-due-info {
-        font-size: 20px;
-      }
+    .due-this-week {
+      color: white;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
 
-      .date-display {
-        background-color: #bdbdbd;
-        padding: 5px;
-        border-radius: 30px;
-      }
+    #due-display {
+      background: linear-gradient(145deg, #3d3d3d, #2e2e2e);
+      margin: 15px;
+      padding: 20px;
+      border-radius: 16px;
+      color: white;
+    }
 
-      .due-date {
-        font-size: 15px;
-      }
+    #customer-due-info {
+      font-size: 18px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
 
-    /* Modal UI */
+    .date-display {
+      background: rgba(168, 216, 255, 0.2);
+      padding: 10px 20px;
+      border-radius: 20px;
+      display: inline-block;
+      border: 2px solid #a8d8ff;
+      margin-top: 10px;
+    }
 
+    .due-date {
+      color: #a8d8ff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Modal Overlay */
     .modal-overlay {
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
-      display: none;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
       justify-content: center;
       align-items: center;
-      z-index: 999;
+      padding: 20px;
     }
 
+    /* Order Details Modal */
     .modal-container {
-      background-color: #545454;
+      background: linear-gradient(145deg, #3d3d3d, #2e2e2e);
+      border-radius: 24px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       display: flex;
-      width: 80%;
-      max-width: 1000px;
-      margin: 50px auto; 
-      padding: 20px;
-      border-radius: 15px;
+      gap: 30px;
+      padding: 40px;
     }
 
     .unif-pic-type {
       width: 150px;
-      height: 150px;
-    }
-
-    .unif-pic-type {
-      margin-top: 20px;
-      margin-right: 20px;
+      height: 200px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
     .info-panel {
-      margin-top: 20px;
-      background-color: #a6a6a6;
-      border-radius: 15px;
-      width: 100%;
-      padding-right: 15px;
-      padding-left: 15px;
-      padding-bottom: 15px;
-      padding-top: 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
     }
-
-    /* Modal Top section */
 
     .top-info-panel {
       display: flex;
       justify-content: space-between;
+      gap: 20px;
     }
 
+    .left-info,
     .right-info {
-      align-self: center;
-      text-align: right;
+      flex: 1;
     }
 
-    .customer-name, .date-ordered {
-      font-size: 35px;
-      margin-bottom: 10px;
+    .customer-name,
+    .date-ordered {
+      color: white;
+      font-size: 24px;
+      margin-bottom: 8px;
+      font-weight: 600;
     }
 
-    .customer-credentials, .date {
-      margin-top: 0;
+    .customer-credentials,
+    .date {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
       margin-bottom: 5px;
     }
-
-    /* Modal Middle Section */
 
     .mid-info-panel {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 20px;
     }
 
     .mid-info-upper {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
-    }
-
-    .status-update-dropdown {
-      font-size: 25px;
-      border: none;
-      background-color: transparent;
+      align-items: center;
     }
 
     .mid-info-right {
       display: flex;
       gap: 15px;
+      align-items: center;
+    }
+
+    .status-update-dropdown {
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .status-update-dropdown:focus {
+      outline: none;
+      border-color: rgba(168, 216, 255, 0.5);
     }
 
     .order-label {
-      font-size: 25px;
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
     }
 
     .order-type {
-      height: 30px;
-      width: 130px;
-      align-self: center;
-    }
-
-    .sizes-form {
-      background-color: #545454;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, auto);
-      grid-template-areas: 
-      "box-one box-two box-three"
-      "foot foot foot";
-      gap: 5px;
-      justify-content: center;
-      padding: 10px;
-      border-radius: 15px;
-    }
-
-    .grid-box-one {
-      grid-area: box-one;
-    }
-
-    .grid-box-two {
-      grid-area: box-two;
-    }
-
-    .grid-box-three {
-      grid-area: box-three;
-    }
-
-    .size-input {
-      height: 50px;
-      width: 250px;
-      margin-bottom: 10px;
-      font-size: 25px;
-    }
-
-    .footer-grid {
-      grid-area: foot;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    #requests {
-      height: 200px;
-      width: 100%;
-    }
-
-    .remarks {
-      margin: 5;
-    }
-
-    .submit-save {
-      height: 30px;
-      border: none;
+      padding: 10px 15px;
       border-radius: 10px;
-      align-self: center;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      font-size: 14px;
       cursor: pointer;
     }
 
-    /* Status update */
+    .sizes-form {
+      background: rgba(0, 0, 0, 0.2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 20px;
+      border-radius: 16px;
+    }
+
+    .grid-box-one,
+    .grid-box-two {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .grid-box-three {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .measurement-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px 15px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 3px solid #a8d8ff;
+    }
+
+    .measurement-label {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .measurement-value {
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .size-input {
+      height: 45px;
+      width: 100%;
+      margin-bottom: 10px;
+      font-size: 16px;
+      padding: 0 15px;
+      border-radius: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .size-input:focus {
+      outline: none;
+      border-color: rgba(168, 216, 255, 0.5);
+    }
+
+    .footer-grid {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    #requests {
+      width: 100%;
+      min-height: 100px;
+      padding: 15px;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    .remarks {
+      color: white;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .submit-save {
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #6a6a6a, #4a4a4a);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .submit-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Progress Bar */
     .progress-bar-contain {
       display: flex;
       flex-direction: column;
@@ -669,282 +858,194 @@
     .status-title {
       display: flex;
       justify-content: space-between;
-    }
-
-    .status {
-      margin: 0;
+      color: white;
     }
 
     .progress-bar {
       height: 40px;
-      background-color: aqua;
+      background: linear-gradient(90deg, #a8d8ff, #6ab8ff, #a8d8ff, #6ab8ff);
+      background-size: 200% 100%;
       width: 0;
-      border-radius: 15px;
-      display: flex;
+      border-radius: 20px;
+      transition: width 0.5s ease;
+      animation: progressShimmer 2s linear infinite;
+      position: relative;
     }
 
     .percent-text {
-      align-self: center;
       position: absolute;
       left: 50%;
+      transform: translateX(-50%);
+      color: #2c2c2c;
+      font-weight: 700;
+      line-height: 40px;
     }
 
-    /* Confirm Modal */
-
+    /* Confirmation Modal */
     .modal-confirmation {
-      background-color: #bdbdbd;
-      padding: 10px;
-      border-radius: 15px;
+      background: linear-gradient(145deg, #3d3d3d, #2e2e2e);
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      max-width: 500px;
     }
 
     .header-confirm {
-      font-size: 50px;
+      color: white;
+      font-size: 32px;
+      margin-bottom: 20px;
+      text-align: center;
     }
 
-    .middle-confirm, .top-confirm {
-      margin: 20px;
+    .sub-header {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 30px;
     }
 
     .lower-confirm {
       display: flex;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 15px;
     }
 
     .lower-confirm button {
-      padding: 10px 30px;
+      padding: 12px 30px;
       border: none;
-      color: white;
-      background-color: #363636;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
-    .sub-header {
+    /* Add Customer Form */
+    .forms {
+      background: linear-gradient(145deg, #f5f5f5, #e0e0e0);
+      width: 90%;
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-height: 500px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .head-section {
       text-align: center;
-      font-size: 20px;
     }
 
-    /* Add customer modal */
-        .forms {
-      background-color: white;
-      width: 40%;
-      border-radius: 15px;
-      padding: 25px;
+    .head-section h2 {
+      color: #2c2c2c;
+      margin-bottom: 15px;
+    }
+
+    hr {
+      border: none;
+      height: 2px;
+      background: rgba(0, 0, 0, 0.1);
+      margin: 15px 0;
+    }
+
+    .date-section {
+      text-align: right;
+    }
+
+    .add-form-date {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .body-section {
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    .head-section {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    hr {
-      width: 70%;
-    }
-
-    .date-section {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: flex-end;
-      width: 100%;
-    }
-
-    .add-form-date {
-      margin: 0;
-    }
-
-    .body-section {
-      display: flex;
-      justify-content: space-between;
-      gap: 5px;
-    }
-
-    .fill-up {
-      font-size: 15px;
-    }
-
-    .input-container {
-      display: flex;
-      gap: 5px;
-    }
-
     .wrapper {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 8px;
     }
 
-    .add-forms {
-      border: none;
-      background-color: aliceblue;
-      padding: 5px;
-      width: 130px;
+    .fill-up {
+      color: #2c2c2c;
+      font-weight: 600;
+      font-size: 14px;
     }
 
-    #contact, #set {
-      align-self: flex-start;
+    .add-forms,
+    .add-size-input {
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 14px;
+      background: white;
+      transition: all 0.3s ease;
     }
 
-    .measurement-header {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    /* customer form */
-    #add-customer-form {
-      display: none;
+    .add-forms:focus,
+    .add-size-input:focus {
+      outline: none;
+      border-color: #a8d8ff;
     }
 
     .measurements-wrapper {
       display: flex;
-      gap: 10px;
+      gap: 15px;
     }
 
     .forms-input-display {
       display: flex;
-      gap: 5px;
+      gap: 15px;
+    }
+
+    .first,
+    .second {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     #order-pick {
-      padding: 5px;
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      background: white;
     }
 
     .remarks-section {
-      margin: 20px;
-      display: flex;
-      justify-content: flex-end;
+      margin-top: 10px;
     }
 
     #request-remarks {
-      height: 40px;
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-family: 'Roboto', sans-serif;
+      resize: vertical;
     }
 
     .button-section {
-      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 10px;
     }
 
     #save-order {
-      background-color: rgb(79, 255, 79);
+      background: linear-gradient(135deg, #4ade80, #22c55e);
       color: white;
       border: none;
-      padding: 5px;
+      padding: 12px 30px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
-
-    #confirm-add {
-      border: none;
-      padding: 5px;
-    }
-
-    .top-deck {
-      display: flex;
-      justify-content: flex-start;
-    }
-
-    .low-deck {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .first, .second {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .add-size-input {
-      background-color: aliceblue;
-      border: none;
-      padding: 5px;
-    }
-
-
-      /* Mobile Responsiveness */
-
-      @media (max-width:768px){
-
-       /* Main Structure */ 
-
-      .main-grid {
-        display: grid;
-        grid-template-columns: 15px 60px;
-        grid-template-rows: auto 1fr;
-        grid-template-areas: 
-        "side nav nav"
-        "side sep sep";
-        height: 100vh;
-      }
-
-      .separator {
-        grid-area: sep;
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 350px;
-        grid-template-areas: 
-        "main"
-        "due";
-        margin: 20px;
-        gap: 15px;
-      }
-
-        /* side bar */
-        /* Maybe do something on the responsiveness of the side bar, no hover since it is not applicable on mobile */
-
-        .side-bar {
-          width: 20px;
-          position: fixed;
-          height: 100vh;
-          transition: width 1s ease;
-        }
-
-        .side-bar-expand {
-        width: 100%;
-        transition: 0.8s ease;
-      }
-
-      .customer-messages-panel {
-        overflow: hidden;
-      }
-
-      .customers.customers-expand {
-        display: flex;
-      }
-
-      #customer-search.customers-expand {
-        display: flex;
-      }
-
-        /* Navigation bar */
-
-
-    /* Ui Modal */
-
-    .modal-container {
-      padding: 10px;
-    }
-
-    .unif-pic-type {
-      width: 100px;
-      height: 100px;
-      margin-right: 10px;
-    }
-
-    .info-panel {
-      width: 100%;
-    }
-
-    .size-input {
-      height: 45px;
-      width: 120px;
-      font-size: 15px;
-    }
-
-    .remarks {
-      margin: 0;
-    }
-        
-      }
