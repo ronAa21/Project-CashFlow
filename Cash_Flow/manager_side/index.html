@@ -87,13 +87,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><input class="table-input" type="date" name="date" id="date"></td>
-                    <td><textarea class="table-input" name="description" id="description"></textarea></td>
-                    <td><input data-type="in" class="table-input"type="number" min="0"></td>
-                    <td><input type="number" class="table-input" data-type="out" min="0"></td>
-                    <td><output data-type="output" class="table-input">0</output></td>
-                  </tr>
+                  <!-- The row for cashflow goes here -->
                 </tbody>
               </table>
               <div class="total-contain">
@@ -284,9 +278,9 @@
                 <option value="order2">Order 2</option>
               </select>
               <select id="ord-type">
-                <option value="Short Sleeve">Short Sleeve</option>
-                <option value="Long Sleeve">Long Sleeve</option>
-                <option value="Pants">Pants</option>
+                <option value="short_sleeve">Short Sleeve</option>
+                <option value="long_sleeve">Long Sleeve</option>
+                <option value="pants">Pants</option>
               </select>
             </div>
           </div>
@@ -452,9 +446,10 @@
 
       if(dayDiff <= 3 && dayDiff >= 0) {
 
+        let daysLabel = document.createElement("span");
+
         const clone = orderContain.cloneNode(true);
 
-        let daysLabel = document.createElement("span");
         daysLabel.style.fontSize = "12px";
         daysLabel.style.color = "red";
         daysLabel.style.marginLeft = "10px";
@@ -463,6 +458,11 @@
           daysLabel.textContent = `Due Today`;
         } else {
           daysLabel.textContent = `Due in ${dayDiff} days`;
+        }
+
+        if(o.status === "ready" || o.status === "released") {
+          daysLabel.style.color = "#32CD32";
+          daysLabel.textContent = "Completed";
         }
 
         clone.querySelector(".customer-info").appendChild(daysLabel);
@@ -559,12 +559,23 @@
       // dropdown order-type logic
      let orderDropdown = document.querySelector(".order-type");
      let remarksVal = document.getElementById("requests");
-     remarksVal.textContent = orders.remarks;
+     remarksVal.textContent = orders.remarks || "No Remarks";
 
      let newOrderDropdown = orderDropdown.cloneNode(true);
-     orderDropdown.replaceWith(newOrderDropdown);
 
-     const updateMeasurementDisplay = (typeValue) => {
+     newOrderDropdown.selectedIndex = 0;
+
+     if(orders.order_name) {
+      let normalizedType = orders.order_name.toLowerCase().trim().replace(/ /g, "_");
+      newOrderDropdown.value = normalizedType;
+     }
+
+      orderDropdown.replaceWith(newOrderDropdown);
+
+     document.querySelector(".grid-box-one").innerHTML = "";
+     document.querySelector(".grid-box-two").innerHTML = "";
+
+     const updateMeasurementDisplay = () => {
 
       console.log("Fetching measurements for Order ID:", orders.order_id);
       console.log("Using Token:", token);
@@ -591,7 +602,7 @@
         });
      }
 
-     updateMeasurementDisplay(newOrderDropdown.value)
+     updateMeasurementDisplay()
 
       newOrderDropdown.addEventListener("change", function() {
         updateMeasurementDisplay(this.value);
@@ -731,12 +742,10 @@
   
             // ===== CASH FLOW FUNCTIONS ===== //
      let tablePosition = document.querySelector(".table-position"); // parent 
-
      let initialTotal = document.getElementById("initial-state"); // initial
-
      let finalTotal = document.getElementById("total-val"); // final
-
      let tableBody = document.querySelector("tbody");
+     let addBtn = document.querySelector(".add-rows");
 
      let date = document.getElementById("date");
      let description = document.getElementById("description");
@@ -744,7 +753,52 @@
      let outs = document.querySelector('[data-type="out"]');
      let output = document.querySelector('[data-type="output"]');
 
-     let addBtn = document.querySelector(".add-rows");
+     loadCashflowData();
+
+     function loadCashflowData() {
+      fetch("http://localhost:4001/project/viewcashflow", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(rows => {
+          tableBody.innerHTML = "";
+
+          if (!Array.isArray(rows)) {
+            console.error("Data is not an array:", rows);
+            addRow(); // Fail-safe: Add blank row
+            return;
+        }
+
+        if(rows.length > 0 && rows[0].initial_val) {
+          initialTotal.value = rows[0].initial_val;
+        }
+
+          let runningBalance = Number(initialTotal.value) || 0;
+
+          rows.forEach(row => {
+            let valIn = Number(row.amount_in) || 0;
+            let valOut = Number(row.amount_out) || 0; 
+
+            runningBalance += valIn - valOut;
+
+            addRow({
+              date: row.entry_date,
+              desc: row.description,
+              in: row.amount_in,
+              out: row.amount_out,
+              output: runningBalance
+            })
+          })
+
+          finalTotal.textContent = runningBalance;
+
+          addRow();
+        })
+          .catch(err => {
+            console.error(err);
+            addRow();
+          });
+     }
 
      tablePosition.addEventListener("input", function(event) {
 
@@ -778,12 +832,63 @@
         prevOutput = Number(dynOutput.textContent);
 
         finalTotal.innerHTML = prevOutput;
-      }); 
      });
+    }); 
 
-     addBtn.addEventListener("click", function() {
-      addRow();
-     })
+        addBtn.addEventListener("click", function() {
+
+          const rows = document.querySelectorAll("tbody tr");
+
+          if (rows.length === 0) {
+            addRow(); // Create the missing row
+            return;   // Stop here, user needs to type first
+          }
+
+          const lastRow = rows[rows.length - 1];
+
+          const dateInput = lastRow.querySelector('.table-input[type="date"]');
+          const descInput = lastRow.querySelector('textarea.table-input');
+          const inInput = lastRow.querySelector('.table-input[data-type="in"]');
+          const outInput = lastRow.querySelector('.table-input[data-type="out"]');
+
+        if (!dateInput.value) {
+            alert("Please enter a date.");
+            return;
+            }
+        if (!inInput.value && !outInput.value) {
+            alert("Please enter an In or Out amount.");
+            return;
+        }
+
+        let decIns = inInput.value;
+        let decOuts = outInput.value;
+
+          fetch("http://localhost:4001/project/savecashflow", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              initial: initialTotal.value,
+              date: dateInput.value,
+              description: descInput.value,
+              input: parseFloat(decIns),
+              output: parseFloat(decOuts)
+            })
+          })
+          .then(res => {
+            if (!res.ok) return res.json().then(err => { throw new Error(err.message) });
+            return res.json();
+          })
+          .then(data => {
+            console.log("Saved", data);
+            addRow();
+          })
+          .catch(error => {
+            console.error(error);
+          });
+        })
 
      // Add customer function
      let orderPick = document.getElementById("order-pick");
@@ -806,7 +911,7 @@
 
     // temporary save
     const measurementTemplates = {
-    "Short Sleeve": {
+    "short_sleeve": {
       shoulder: "",
       sleeveLength: "",
       sleeveOpening: "",
@@ -817,7 +922,7 @@
       hips: "",
       collar: ""
     },
-    "Long Sleeve": {
+    "long_sleeve": {
       shoulder: "",
       sleeveLength: "",
       cuff: "",
@@ -828,7 +933,7 @@
       hips: "",
       collar: ""
     },
-    "Pants": {
+    "pants": {
       crotch: "",
       ptslength: "",
       ptsWaistline: "",
@@ -1027,34 +1132,81 @@
      }
 
      // add row function
-     function addRow() {
+     function addRow(data = null) {
       let newRow = document.createElement("tr");
+      let uniqueId = Math.random().toString(36).substring(2, 9);
 
+      let dateTd = document.createElement("td");
       let newDate = document.createElement("input");
       newDate.type = "date";
       newDate.className = "table-input";
-      let dateTd = document.createElement("td");
+      newDate.name = `date_${uniqueId}`
+      newDate.setAttribute("autocomplete", "off")
+      if(data && data.date) {
+        let d = new Date(data.date);
 
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+
+        newDate.value = `${year}-${month}-${day}`;
+        newDate.readOnly = true;
+      } else {
+        newDate.value = "";
+      }
+
+      let descTd = document.createElement("td");
       let newDescription = document.createElement("textarea");
       newDescription.className = "table-input";
-      let descTd = document.createElement("td");
+      newDescription.name = `desc_${uniqueId}`;
+      newDescription.setAttribute("autocomplete", "off");
+      if(data && data.desc) {
+        newDescription.value = data.desc;
+        newDescription.readOnly = true;
+      } else {
+        newDescription.value = "";
+      }
+      
 
+      let insTd = document.createElement('td');
       let newIns = document.createElement("input");
       newIns.type = "number";
       newIns.className = "table-input";
-      let insTd = document.createElement('td');
       newIns.setAttribute("data-type", "in");
+      newIns.name = `in_${uniqueId}`
+      newIns.setAttribute("autocomplete", "off");
 
+      if(data) {
+        newIns.value = data.in;
+        newIns.readOnly = true;
+      } else {
+        newIns.value = "";
+      }
+
+      let outTd = document.createElement("td");
       let newOuts = document.createElement("input");
       newOuts.type = "number";
       newOuts.className = "table-input";
-      let outTd = document.createElement("td");
       newOuts.setAttribute("data-type", "out");
+      newOuts.name = `out_${uniqueId}`;
+      newOuts.setAttribute("autocomplete", "off");
+      if(data) {
+        newOuts.value = data.out;
+        if(data.out > 0) newOuts.readOnly = true;
+        else newOuts.disabled = true;
+      } else {
+        newOuts.value = "";
+      }
 
+      let outputTd = document.createElement("td")
       let newOutput = document.createElement("output");
       newOutput.className = "table-input";
-      let outputTd = document.createElement("td")
       newOutput.setAttribute("data-type", "output");
+      if(data && data.output) {
+        newOutput.textContent = data.output;
+      } else {
+        newOutput.textContent = 0;
+      }
 
       dateTd.appendChild(newDate);
       descTd.appendChild(newDescription);

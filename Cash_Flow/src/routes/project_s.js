@@ -328,4 +328,38 @@ router.post("/addcustomers", check, managerOnly, async (req, res) => {
   
 });
 
+// save cashflow
+router.post("/savecashflow", check, managerOnly, async (req, res) => {
+  try {
+    const { initial, date, description, input, output } = req.body;
+
+    const [rows] = await pool.query(
+      'insert into cashflow_ledger (initial_val, entry_date, description, amount_in, amount_out) values (?, ?, ?, ?, ?)', [initial, date, description, input, output]
+    );
+
+    res.json({
+      message: "success",
+      id: rows.insertId
+    });
+
+  } catch (error) {
+    console.error("Insert error", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// get the cashflow data
+router.get("/viewcashflow", check, managerOnly, async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "select * from cashflow_ledger"
+    );
+
+    res.json(rows);
+  } catch (error) {
+    console.error("Retrieve error", error);
+    res.status(401).json({ error: error });
+  }
+})
+
 export default router;
