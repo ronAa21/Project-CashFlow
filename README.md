@@ -57,3 +57,11 @@ My first project Project S
 - Able to add customer through manager dashboard and save through database.
 - Able to update status through database
 - Able to display due orders
+
+### WEEK 11 (WEEK 30 - JANUARY 1, 2026)
+- Fixed the issue where the measurement data is not displaying
+- Added a feature where if the status is ready or released it will be green on the due section
+- == CUSTOMER PANEL DONE == 
+- Able to add cashflow data and saved to the database
+- fixed the issue where when adding it resets the initial value to 0
+- == CASHFLOW PANEL DONE == 
