@@ -125,6 +125,13 @@
       flex-direction: column;
       gap: 15px;
     }
+    
+    .customer-profile-card {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     .placeholder {
       font-weight: 600;
@@ -165,16 +172,21 @@
 
     .customers {
       display: none;
-      gap: 15px;
+      gap: 25px;
       padding: 15px;
       border-radius: 12px;
       cursor: pointer;
       transition: all 0.3s ease;
       background: rgba(255, 255, 255, 0.05);
+      flex-direction: column;
+      height: 700px;          /* REQUIRED */
+      overflow-y: auto;       /* vertical scroll */
     }
 
     .customers.customers-expand {
       display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
 
     .customers:hover {
@@ -507,35 +519,41 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
-    }
-
-    .customer-chat,
-    .manager-chat {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .manager-chat {
-      align-items: flex-end;
+      width: 850px;
     }
 
     .message-wrap {
       display: flex;
+      max-width: 70%;
       flex-direction: column;
       gap: 5px;
       max-width: 70%;
     }
 
+    .message-wrap.manager {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
     .message-bubble {
-      background: rgba(168, 216, 255, 0.9);
-      padding: 12px 18px;
-      border-radius: 18px 18px 4px 18px;
-      color: #2c2c2c;
-      font-weight: 400;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      word-wrap: break-word;
+      padding: 10px;
+    }
+
+    .message-wrap.manager .message-bubble {
+        background-color: #007bff; /* Nice Blue */
+        color: white;
+        border-radius: 15px 15px 0px 15px; /* Rounded corners with a "tail" */
+    }
+
+    .message-wrap.customer {
+        align-self: flex-start; /* Pushes to the left edge */
+        align-items: flex-start;
+    }
+
+    .message-wrap.customer .message-bubble {
+        background-color: #f0f0f0; /* Light gray */
+        color: black;
+        border-radius: 15px 0px 15px 15px; /* Rounded corners with a "tail" */
     }
 
     .message-date {

@@ -40,17 +40,7 @@
           <div class="customers">
 
             <!-- the contents here for now is static but it should display the customers with inquiries, with the new messages being on top for attentio like on Messenger -->
-            <svg class="profile-customer" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="25" cy="25" r="25" fill="#a8d8ff"/>
-              <circle cx="25" cy="18" r="8" fill="white"/>
-              <path d="M 10 40 Q 10 30 25 30 Q 40 30 40 40 Z" fill="white"/>
-            </svg>
-            <div class="customer-profile-info">
 
-              <!-- This section here is also just for placeholder, I'll add the dynamic version hopefully by july -->
-              <h3 class="name-of-customer">Juan Dela Cruz</h3>
-              <p class="recent-message">What's my update?</p>
-            </div>
           </div>
         </div>
       </div>
@@ -103,12 +93,7 @@
             <div id="chat" class="tab-pane">
               <div class="chat-panel">
                 <div class="chat-messages">
-                  <div class="customer-chat">
-                    <!-- this the chat of customer -->
-                  </div>
-                  <div class="manager-chat">
-                    <!-- this is the chat of manager -->
-                  </div>
+                  <!-- The chat logic here -->
                 </div>
                 <div class="message-section">
                   <textarea name="chats" id="chats" class="chats"></textarea>
@@ -307,8 +292,8 @@
       </div>
      </div>
   </body>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
-
     // 7/22/2025 - Navigation bar/Switching panels
 
     // panel switching 
@@ -1224,38 +1209,82 @@
        
      }
 
-     // this is for the customer chats
-     let customerChat = document.querySelector(".customer-chat");
+     // ==== CHAT PANEL ==== 
+     const socket = io("http://localhost:4001");
 
-     // this is for the manager chats
-     let managerChat = document.querySelector(".manager-chat");
+     let activeCustomerId = null;
+     loadSideBarCustomers();
+     
+    // ==== SOCKET LISTENERS ====
+     socket.on("receive_message", (data) => {
+      if(Number(data.customerId) === Number(activeCustomerId)) {
+        let dateObj = data.created_at ? new Date(data.created_at) : new Date();
+        renderMessage(data.message, data.sender, dateObj);     
+       }
+     })
+
+    // side bar
+    let customerSearch = document.getElementById("customer-search");
+    let customers = document.querySelector(".customers");
+
+    document.querySelector(".side-bar").addEventListener("click", function() {
+      this.classList.toggle("side-bar-expand");
+      customers.classList.toggle("customers-expand");
+      customerSearch.classList.toggle("customers-expand");
+    })
+
+    customers.addEventListener("click", function() {
+      chatPanel.style.display = "flex";
+      chatId.style.backgroundColor = "grey";
+      customerId.style.backgroundColor = "";
+      cashflowId.style.backgroundColor = ""
+      customerPanel.style.display = "none";
+      cashflowPanel.style.display = "none";
+    });
 
      document.getElementById("chats").addEventListener("keydown", function(e) {
       if(e.key === "Enter" && this.value.trim() !== "") {
         e.preventDefault();
-        let testVal = this.value;
+        let text = this.value.trim();
 
-        let messageWrap = document.createElement("div");
-        messageWrap.className = "message-wrap";
+        if(text === "") return;
 
-        let messageBubble = document.createElement("h4");
-        messageBubble.className = "message-bubble";
-        messageBubble.textContent = testVal;
+        if(!activeCustomerId) {
+          alert("Please select a customer to chat with from the side bar");
+          return;
+        };
 
-        let date = document.createElement("p");
-        date.className = "message-date";
-        date.textContent = formattedDate();
+        fetch("http://localhost:4001/project/manager/send", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({customerId: activeCustomerId, message: text})
+        })
+          .then(res => {
+            if(!res.ok) throw new Error("Failed to send message");
 
-        messageWrap.append(date);
-        messageWrap.append(messageBubble);
-        managerChat.appendChild(messageWrap);
+            socket.emit("send_message", {
+              customerId: activeCustomerId, 
+              message: text,
+              sender: "manager",
+              created_at: new Date().toISOString()
+            });
 
-        this.value = "";
-      }
+            renderMessage(text, "manager", new Date());
+
+            this.value = "";
+
+          })
+            .catch(err => console.log(err));
+        }
      })
 
-    function formattedDate() {
-      let now = new Date();
+    function formattedDate(now) {
+
+      if(!(now instanceof Date)) now = new Date(now);
+      if(isNaN(now)) now = new Date();
 
       let hrs = now.getHours();
       let mins = now.getMinutes();
@@ -1266,48 +1295,131 @@
 
       mins = mins < 10 ? "0" + mins : mins;
 
-      let month = now.getMonth();
+      let month = now.getMonth() + 1;
       let day = now.getDate();
       let year = now.getFullYear();
 
       return `${hrs}:${mins} ${ampm} ${month}/${day}/${year}`;    
     }
 
-    document.querySelector(".manager-chat").addEventListener("mouseover", function(e) {
-      let action = e.target;
 
-      if(action.classList.contains("message-bubble")) {
-        let messageWrap = action.closest(".message-wrap");
-        let date = messageWrap.querySelector(".message-date");
+    function loadSideBarCustomers() {
+      fetch("http://localhost:4001/project/viewallorders", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("API Data Sample:", data[0])
 
-        let timer = setTimeout(() => {
-          date.style.display = "flex";
-        }, 2000)
+          customers.innerHTML = "";
 
-        action.addEventListener("mouseout", () => {
-          clearTimeout(timer);
-          date.style.display = "none";
+          const uniqueCustomers = new Map();
+
+          data.forEach(order => {
+            let cId = order.customer_id || order.id;
+            if (cId && !uniqueCustomers.has(cId)) {
+              order.customer_id = cId;
+              uniqueCustomers.set(cId, order);
+            }
+          });
+
+          uniqueCustomers.forEach(c => {
+            let item = document.createElement("div");
+            item.className = "customer-profile-card";
+            item.style.cursor = "pointer";
+            item.dataset.id = c.customer_id;
+            item.dataset.name = c.full_name;
+
+            item.innerHTML = `
+              <svg class="profile-customer" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="25" cy="25" r="25" fill="#a8d8ff"/>
+                <circle cx="25" cy="18" r="8" fill="white"/>
+                <path d="M 10 40 Q 10 30 25 30 Q 40 30 40 40 Z" fill="white"/>
+              </svg>
+              <div class="customer-profile-info">
+                <h3 class="name-of-customer">${c.full_name}</h3>
+                <p class="recent-message"><!-- Empty for now --></p>
+              </div>
+            `;
+
+            item.addEventListener("click", function(e) {
+              e.stopPropagation();
+              activeCustomerId = this.dataset.id;
+
+              document.querySelectorAll(".customer-profile-card").forEach(el => el.style.background = "transparent");
+              this.style.background = "grey";
+
+              chatPanel.style.display = "flex";
+              customerPanel.style.display = "none";
+              cashflowPanel.style.display = "none";
+
+              console.log("Chatting with Customer: ", activeCustomerId);
+
+              socket.emit("join_room", activeCustomerId);
+              loadChatHistory(activeCustomerId);
+            });
+
+            customers.appendChild(item);
+          });
         })
-      }
-    })
+          .catch(err => console.log(err));
+    };
 
-    // side bar
-    let customersChat = document.querySelector(".customers");
-    let customerSearch = document.getElementById("customer-search");
 
-    document.querySelector(".side-bar").addEventListener("click", function() {
-      this.classList.toggle("side-bar-expand");
-      customersChat.classList.toggle("customers-expand");
-      customerSearch.classList.toggle("customers-expand");
-    })
+    function loadChatHistory(customerId) {
+      fetch(`http://localhost:4001/project/loadchats/${customerId}`,{
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(data => {
+          const container = document.querySelector(".chat-messages");
+          container.innerHTML = "";
 
-    customersChat.addEventListener("click", function() {
-      chatPanel.style.display = "flex";
-      chatId.style.backgroundColor = "grey";
-      customerId.style.backgroundColor = "";
-      cashflowId.style.backgroundColor = ""
-      customerPanel.style.display = "none";
-      cashflowPanel.style.display = "none";
-    })
+          let messages = [];
+
+          if(Array.isArray(data)) {
+            messages = data;
+          } else if (data.data && Array.isArray(data.data)) {
+            messages = data.data;
+          }
+
+          if(messages.length === 0) {
+            console.log("No messages found");
+          }
+
+          messages.forEach(msg => {
+            let dateVal = msg.created_at ? new Date(msg.created_at) : new Date();
+            renderMessage(msg.message, msg.sender, dateVal);
+          });
+
+          container.scrollTop = container.scrollHeight;
+        })
+          .catch(err => console.log(err));
+    }
+
+     function renderMessage(text, sender, date) {
+      const chatMessages = document.querySelector(".chat-messages");
+
+      const messageWrap = document.createElement("div");
+      messageWrap.className = `message-wrap ${sender}`;
+
+      const messageBubble = document.createElement("div");
+      messageBubble.className = "message-bubble";
+      messageBubble.textContent = text;
+
+      const dateElement = document.createElement("p");
+      dateElement.className = "message-date";
+      dateElement.textContent = formattedDate(date);
+      dateElement.style.display = "none";
+
+      messageBubble.addEventListener("mouseover", () => dateElement.style.display = "block");
+      messageBubble.addEventListener("mouseout", () => dateElement.style.display = "none");
+
+      messageWrap.append(dateElement);
+      messageWrap.append(messageBubble);
+      chatMessages.appendChild(messageWrap);
+    }
 
   </script>

@@ -69,12 +69,7 @@
           <div id="chat-tab" class="tab-pane">
             <div class="chat-panel">
               <div class="chat-messages">
-                <div class="manager-chat">
-                  <!-- this is the chat of manager -->
-                </div>
-                <div class="customer-chat">
-                  <!-- this is the chat of customer -->
-                </div>
+                <!-- Place the chat here -->
               </div>
               <div class="message-section">
                 <textarea name="messenger" id="messenger" placeholder="Type your message..."></textarea>
@@ -159,6 +154,7 @@
     </div>
   </div>
   </body>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
 
     // side-bar
@@ -428,39 +424,73 @@
     })
   }
 
-  // this is for the manager chats
-  let managerChat = document.querySelector(".manager-chat");
+  // ==== CHAT PANEL ====
+  const socket = io("http://localhost:4001");
+  let myCustomerId = null;
 
-  // this is for the customer chat
-  let customerChat = document.querySelector(".customer-chat");
+  initCustomer();
+
+  async function initCustomer() {
+    try {
+      const response = await fetch("http://localhost:4001/project/current-user", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const data = await response.json();
+      myCustomerId = data.id;
+
+      console.log("Logged in as Customer: ", myCustomerId);
+
+      socket.emit("join_room", myCustomerId);
+      loadChatHistory()
+    } catch (error) {
+      console.error("Error initializing customer:", error);
+    }
+  };
+
+  socket.on("receive_message", (data) => {
+    let dateObj = data.created_at ? new Date(data.created_at) : new Date();
+    renderMessage(data.message, data.sender, dateObj);
+  });
+
 
   document.getElementById("messenger").addEventListener("keydown", function(e) {
     if(e.key === "Enter" && this.value.trim() !== "") {
       e.preventDefault
-      let textVal = this.value;
+      let text = this.value;
 
-      let messageWrap = document.createElement("div");
-      messageWrap.className = "message-wrap";
+      if(text === "") return;
 
-      let messageBubble = document.createElement("h4");
-      messageBubble.className = "message-bubble";
+      fetch("http://localhost:4001/project/customer/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({message: text})
+      })
+        .then(res => {
+          if(!res.ok) throw new Error("Failed to send message");
 
-      messageBubble.textContent = textVal;
+          socket.emit("send_message", {
+            customerId: myCustomerId,
+            message: text,
+            sender: "customer",
+            created_at: new Date().toISOString()
+          });
 
-      let date = document.createElement("p");
-      date.className = "message-date";
-      date.textContent = formattedDate();
-
-      messageWrap.append(date);
-      messageWrap.append(messageBubble);
-      customerChat.appendChild(messageWrap);
+          renderMessage(text, "customer", new Date());
+        })
+          .catch(err => console.log(err));
 
       this.value = "";
     }
   });
 
-  function formattedDate() {
-    let now = new Date();
+  function formattedDate(now) {
+
+    if(!(now instanceof Date)) now = new Date(now);
+    if(isNaN(now)) now = new Date();
 
     let hrs = now.getHours();
     let mins = now.getMinutes();
@@ -471,31 +501,55 @@
 
     mins = mins < 10 ? "0" + mins : mins;
 
-    let month = now.getMonth();
+    let month = now.getMonth() + 1;
     let day = now.getDate();
     let year = now.getFullYear();
 
     return `${hrs}:${mins} ${ampm} ${month}/${day}/${year}`;    
+  };
+
+  function loadChatHistory() {
+    fetch(`http://localhost:4001/project/customer/loadchats`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        const container = document.querySelector(".chat-messages");
+        container.innerHTML = "";
+
+        let messages = Array.isArray(data) ? data : (data.data || []);  
+
+        messages.forEach(msg => {
+          let dateVal = msg.created_at ? new Date(msg.created_at) : new Date();
+          renderMessage(msg.message, msg.sender, dateVal);
+        });
+
+        container.scrollTop = container.scrollHeight;
+      });
   }
 
-  document.querySelector(".customer-chat").addEventListener("mouseover", function(e) {
-    let action = e.target;
+  function renderMessage(text, sender, date) {
+      let chatMessages = document.querySelector(".chat-messages")
 
-    if(action.classList.contains("message-bubble")){
-      let messageWrap = action.closest(".message-wrap");
-      let date = messageWrap.querySelector(".message-date");
+      let messageWrap = document.createElement("div");
+      messageWrap.className = `message-wrap ${sender}`;
 
-      let timer = setTimeout(() => {
-        date.style.display = "flex";
-      }, 2000)
+      let messageBubble = document.createElement("div");
+      messageBubble.className = "message-bubble";
 
-      action.addEventListener("mouseout", () => {
-        clearTimeout(timer);
-        date.style.display = "none";
-      })
-    }
-  })
-    
+      messageBubble.textContent = text;
+
+      let dateElement = document.createElement("p");
+      dateElement.className = "message-date";
+      dateElement.textContent = formattedDate(date);
+
+      messageBubble.addEventListener("mouseover", () => dateElement.style.display = "block");
+      messageBubble.addEventListener("mouseout", () => dateElement.style.display = "none");
+
+      messageWrap.append(dateElement);
+      messageWrap.append(messageBubble);
+      chatMessages.appendChild(messageWrap);
+  };
 
   </script>
 </html>

@@ -1,7 +1,9 @@
 import express from "express";
 import project from "./routes/project_s.js";
 import dotenv from "dotenv";
+import http from "http";
 import path from "path";
+import { Server } from "socket.io"; 
 import { fileURLToPath } from "url";
 import cors from "cors";
 
@@ -9,15 +11,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename); 
 
 const app = express();
+const server = http.createServer(app);
 
 dotenv.config();
 
-// Enable CORS
-app.use(cors({
-  origin: 'http://localhost:4001',
-  methods: ['GET', 'POST', "PUT", "DELETE"],
-  credentials: true
-}));
+// CORS wrap inside Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:4001',
+    methods: ['GET', 'POST', "PUT", "DELETE"],
+    credentials: true
+  }
+});
 
 app.use(express.json());
 
@@ -29,6 +34,27 @@ app.use("/project", project);
 
 app.use((req, res) => res.status(404).send("404 Not Found"));
 
-app.listen(process.env.PORT, () => {
+// ==== SOCKET LOGIC ==== 
+io.on("connection", (socket) => {
+  console.log("A user connected: ", socket.id);
+
+  // joins specific rooms
+  socket.on('join_room', (customerId) => {
+    socket.join(`customer_${customerId}`);
+    console.log("Joined room: ", `customer_${customerId}`);
+  });
+
+  // sends message
+  socket.on('send_message', (data) => {
+    io.to(`customer_${data.customerId}`).emit("receive_message", data);
+  });
+
+  // disconnects
+  socket.on("disconnect", () => {
+    console.log("A user disconnected: ", socket.id);
+  });
+});
+
+server.listen(process.env.PORT, () => {
   console.log(`Server running at ${process.env.PORT}\nWelcome ${process.env.USER}`);
 });

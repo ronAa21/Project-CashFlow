@@ -226,6 +226,7 @@ router.get("/viewallorders", check, managerOnly, async (req, res) => {
         o.fabric_type,
         o.status,
         o.created_at,
+        c.id AS customer_id,
         c.full_name,
         c.email,
         c.phone_number,
@@ -360,6 +361,82 @@ router.get("/viewcashflow", check, managerOnly, async (req, res) => {
     console.error("Retrieve error", error);
     res.status(401).json({ error: error });
   }
+});
+
+router.post("/manager/send", check, managerOnly, async (req, res) => {
+  try {
+    const { customerId, message } = req.body;
+    const manager = "manager";
+
+    const [rows] = await pool.query(
+      'insert into chats (customer_id, sender, message) values (?, ?, ?)', [customerId, manager, message]
+    );
+
+    res.json({
+      message: "sent",
+      id: rows.insertId
+    });
+
+  } catch (error) {
+    console.error("Insert error", error);
+    res.status(500).json({ error: error.message });
+  };
+});
+
+router.post("/customer/send", check, async (req, res) => {
+  try {
+    const { message } = req.body;
+    const myId = req.user.customerId;
+    const customer = "customer";
+
+    const [rows] = await pool.query(
+      'insert into chats (customer_id, sender, message) values (?, ?, ?)', [myId,customer, message]
+    );
+
+    res.json({
+      message: "sent",
+      id: rows.insertId
+    });
+  } catch (error) {
+    console.error("Not sent: ", error);
+    res.status(500).json({ error: error.message });
+  }
+})
+
+// load chats (For manager)
+router.get("/loadchats/:id", check, async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const [rows] = await pool.query(
+      "SELECT * FROM chats WHERE customer_id = ? ORDER BY created_at ASC", [id]
+    );
+
+    res.json(rows)
+  } catch (error) {
+    console.error("Retrieve error", error);
+    res.status(401).json({ error: error });
+  }
+});
+
+// load user specific chats (For customers)
+router.get("/customer/loadchats", check, async (req, res) => {
+  try {
+    const customerId = req.user.customerId;
+
+    const [rows] = await pool.query(
+      "SELECT * FROM chats WHERE customer_id = ? ORDER BY created_at ASC", [customerId]
+    );
+
+    res.json(rows);
+  } catch (error) {
+    console.error("Retrieve error", error);
+    res.status(401).json({ error: error });
+  }
+});
+
+router.get("/current-user", check, (req, res) => {
+  res.json({ id: req.user.customerId  });
 })
 
 export default router;
