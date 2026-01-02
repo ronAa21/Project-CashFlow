@@ -64,4 +64,9 @@ My first project Project S
 - == CUSTOMER PANEL DONE == 
 - Able to add cashflow data and saved to the database
 - fixed the issue where when adding it resets the initial value to 0
-- == CASHFLOW PANEL DONE == 
+- == CASHFLOW PANEL DONE ==
+
+### WEEK 11 (WEEK 31 - JANUARY 2, 2026)
+- Added the chat feature
+- Able to chat between customers and managers
+- == PROJECT_S PARTIALLY DONE ==
