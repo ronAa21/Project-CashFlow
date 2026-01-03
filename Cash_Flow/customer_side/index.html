@@ -157,6 +157,9 @@
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
 
+    // Retrieve token
+    const token = localStorage.getItem("token");
+
     // side-bar
     let initialSideBar = document.querySelector(".side-bar"); 
     let initialSideUpper = document.querySelector(".side-upper-content");
@@ -177,6 +180,10 @@
      // CHAT TAB
     let chatTab = document.querySelector(".chat-page");
     let chatPanel = document.getElementById("chat-tab");
+    const socket = io("http://localhost:4001");
+    let myCustomerId = null;
+
+    initCustomer();
 
     progressTab.addEventListener("click", function() {
       progressTab.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
@@ -191,9 +198,6 @@
       chatPanel.style.display = "flex";
       progressPanel.style.display = "none";
     })
-
-    // Retrieve token
-    const token = localStorage.getItem("token");
 
     fetch("http://localhost:4001/project/vieworders", {
       headers: {
@@ -372,9 +376,10 @@
     });
   }
 
+
   function changed(passChange) {
     let pass = document.getElementById("new-pass");
-    let confPass = document.getElementById("confirm-pass");
+    let confPass = document.getElementById("confirm-pass-input");
 
     document.querySelector(".low-section").addEventListener("click", function() {
       const action = event.target.id;
@@ -383,23 +388,29 @@
         passChange.style.display = "none"
       } else if (action === "confirm-pass") {
         try {
-          if(pass.value === "" || confPass.value === "" && pass.value !== confPass.value) {
-            throw new Error("password does not match")
+           console.log("New pass", pass.value)
+           console.log("Confirm pass",confPass.value)
+
+          if(pass.value === "" || confPass.value === "" || pass.value !== confPass.value) {
+            alert("Password does not match");
+            throw new Error("password does not match");
           } 
 
-          let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-          let usersUpdated = JSON.parse(localStorage.getItem("users"));
-
-          currentUser.pass = pass.value;
-          localStorage.setItem("currentUser", JSON.stringify(currentUser));
-
-          let userIndex = usersUpdated.findIndex(u => u.email === currentUser.email);
-          if(userIndex !== -1) {
-            usersUpdated[userIndex].password = pass.value;
-          }
-          localStorage.setItem("users", JSON.stringify(usersUpdated));
+          fetch(`http://localhost:4001/project/changepass`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              changePass: pass.value
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            alert("Changed Successfully");
+          });
           
-          alert("Changed Successfully");
         }catch (error) {
           console.error("Error ", error);
         } finally {
@@ -425,11 +436,6 @@
   }
 
   // ==== CHAT PANEL ====
-  const socket = io("http://localhost:4001");
-  let myCustomerId = null;
-
-  initCustomer();
-
   async function initCustomer() {
     try {
       const response = await fetch("http://localhost:4001/project/current-user", {

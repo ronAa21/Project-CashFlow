@@ -363,6 +363,24 @@ router.get("/viewcashflow", check, managerOnly, async (req, res) => {
   }
 });
 
+// for clearing cashflow data
+router.delete("/clear/cashflow", check, managerOnly, async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "truncate table cashflow_ledger"
+    );
+
+    res.json({
+      message: "deleted",
+    });
+
+    console.log("Deleted")
+  } catch (error) {
+    console.error("Delete error", error);
+    res.status(500).json({ error: error.message });
+  }
+})
+
 router.post("/manager/send", check, managerOnly, async (req, res) => {
   try {
     const { customerId, message } = req.body;
@@ -383,6 +401,7 @@ router.post("/manager/send", check, managerOnly, async (req, res) => {
   };
 });
 
+// for sending chats (Customer)
 router.post("/customer/send", check, async (req, res) => {
   try {
     const { message } = req.body;
@@ -435,8 +454,33 @@ router.get("/customer/loadchats", check, async (req, res) => {
   }
 });
 
+// for customer chats
 router.get("/current-user", check, (req, res) => {
   res.json({ id: req.user.customerId  });
-})
+});
+
+// for changing password
+router.put("/changepass", check, async (req, res) => {
+  try {
+    const customerId = req.user.customerId
+    const { changePass } = req.body;
+
+    const hashed = await bcrypt.hash(changePass, 10);
+
+    const [rows] = await pool.query(
+      "update users set password_hash = ? where customer_id = ?", [hashed, customerId]
+    );
+
+    res.json({
+      message: "Password changed successfully",
+      id: rows.insertId
+    });
+
+    console.log("Password changed successfully");
+  } catch (error) {
+    console.error("Insert error", error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 export default router;

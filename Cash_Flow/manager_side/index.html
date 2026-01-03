@@ -84,7 +84,8 @@
                 <h2 class="total-display">Total</h2>
                 <output id="total-val">0</output>
               </div>
-              <div class="add-container">
+              <div class="action-buttons">
+                  <button class="clear-rows">Clear</button>
                   <button class="add-rows">Add row</button>
               </div>
              </div> 
@@ -873,7 +874,35 @@
           .catch(error => {
             console.error(error);
           });
-        })
+        });
+
+        // place the clear button here
+        document.querySelector(".clear-rows").addEventListener("click", function() {
+          let choice = confirm("You sure you want to clear your today's cashflow?");
+
+          if(choice) {
+            dropDataCashflow();
+          } else {
+            alert("Cancelled");
+            return;
+          }
+        }); 
+
+        // deletes cashflow
+        function dropDataCashflow() {
+          fetch("http://localhost:4001/project/clear/cashflow", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            }
+          })
+            .then(res => res.json())
+            .then(data => {
+              alert("Cleared");
+              location.reload();
+            });
+        }
 
      // Add customer function
      let orderPick = document.getElementById("order-pick");
