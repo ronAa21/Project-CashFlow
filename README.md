@@ -58,7 +58,7 @@ My first project Project S
 - Able to update status through database
 - Able to display due orders
 
-### WEEK 11 (WEEK 30 - JANUARY 1, 2026)
+### WEEK 11 (WEEK 30 - January 1, 2026)
 - Fixed the issue where the measurement data is not displaying
 - Added a feature where if the status is ready or released it will be green on the due section
 - == CUSTOMER PANEL DONE == 
@@ -66,7 +66,12 @@ My first project Project S
 - fixed the issue where when adding it resets the initial value to 0
 - == CASHFLOW PANEL DONE ==
 
-### WEEK 11 (WEEK 31 - JANUARY 2, 2026)
+### WEEK 11 (WEEK 30 - January 2, 2026)
 - Added the chat feature
 - Able to chat between customers and managers
 - == PROJECT_S PARTIALLY DONE ==
+
+### WEEK 11 (WEEK 30 - January 3, 2026)
+- Added a clear function on cashflow tab
+- Fix the ui on manager and customer side
+- Able to change pass on customer side
