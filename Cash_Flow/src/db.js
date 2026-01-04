@@ -3,18 +3,22 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const poolConfig = process.env.DATABASE_URL ? 
-{
-  uri: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // Required for Aiven cloud connections
-  connectionLimit: 5
-} : {
-  host: "localhost",
-  user: "root",
-  port: "3307",
-  password: "Aaronpagente212005",
-  database: "project_s",
+const pool = mysql.createPool({
+  host: process.env.HOST,
+  user: process.env.USER,
+  port: process.env.DB_PORT || 3307,
+  password: process.env.PASSWORD,
+  database: process.env.DB_NAME,
   connectionLimit: 5 
-};
+});
 
-export const pool = mysql.createPool(poolConfig);
+pool.getConnection()
+  .then(connection => {
+    console.log("Connected to the database");
+    connection.release();
+  })
+  .catch(error => {
+    console.error("Error connecting to the database:", error);
+  });
+
+export { pool };
