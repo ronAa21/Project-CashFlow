@@ -1,10 +1,20 @@
 import mysql from "mysql2/promise";
+import dotenv from "dotenv";
 
-export const pool = mysql.createPool({
+dotenv.config();
+
+const poolConfig = process.env.DATABASE_URL ? 
+{
+  uri: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }, // Required for Aiven cloud connections
+  connectionLimit: 5
+} : {
   host: "localhost",
   user: "root",
   port: "3307",
   password: "Aaronpagente212005",
   database: "project_s",
   connectionLimit: 5 
-});
+};
+
+export const pool = mysql.createPool(poolConfig);

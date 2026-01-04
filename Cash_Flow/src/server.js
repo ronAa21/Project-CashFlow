@@ -18,11 +18,16 @@ dotenv.config();
 // CORS wrap inside Socket.io
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:4001',
+    origin: [
+      'http://localhost:4001',
+      'https://project-s-nhsi.onrender.com'
+    ],
     methods: ['GET', 'POST', "PUT", "DELETE"],
     credentials: true
   }
 });
+
+const PORT = process.env.PORT || 10000;
 
 app.use(express.json());
 
@@ -55,6 +60,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(process.env.PORT, () => {
-  console.log(`Server running at ${process.env.PORT}\nWelcome ${process.env.USER}`);
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running at ${PORT}\nWelcome ${process.env.USER}`);
 });
