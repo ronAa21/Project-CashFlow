@@ -15,13 +15,23 @@ const server = http.createServer(app);
 
 dotenv.config();
 
+const allowedOrigins = [
+  'http://localhost:4001',                  
+  'http://localhost:5500',                  
+  'http://127.0.0.1:5500',                 
+  'https://project-s-nhsi.onrender.com'
+]
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', "PUT", "DELETE"],
+  credentials: true
+}));
+
 // CORS wrap inside Socket.io
 const io = new Server(server, {
   cors: {
-    origin: [
-      'http://localhost:4001',
-      'https://project-s-nhsi.onrender.com'
-    ],
+    origin: allowedOrigins,
     methods: ['GET', 'POST', "PUT", "DELETE"],
     credentials: true
   }
