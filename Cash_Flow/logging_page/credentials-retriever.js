@@ -47,7 +47,7 @@ document.querySelector(".submit").addEventListener("click", function(e) {
     return;
   }
 
-  fetch("https://project-s-nhsi.onrender.com/project/signup", {
+  fetch("/project/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

@@ -361,7 +361,7 @@
     displayData();
 
     function displayData() {
-      fetch("https://project-s-nhsi.onrender.com/project/viewallorders", {
+      fetch("/project/viewallorders", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -566,7 +566,7 @@
       console.log("Fetching measurements for Order ID:", orders.order_id);
       console.log("Using Token:", token);
 
-      fetch(`https://project-s-nhsi.onrender.com/project/orders/${orders.order_id}/measurements`, {
+      fetch(`/project/orders/${orders.order_id}/measurements`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -636,7 +636,7 @@
 
       newYes.addEventListener("click", () => {
 
-        fetch(`https://project-s-nhsi.onrender.com/project/updateorders/${o.order_id}/status`, {
+        fetch(`/project/updateorders/${o.order_id}/status`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -742,7 +742,7 @@
      loadCashflowData();
 
      function loadCashflowData() {
-      fetch("https://project-s-nhsi.onrender.com/project/viewcashflow", {
+      fetch("/project/viewcashflow", {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => res.json())
@@ -849,7 +849,7 @@
         let decIns = inInput.value;
         let decOuts = outInput.value;
 
-          fetch("https://project-s-nhsi.onrender.com/project/savecashflow", {
+          fetch("/project/savecashflow", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -890,7 +890,7 @@
 
         // deletes cashflow
         function dropDataCashflow() {
-          fetch("https://project-s-nhsi.onrender.com/project/clear/cashflow", {
+          fetch("/project/clear/cashflow", {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
@@ -1024,7 +1024,7 @@
       console.log(JSON.stringify(payload, null, 2));
 
       try {
-        const res = await fetch("https://project-s-nhsi.onrender.com/project/addcustomers", {
+        const res = await fetch("/project/addcustomers", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -1239,7 +1239,7 @@
      }
 
      // ==== CHAT PANEL ==== 
-     const socket = io("https://project-s-nhsi.onrender.com");
+     const socket = io();
 
      let activeCustomerId = null;
      loadSideBarCustomers();
@@ -1283,7 +1283,7 @@
           return;
         };
 
-        fetch("https://project-s-nhsi.onrender.com/project/manager/send", {
+        fetch("/project/manager/send", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -1333,7 +1333,7 @@
 
 
     function loadSideBarCustomers() {
-      fetch("https://project-s-nhsi.onrender.com/project/viewallorders", {
+      fetch("/project/viewallorders", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -1398,7 +1398,7 @@
 
 
     function loadChatHistory(customerId) {
-      fetch(`https://project-s-nhsi.onrender.com/project/loadchats/${customerId}`,{
+      fetch(`/project/loadchats/${customerId}`,{
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => res.json())

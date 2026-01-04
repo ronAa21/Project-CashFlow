@@ -180,7 +180,7 @@
      // CHAT TAB
     let chatTab = document.querySelector(".chat-page");
     let chatPanel = document.getElementById("chat-tab");
-    const socket = io("https://project-s-nhsi.onrender.com");
+    const socket = io();
     let myCustomerId = null;
 
     initCustomer();
@@ -199,7 +199,7 @@
       progressPanel.style.display = "none";
     })
 
-    fetch("https://project-s-nhsi.onrender.com/project/vieworders", {
+    fetch("/project/vieworders", {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -325,7 +325,7 @@
 
       console.log("ORDER ID:", orders.order_id);
 
-      fetch(`https://project-s-nhsi.onrender.com/project/orders/${orders.order_id}/measurements`, {
+      fetch(`/project/orders/${orders.order_id}/measurements`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -396,7 +396,7 @@
             throw new Error("password does not match");
           } 
 
-          fetch(`https://project-s-nhsi.onrender.com/project/changepass`, {
+          fetch(`/project/changepass`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -438,7 +438,7 @@
   // ==== CHAT PANEL ====
   async function initCustomer() {
     try {
-      const response = await fetch("https://project-s-nhsi.onrender.com/project/current-user", {
+      const response = await fetch("/project/current-user", {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -467,7 +467,7 @@
 
       if(text === "") return;
 
-      fetch("https://project-s-nhsi.onrender.com/project/customer/send", {
+      fetch("/project/customer/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -515,7 +515,7 @@
   };
 
   function loadChatHistory() {
-    fetch(`https://project-s-nhsi.onrender.com/project/customer/loadchats`, {
+    fetch(`/project/customer/loadchats`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
