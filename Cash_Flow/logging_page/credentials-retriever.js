@@ -13,19 +13,39 @@ errorText.style.color = "red";
 let checkExistingError = document.querySelector(".error-text"); // avoid duplicates
 
 // modal display
+let modalWrapper = document.querySelector(".modal-wrapper");
 let loading = document.getElementById("loading");
 let success = document.getElementById("success");
+let errorDisp = document.getElementById("error");
+let errorMsg = document.getElementById("error-msg");
 
 let successBtn = document.querySelector(".success-btn")
 
-// initially this bit right here should check an email on the database(this is for the backend) to check if it is existing
+const existingToken = localStorage.getItem("token");
+const existingRole = localStorage.getItem("role");
 
-document.querySelector(".submit").addEventListener("click", function(e) {
+if(existingToken && existingRole) {
+  if(modalWrapper && loading) {
+        modalWrapper.style.display = "flex";
+        modalWrapper.classList.add("active");
+        loading.style.display = "flex";
+        loading.classList.add("active");
+    }
+
+    // Redirect based on role
+    if (existingRole === "manager") {
+        window.location.replace("/manager");
+    } else {
+        window.location.replace("/customer");
+    }
+}
+
+document.querySelector(".submit").addEventListener("click", async function(e) {
   e.preventDefault();
 
   let signEmail = email.value.trim().toLowerCase()
   let signPass = password.value.trim();
-  let rePass = document.querySelector(".re-password").value;
+  let rePass = document.querySelector(".re-password");
 
   errorText.remove();
 
@@ -37,7 +57,7 @@ document.querySelector(".submit").addEventListener("click", function(e) {
     errorText.textContent = "Password cannot be empty";
     rePassEnter.appendChild(errorText);
     return;
-  } else if(document.querySelector(".re-password").value === ""){
+  } else if(rePass.value === ""){
     errorText.textContent = "Please re-enter password";
     rePassEnter.appendChild(errorText);
     return;
@@ -47,48 +67,65 @@ document.querySelector(".submit").addEventListener("click", function(e) {
     return;
   }
 
-  fetch("/project/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({email: signEmail, password: signPass})
-  })
-  .then(async (response) => {
-    const text = await response.text();
-    
-    if(!text) {
-      throw new Error("Empty response");
-    }
+  openModal(loading);
 
-    const data = JSON.parse(text);
-    
-    if(!response.ok) {
+  try {
+    const res = await fetch("/project/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: signEmail, password: signPass })
+    });
+
+    const data = await res.json();
+
+    if(!res.ok) {
       throw new Error(data.message || "Signup failed");
     }
 
-    verification(successDisplay);
-  })
-  .catch(error => {
-    errorText.textContent = error.message;
-    rePassEnter.appendChild(errorText); 
-  })  
+    closeModal(loading);
+
+    showSuccessPill();
+
+    setTimeout(() => {
+      window.location.replace("/");
+    }, 2000);
+  } catch (error) {
+    closeModal(loading);
+
+    setTimeout(() => {
+      errorMsg.textContent = error.message;
+      openModal(errorDisp);
+    }, 2000)
+  }
 });
 
+function openModal(modalElement) {
+  modalWrapper.style.display = "flex";
+  void modalWrapper.offsetWidth; // force reflow
+  modalWrapper.classList.add("active");
 
-// this is just a mock loading;
-function verification(success) {
-  loading.style.display = "flex";
+  modalElement.style.display = "flex";
+  void modalElement.offsetWidth;
+  modalElement.classList.add("active");
+};
+
+function closeModal(modalElement) {
+  modalWrapper.classList.remove("active");
+  modalElement.classList.remove("active");
+
   setTimeout(() => {
-    success();
-  }, 5000)
+      modalWrapper.style.display = "none";
+      modalElement.style.display = "none";
+  }, 300);
 }
 
-function successDisplay() {
-  loading.style.display = "none";
-  success.style.display = "flex";
-  document.querySelector(".success-btn").addEventListener("click", () => {
-    success.style.display = "none";
-    window.location.href = "/";
-  })
+function showSuccessPill() {
+ modalWrapper.style.display = "none"; // Hide the dark background
+ success.style.display = "flex"; // This triggers the slideDownBounce animation 
 }
+
+document.querySelectorAll(".success-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    closeModal(errorDisp);
+  })
+})

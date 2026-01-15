@@ -3,6 +3,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project_S</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -15,7 +18,7 @@
       <nav>
         <div class="left-contents"></div>
         <div class="middle-contents">
-          <h1 class="website-title">Project S</h1>
+          <h1 class="website-title">Thread</h1>
         </div>
         <div class="right-contents">
           <svg class="profile-pic" width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
@@ -52,7 +55,7 @@
     <div class="main-contents">
       <nav class="main-content-nav">
         <div class="contents">
-          <section class="progress-page">
+          <section class="progress-page active-tab">
             <h3 class="title-of-contents">Progress</h3>
           </section>
           <section class="chat-page">
@@ -64,6 +67,42 @@
         <div class="main-content-container">
           <div id="progress-tab" class="tab-pane">
             <!-- Contents Displayed dynamically -->
+            <div class="modal-popup" id="customer-loading">
+              <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle 
+                  cx="50" 
+                  cy="50" 
+                  r="40" 
+                  stroke="#e0e0e0" 
+                  stroke-width="8" 
+                  fill="none"
+                />
+                <circle 
+                  cx="50" 
+                  cy="50" 
+                  r="40" 
+                  stroke="#3b82f6" 
+                  stroke-width="8" 
+                  fill="none"
+                  stroke-dasharray="251.2"
+                  stroke-dashoffset="62.8"
+                  stroke-linecap="round"
+                >
+                  <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    from="0 50 50"
+                    to="360 50 50"
+                    dur="1s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+              </svg>
+              Fetching your order...
+            </div>
+            <p class="error-txt">
+              Something went wrong, please try again later...
+            </p>
           </div>
 
           <div id="chat-tab" class="tab-pane">
@@ -153,12 +192,26 @@
       </div>
     </div>
   </div>
+
+  <div class="sliding-modal">
+    <!-- Place the modal contents here -->
+  </div>
   </body>
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
+    // 1. FORCE RE-CHECK ON PAGE SHOW (Handles "Forward" button from Login)
+    window.addEventListener("pageshow", function(event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
+
 
     // Retrieve token
     const token = localStorage.getItem("token");
+    
+    // sliding modal popup
+    let slidingModal = document.querySelector(".sliding-modal");
 
     // side-bar
     let initialSideBar = document.querySelector(".side-bar"); 
@@ -186,18 +239,24 @@
     initCustomer();
 
     progressTab.addEventListener("click", function() {
-      progressTab.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
-      chatTab.style.backgroundColor = ""
+      progressTab.classList.add("active-tab");
+      chatTab.classList.remove("active-tab");
+
       progressPanel.style.display = "flex";
-      chatPanel.style.display = "none"
+      chatPanel.style.display = "none";
     })
 
     chatTab.addEventListener("click", function() {
-      chatTab.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
-      progressTab.style.backgroundColor = ""
+      chatTab.classList.add("active-tab");
+      progressTab.classList.remove("active-tab");
+
       chatPanel.style.display = "flex";
       progressPanel.style.display = "none";
     })
+
+    let customerLoading = document.getElementById("customer-loading");
+
+    customerLoading.style.display = "flex";
 
     fetch("/project/vieworders", {
       headers: {
@@ -206,13 +265,15 @@
     })
       .then(res => {
         if(res.status === 401) {
-          alert("Session expired. Please login again.");
-          window.location.href = "/";
+          slidingDisplay("Session expired. Please login again.", 'error');
+          window.location.replace("/");
         }
         return res.json();
       })
         .then(myOrders => {
           
+          customerLoading.style.display = "none";
+
            // displays the customer order
           for(let i = 0; i < myOrders.length; i++) {
                 
@@ -240,6 +301,13 @@
 
           }
 
+        })
+        .catch(error => {
+            customerLoading.style.display = "none";
+            let errorTxt = document.querySelector(".error-txt");
+            if(errorTxt) {
+              errorTxt.style.display = "block";
+            };
         })
 
   document.querySelector(".log-out").addEventListener("click", function() {
@@ -392,7 +460,7 @@
            console.log("Confirm pass",confPass.value)
 
           if(pass.value === "" || confPass.value === "" || pass.value !== confPass.value) {
-            alert("Password does not match");
+            slidingDisplay("Password does not match", 'error');
             throw new Error("password does not match");
           } 
 
@@ -408,7 +476,7 @@
           })
           .then(res => res.json())
           .then(data => {
-            alert("Changed Successfully");
+            slidingDisplay("Changed Successfully", 'success');
           });
           
         }catch (error) {
@@ -430,7 +498,8 @@
       if(action === "cancel") {
         logModal.style.display = "none"
       } else if (action === "logout") {
-        window.location.href = "/";
+        localStorage.removeItem("token");
+        window.location.replace("/");
       }
     })
   }
@@ -485,7 +554,7 @@
             created_at: new Date().toISOString()
           });
 
-          renderMessage(text, "customer", new Date());
+          this.value = "";
         })
           .catch(err => console.log(err));
 
@@ -556,6 +625,43 @@
       messageWrap.append(messageBubble);
       chatMessages.appendChild(messageWrap);
   };
+
+  function slidingDisplay(content, status) {
+    let contentDisp = document.createElement("p");
+    contentDisp.className = "heading";
+
+    slidingModal.innerHTML = "";
+    slidingModal.classList.remove("fade", "success", "error", "warning");
+
+    void slidingModal.offsetWidth;
+
+    if(status === 'error') {
+      slidingModal.classList.add('error');
+    } else if (status === 'success') {
+      slidingModal.classList.add('success');
+    } else {
+      slidingModal.classList.add('warning');
+    }
+
+    contentDisp.textContent = content;
+    slidingModal.appendChild(contentDisp);
+
+    slidingModal.style.display = "flex";
+
+    setTimeout(() => {
+      close(slidingModal)
+    }, 3000)
+  };
+
+  function close(element) {
+    element.classList.add("fade");
+
+    setTimeout(() => {
+      element.style.display = "none";
+
+      element.classList.remove("fade");
+    }, 600)
+  }
 
   </script>
 </html>

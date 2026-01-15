@@ -7,6 +7,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <title>Welcome</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <style>
     /* General traits */
     body {
@@ -20,6 +23,10 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;                /* Chrome, Safari */
     }
 
     @keyframes gradientShift {
@@ -218,6 +225,138 @@
       justify-content: center;
     }
 
+    /* --- MODERN MODAL WRAPPER --- */
+    .modal-wrapper {
+        display: none;
+        position: fixed;
+        background-color: rgba(0, 0, 0, 0.6); /* Lighter, more modern dim */
+        backdrop-filter: blur(12px); /* Stronger blur on background */
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0; /* For fade in animation */
+        transition: opacity 0.3s ease;
+    }
+
+    /* Class to trigger fade in via JS */
+    .modal-wrapper.active {
+        opacity: 1;
+    }
+
+    /* --- MODERN STANDARD MODAL (Loading, Success, Error) --- */
+    .modal-popup {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        font-size: 20px;
+        
+        /* Glassmorphism Style */
+        background: rgba(40, 40, 40, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle highlight border */
+        padding: 40px 50px;
+        border-radius: 24px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+        text-align: center;
+        
+        /* Animation defaults */
+        transform: scale(0.9);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
+    }
+
+    /* Active state for standard modal */
+    .modal-popup.active {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    .heading {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .sub-heading {
+        font-size: 16px;
+        opacity: 0.8;
+    }
+
+    .ok-btn {
+        margin-top: 10px;
+        background: white;
+        color: black;
+        width: 120px;
+        padding: 10px;
+    }
+
+    .ok-btn:hover {
+        background: #e0e0e0;
+        color: black;
+    }
+
+    /* --- THE WELCOME POPUP ANIMATION --- */
+    #welcome-popup {
+      display: none; /* JS toggles this */
+      position: fixed; /* Fixed is better so it floats over everything */
+      top: 30px;
+      left: 50%;
+      /* Centering trick for fixed elements */
+      transform: translateX(-50%); 
+      z-index: 2000;
+
+      flex-direction: row;
+      align-items: center;
+      gap: 15px;
+
+      /* Modern Pill Shape */
+      background: rgba(50, 50, 50, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 15px 40px;
+      border-radius: 50px; /* Pill shape */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      color: white;
+      
+      /* The Animation Logic */
+      animation: slideDownBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+
+    /* Green dot to indicate success inside welcome */
+    #welcome-popup::before {
+        content: '';
+        display: block;
+        width: 12px;
+        height: 12px;
+        background-color: #4ade80; /* Success Green */
+        border-radius: 50%;
+        box-shadow: 0 0 10px #4ade80;
+    }
+
+  /* ANIMATION */
+  @keyframes slideDownBounce {
+    0% {
+        top: -100px; /* Start off screen */
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    60% {
+        top: 40px; /* Go slightly lower than final position */
+        opacity: 1;
+        transform: translateX(-50%) scale(1.05);
+    }
+    100% {
+        top: 30px; /* Settle */
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+  }
+
     /* Mobile Responsiveness */
     @media (max-width:768px) {
 
@@ -350,7 +489,7 @@
 
 <body>
   <div class="title-container">
-    <h2 class="website-name">Project S</h2>
+    <h2 class="website-name">Thread</h2>
   </div>
   <div class="login-panel">
     <div class="content-panel">
@@ -378,6 +517,55 @@
       </div>
     </div>
   </div>
+
+  <div class="modal-wrapper">
+    <div class="modal-popup" id="loading">
+      <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle 
+          cx="50" 
+          cy="50" 
+          r="40" 
+          stroke="#e0e0e0" 
+          stroke-width="8" 
+          fill="none"
+        />
+        <circle 
+          cx="50" 
+          cy="50" 
+          r="40" 
+          stroke="#3b82f6" 
+          stroke-width="8" 
+          fill="none"
+          stroke-dasharray="251.2"
+          stroke-dashoffset="62.8"
+          stroke-linecap="round"
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            from="0 50 50"
+            to="360 50 50"
+            dur="1s"
+            repeatCount="indefinite"
+          />
+        </circle>
+      </svg>
+    </div>
+    <div class="modal-popup" id="success">
+      <h2 class="heading">Success</h2>
+      <button class="ok-btn">ok</button>
+    </div>
+    <div class="modal-popup" id="error">
+      <h2 class="heading">Oopss!</h2>
+      <p class="sub-heading">Please try again</p>
+      <button class="ok-btn">ok</button>
+    </div>
+  </div>
+
+  <!-- Welcome modal -->
+  <div id="welcome-popup">
+    <h2 class="heading" id="welcome-heading">Welcome User</h2>
+  </div>
 </body>
 </html>
   <script>
@@ -391,6 +579,27 @@ let errorContent = document.createElement("p");
 errorContent.className = "error-text";
 errorContent.style.color = "red";
 
+// loading/Error states
+let modalWrapper = document.querySelector(".modal-wrapper");
+
+// loading modal
+let loading = document.getElementById("loading");
+let success = document.getElementById("success");
+let errorDisp = document.getElementById("error");
+
+// auto logs if token exist
+const existingToken = localStorage.getItem("token");
+const existingRole = localStorage.getItem("role");
+
+if(existingToken && existingRole) {
+  state(loading)
+  if(existingRole === "manager") {
+    window.location.replace("/manager");
+  } else {
+    window.location.replace("/customer");
+  }
+}
+
 // login process
 
 document.querySelector(".log-submit").addEventListener("click", async function(e) {
@@ -400,6 +609,8 @@ document.querySelector(".log-submit").addEventListener("click", async function(e
   let logPass = loginPass.value.trim();
 
   errorDisplay.innerHTML = "";
+
+  state(loading);
 
   try {
     const res = await fetch("/project/login", {
@@ -420,21 +631,75 @@ document.querySelector(".log-submit").addEventListener("click", async function(e
       }
 
       localStorage.setItem("token", data.token);   // ✅ STORE TOKEN
-      alert("Welcome " + logEmail);
+      localStorage.setItem("role", data.user.role);
+
+      close(loading);
+
+      welcomeModal(logEmail);
 
       // ✅ role-based redirect
-      if (data.user.role === "manager") {
-        window.location.href = "/manager";
-      } else {
-        window.location.href = "/customer";
-      }
+      setTimeout(() => {
+        if (data.user.role === "manager") {
+          window.location.replace("/manager");
+        } else {
+          window.location.replace("/customer");
+        }
+      }, 2000)
 
-  } catch (error) {
+    } catch (error) {
+      loading.classList.remove("active");
+      loading.style.display = "none";
+
+      state(errorDisp);
+
       errorContent.textContent = error.message;
       errorDisplay.appendChild(errorContent);
   }
 
-})
+});
+
+function state(modalElement) {
+  // 1. Show wrapper
+  modalWrapper.style.display = "flex";
+  // Force reflow
+  void modalWrapper.offsetWidth; 
+  modalWrapper.classList.add("active"); // Fades in background
+
+  // 2. Show specific popup
+  modalElement.style.display = "flex";
+  // Force reflow
+  void modalElement.offsetWidth;
+  modalElement.classList.add("active"); // Pops in content
+}
+
+function close(modalElement) {
+  modalWrapper.classList.remove("active");
+  modalElement.classList.remove("active");
+    
+  // Wait for CSS transition to finish before hiding display:none
+  setTimeout(() => {
+      modalWrapper.style.display = "none";
+      modalElement.style.display = "none";
+  }, 300);
+}
+
+function welcomeModal(user) {
+  modalWrapper.style.display = "none";
+
+  let popup = document.getElementById("welcome-popup");
+  let heading = document.getElementById("welcome-heading");
+
+  heading.textContent = `Welcome ${user}`;
+
+  popup.style.display = "flex";
+}
+
+document.querySelectorAll(".ok-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    close(success);
+    close(errorDisp);
+  });
+});
 
   </script>
 </html>

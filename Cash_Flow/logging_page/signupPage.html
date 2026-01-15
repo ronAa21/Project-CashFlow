@@ -7,6 +7,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <title>Sign Up Now!!!</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <style>
     /* General traits */
     body {
@@ -15,6 +18,10 @@
       animation: gradientShift 15s ease infinite;
       margin: 50px;
       min-height: 100vh;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;                /* Chrome, Safari */
     }
 
     @keyframes gradientShift {
@@ -179,6 +186,7 @@
       display: flex;
       gap: 15px;
       align-items: center;
+      width: 100%;
     }
 
     #re-pass-enter {
@@ -196,6 +204,7 @@
       font-size: 14px;
       color: #ff6b6b;
       font-weight: 500;
+      width: 100%;
     }
 
     .re-password::placeholder {
@@ -255,21 +264,38 @@
       z-index: 1000;
     }
 
+    .modal-wrapper.active {
+      opacity: 1;
+    }
+
     .modal-popup {
-      display: flex;
+      display: none;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 20px;
-      font-size: 24px;
-      background: linear-gradient(145deg, #3d3d3d 0%, #2e2e2e 100%);
-      padding: 50px 60px;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      
+      background: rgba(45, 45, 45, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 40px 60px;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      color: white;
+      text-align: center;
+      
+      transform: scale(0.9);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-popup.active {
+      transform: scale(1);
+      opacity: 1;
     }
 
     .loading-text {
-      font-size: 32px;
+      font-size: 24px;
+      font-weight: 700;
     }
 
     .loading-p {
@@ -279,7 +305,55 @@
 
     .success-btn {
       margin-top: 10px;
-      width: 150px;
+      background: white;
+      color: black;
+      width: 120px;
+      padding: 10px;
+    }
+
+    .success-btn:hover {
+      background: #e0e0e0;
+      color: black;
+    }
+
+    #success {
+      display: none;
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2000;
+      
+      flex-direction: row;
+      align-items: center;
+      gap: 15px;
+
+      background: rgba(50, 50, 50, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 15px 40px;
+      border-radius: 50px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      color: white;
+      
+      animation: slideDownBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+
+    #success::before {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 12px;
+      background-color: #4ade80; 
+      border-radius: 50%;
+      box-shadow: 0 0 10px #4ade80;
+    }
+
+    /* ANIMATIONS */
+
+    @keyframes slideDownBounce {
+        0% { top: -100px; opacity: 0; transform: translateX(-50%) scale(0.8); }
+        60% { top: 40px; opacity: 1; transform: translateX(-50%) scale(1.05); }
+        100% { top: 30px; opacity: 1; transform: translateX(-50%) scale(1); }
     }
 
     /* Mobile Responsiveness */
@@ -352,13 +426,17 @@
       /* Middle Section */ 
       .mid-section {
         margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
       }
 
       .inputters {
         display: flex;
+        flex-direction: column;
         gap: 15px;
-        margin-bottom: 20px;
         flex-wrap: wrap;
+        width: 100%;
       }
 
       .email {
@@ -389,7 +467,7 @@
 
 <body>
 <div class="title-container">
-  <h2 class="website-name">Project S</h2>
+  <h2 class="website-name">Thread</h2>
 </div>
   <div class="signup-panel">
     <div class="content-panel">
@@ -421,25 +499,20 @@
     </div>
     <div class="brand">
       <svg class="brand-name" viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg">
-        <!-- Background -->
         <rect width="500" height="600" fill="url(#brandGrad)" rx="20"/>
         
-        <!-- Abstract design elements -->
         <circle cx="250" cy="200" r="80" fill="white" opacity="0.1"/>
         <circle cx="250" cy="200" r="60" fill="white" opacity="0.15"/>
         <circle cx="250" cy="200" r="40" fill="white" opacity="0.2"/>
         
-        <!-- Geometric shapes -->
         <path d="M 150 350 L 250 280 L 350 350 L 250 420 Z" fill="white" opacity="0.15"/>
         <rect x="200" y="450" width="100" height="80" rx="10" fill="white" opacity="0.1"/>
         
-        <!-- Decorative lines -->
         <line x1="100" y1="100" x2="400" y2="100" stroke="white" stroke-width="2" opacity="0.2"/>
         <line x1="100" y1="500" x2="400" y2="500" stroke="white" stroke-width="2" opacity="0.2"/>
         
-        <!-- Project S branding -->
         <text x="250" y="220" font-family="Montserrat, sans-serif" font-size="48" font-weight="800" fill="white" text-anchor="middle" opacity="0.9">
-          Project S
+          Thread
         </text>
         
         <text x="250" y="255" font-family="Roboto, sans-serif" font-size="16" fill="white" text-anchor="middle" opacity="0.7">
@@ -456,17 +529,47 @@
       </svg>
     </div>
   </div>
-  <div class="modal-wrapper" id="loading">
-    <div class="modal-popup">
-      <h2 class="loading-text">Loading...</h2>
-      <p class="loading-p">Please wait</p>
+  <div class="modal-wrapper">
+    <div class="modal-popup" id="loading">
+      <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle 
+          cx="50" 
+          cy="50" 
+          r="40" 
+          stroke="#e0e0e0" 
+          stroke-width="8" 
+          fill="none"
+        />
+        <circle 
+          cx="50" 
+          cy="50" 
+          r="40" 
+          stroke="#3b82f6" 
+          stroke-width="8" 
+          fill="none"
+          stroke-dasharray="251.2"
+          stroke-dashoffset="62.8"
+          stroke-linecap="round"
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            from="0 50 50"
+            to="360 50 50"
+            dur="1s"
+            repeatCount="indefinite"
+          />
+        </circle>
+      </svg>
     </div>
-  </div>
-  <div class="modal-wrapper" id="success">
-    <div class="modal-popup">
-      <h2 class="loading-text">Success</h2>
+    <div class="modal-popup" id="error">
+      <h2 class="loading-text">Oopss! An error occured</h2>
+      <p id="error-msg">Please try again later</p>
       <button class="success-btn">ok</button>
     </div>
+  </div>
+  <div id="success">
+    <h2 class="loading-text">Account created!</h2>
   </div>
   <script src="credentials-retriever.js"></script>
 </body>

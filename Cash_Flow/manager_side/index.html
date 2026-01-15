@@ -3,6 +3,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project S Manager</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -12,11 +15,22 @@
     <div class="main-grid">
       <div class="navigation-bar">
         <nav>
-          <div class="left-contents"></div>
+          <div class="left-contents">
+            <div class="mobile-menu-btn" style="display: none; cursor: pointer; color: white;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </div>
+          </di v>
           <div class="middle-contents">
-            <h1 class="web-title">Project S</h1>
+            <h1 class="web-title">Thread</h1>
           </div>
           <div class="right-contents">
+            <button id="logout-btn">
+              Logout
+            </button>
             <svg class="manager-pfp" width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
               <circle cx="25" cy="25" r="25" fill="url(#managerGrad)"/>
               <circle cx="25" cy="18" r="8" fill="white" opacity="0.9"/>
@@ -54,10 +68,15 @@
             </ul>
           </div>
           <main>
+            <div class="search-customer-container">
+              <input type="text" id="search-customer-input" placeholder="Search customer">
+            </div>
             <div id="customer" class="tab-pane">
-
-              <!-- customers is displayed here -->
-
+ 
+              <p class="initial-text" id="customer-initial-txt">No customers yet...</p>
+              <div id="customer-list-container" style="width: 100%;">
+                <!-- Place the customers here -->
+              </div>
             </div>
 
             <div id="cashflow" class="tab-pane">
@@ -93,8 +112,43 @@
 
             <div id="chat" class="tab-pane">
               <div class="chat-panel">
+                <div class="modal-popup" id="chat-loading" style="display: none;">
+                  <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle 
+                      cx="50" 
+                      cy="50" 
+                      r="40" 
+                      stroke="#e0e0e0" 
+                      stroke-width="8" 
+                      fill="none"
+                    />
+                    <circle 
+                      cx="50" 
+                      cy="50" 
+                      r="40" 
+                      stroke="#3b82f6" 
+                      stroke-width="8" 
+                      fill="none"
+                      stroke-dasharray="251.2"
+                      stroke-dashoffset="62.8"
+                      stroke-linecap="round"
+                    >
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 50 50"
+                        to="360 50 50"
+                        dur="1s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                  </svg>
+                </div>
+                <div class="chat-navigation">
+                  <!-- Place the user manager is chatting here -->
+                </div>
                 <div class="chat-messages">
-                  <!-- The chat logic here -->
+                  <p class="initial-text">Choose a customer to chat on the sidebar...</p>
                 </div>
                 <div class="message-section">
                   <textarea name="chats" id="chats" class="chats"></textarea>
@@ -109,7 +163,7 @@
               Due This Week
             </h2>
           </div>
-          <!-- Displays the due here -->
+            <p class="initial-text">No due today woohoo!</p>
         </div>
       </div>
     </div>
@@ -292,9 +346,43 @@
         </div>
       </div>
      </div>
+
+     <div class="modal-overlay" id="logout-overlay">
+      <div class="popup">
+        <h2 class="conf-text">Log out of Manager?</h2>
+        <div class="button-wrapper" id="logout-btn-wrap">
+          <button class="act-btn" id="cancel">Cancel</button>
+          <button class="act-btn" id="logout">Log out</button>
+        </div>
+      </div>
+     </div>
+
+    <div class="modal-overlay" id="clear-overlay">
+      <div class="popup">
+        <h2 class="conf-text">You sure you want to clear your today's cashflow?</h2>
+        <div class="button-wrapper" id="clear-btn-wrap">
+          <button class="act-btn" id="cancel-clear">Cancel</button>
+          <button class="act-btn" id="clear">clear</button>
+        </div>
+      </div>
+     </div>
+
+     <div class="sliding-modal">
+      <!-- PLace the contents here -->
+     </div>
   </body>
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
+    // 1. FORCE RE-CHECK ON PAGE SHOW (Handles "Forward" button from Login)
+    window.addEventListener("pageshow", function(event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
+
+    // sliding modal popup
+    let slidingModal = document.querySelector(".sliding-modal");
+
     // 7/22/2025 - Navigation bar/Switching panels
 
     // panel switching 
@@ -310,6 +398,14 @@
     let cashflowPanel = document.getElementById("cashflow");
     let chatPanel = document.getElementById("chat");
 
+    // chat navigation
+    let chatNavigation = document.querySelector(".chat-navigation");
+
+    // search customer customer tab
+    let searchCustomer = document.getElementById("search-customer-input");
+
+    const customerLoading = document.getElementById("customer-loading");
+
     mainContents.addEventListener("click", function(event) {
       let action = event.target.id;
 
@@ -317,6 +413,7 @@
       if(action === "customer-id") {
         customerId.style.backgroundColor = "grey";
         customerPanel.style.display = "flex";
+        searchCustomer.style.display = "flex";
 
         cashflowId.style.backgroundColor = "";
         cashflowPanel.style.display = "none";
@@ -329,6 +426,7 @@
 
         customerId.style.backgroundColor = "";
         customerPanel.style.display = "none";
+        searchCustomer.style.display = "none";
 
         chatId.style.backgroundColor = "";
         chatPanel.style.display = "none"
@@ -340,7 +438,8 @@
         cashflowPanel.style.display = "none";
 
         customerId.style.backgroundColor = "";
-        customerPanel.style.display = "none"
+        customerPanel.style.display = "none";
+        searchCustomer.style.display = "none";
       }
 
      })
@@ -349,18 +448,21 @@
     let deadline = document.querySelector(".deadlines"); // append the dueDisplay
 
     let ordersCache = [];
+    let sidebarCache = []; // Stores unique customers for the sidebar
 
     // token
     const token = localStorage.getItem("token");
 
-    if (!token) {
-        alert("You are not logged in!");
+    if (!token) { 
+        slidingDisplay('You are not logged in!', 'error')// replace this with a modal
         window.location.href = "/"; // Change this to your actual login file path
     }
 
+    // initial display
     displayData();
 
     function displayData() {
+      customerLoading.style.display = "flex";
       fetch("/project/viewallorders", {
         headers: {
           Authorization: `Bearer ${token}`
@@ -369,12 +471,76 @@
         .then(res => res.json())
         .then(data => {
           ordersCache = data;
+          customerLoading.style.display = "none";
           displayer(ordersCache);
-        });
+
+          const uniqueMap = new Map();
+          data.forEach(order => {
+            let cId = order.customer_id || order.id;
+
+            if(cId && !uniqueMap.has(cId)) {
+              order.customer_id = cId;
+              uniqueMap.set(cId, order);
+            }
+          });
+
+          sidebarCache = Array.from(uniqueMap.values());
+
+          renderSidebarList(sidebarCache);
+        })
+        .catch(error => {
+          customerLoading.style.display = "none";
+        })
     }
 
     customerPanel.addEventListener("click", handleCustomerClick);
     deadline.addEventListener("click", handleCustomerClick);
+
+    // logout
+    let logoutOverlay = document.getElementById("logout-overlay");
+
+    document.getElementById("logout-btn").addEventListener("click", function() {
+
+      logoutOverlay.style.display = "flex";
+
+      setTimeout(() => {
+        logoutOverlay.classList.add("active");
+      }, 10);
+
+    });
+
+    const logBtnWrap = document.getElementById("logout-btn-wrap").addEventListener("click", function(e) {
+      let action = e.target.closest("button");
+
+      if (!action) return;
+
+      if(action.id === "logout") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        window.location.replace("/");
+      } else if (action.id === "cancel") {
+
+        logoutOverlay.classList.remove("active");
+
+        setTimeout(() => {
+          logoutOverlay.style.display = "none";
+        }, 300);
+
+      }
+    });
+
+    searchCustomer.addEventListener("input", function() {
+      let inpVal = this.value.trim().toLowerCase();
+
+      if(inpVal === "") {
+        displayer(ordersCache);
+        return;
+      }
+
+      let filter = ordersCache.filter(o => o.full_name.toLowerCase().includes(inpVal));
+
+      displayer(filter);
+    })
 
                 // ==== MODALS ==== //
     // customer modal popup
@@ -386,8 +552,22 @@
     // add customer form
     let addCustomerForm = document.getElementById("add-customer-form");
 
-    function displayer(obj){  
-      customerPanel.innerHTML = "";   // 🔥 ADD THIS
+    function displayer(obj){    
+      const listContainer = document.getElementById("customer-list-container");      
+      listContainer.innerHTML = "";   // 🔥 ADD THIS
+      const customerInitial = document.getElementById("customer-initial-txt");
+
+      if(obj.length === 0) {
+        if (customerInitial) {
+        customerInitial.style.display = "flex";
+        customerInitial.textContent = "No customers found"; // Or "No results"
+      }
+        return;
+      }
+
+      if (customerInitial) {
+        customerInitial.style.display = "none";
+      }
 
       obj.forEach(o => {
 
@@ -411,7 +591,7 @@
       orderContain.appendChild(customerInfo); 
       progressTrack.appendChild(progressDisplay);
       orderContain.appendChild(progressTrack)
-      customerPanel.appendChild(orderContain);
+      listContainer.appendChild(orderContain);
 
       let dueDateDisplay = document.createElement("div");
       dueDateDisplay.className = "due-display";
@@ -614,11 +794,11 @@
 
       confirmModal.style.display = "flex";
 
-      setUpConfirmationModal(orders, pendingStatus, currentStatus);
+      setUpConfirmationModal(orders, pendingStatus, currentStatus, progressTrk, progressDisp, progressBar);
     })
     }
 
-    function setUpConfirmationModal(o, pStatus, cStatus) {
+    function setUpConfirmationModal(o, pStatus, cStatus, progressTrk, progressDisp, progressBar) {
        const noBtn = document.querySelector(".no");
        const yesBtn = document.querySelector(".confirm-modal");
 
@@ -630,7 +810,9 @@
 
        newNo.addEventListener("click", () => {
         confirmModal.style.display = "none";
-        dropdown.value = currentStatus;
+
+        let statusDropdown = document.getElementById("status-dropdown");
+        if(statusDropdown) statusDropdown.value = cStatus;
         pendingStatus = null;
        });
 
@@ -654,16 +836,17 @@
           console.log(data);
 
           o.status = pStatus;
-          cStatus = pStatus;
 
-          progressBarLogic(orders.status, progressBar);
+          progressBarLogic(o.status, progressBar);
+
           if(progressTrk && progressDisp) {
             progressTrk.innerHTML = ""
-            progressDisp.textContent = `${pendingStatus}`;
+            progressDisp.textContent = pStatus;
             progressTrk.appendChild(progressDisp);
           }
 
-          alert("Status updated successfully");
+          displayer(ordersCache);
+          slidingDisplay("Status updated successfully", 'success');
           confirmModal.style.display = "none";
         })
         .catch(error => {
@@ -838,11 +1021,11 @@
           const outInput = lastRow.querySelector('.table-input[data-type="out"]');
 
         if (!dateInput.value) {
-            alert("Please enter a date.");
+            slidingDisplay("Please enter a date.", 'warning');
             return;
             }
         if (!inInput.value && !outInput.value) {
-            alert("Please enter an In or Out amount.");
+            slidingDisplay("Please enter an In or Out amount.", 'warning');
             return;
         }
 
@@ -876,17 +1059,41 @@
           });
         });
 
+        let clearOverlay = document.getElementById("clear-overlay");
+        let clearBtnWrap = document.getElementById("clear-btn-wrap")
+
         // place the clear button here
         document.querySelector(".clear-rows").addEventListener("click", function() {
-          let choice = confirm("You sure you want to clear your today's cashflow?");
+          clearOverlay.style.display = "flex";
 
-          if(choice) {
+          setTimeout(() => {
+            clearOverlay.classList.add("active");
+          })
+        }, 10); 
+
+        clearBtnWrap.addEventListener("click", function(e) {
+          let action = e.target.closest("button");
+
+          if (!action) return;
+
+          if(action.id === "cancel-clear") {
+            clearOverlay.classList.remove("active");
+
+          setTimeout(() => {
+            clearOverlay.style.display = "none";
+          }, 300);
+
+            slidingDisplay("Cancelled", 'success');
+          } else if (action.id === "clear") {
             dropDataCashflow();
-          } else {
-            alert("Cancelled");
-            return;
+
+            // Close Modal
+            clearOverlay.classList.remove("active");
+            setTimeout(() => {
+              clearOverlay.style.display = "none";
+            }, 300);
           }
-        }); 
+        });
 
         // deletes cashflow
         function dropDataCashflow() {
@@ -899,7 +1106,7 @@
           })
             .then(res => res.json())
             .then(data => {
-              alert("Cleared");
+              slidingDisplay("Cleared", 'success');
               location.reload();
             });
         }
@@ -1017,7 +1224,7 @@
       }
 
       if (!payload.orders.length) {
-        alert("You must save at least one order");
+        slidingDisplay("You must save at least one order", 'warning');
         return;
       }
 
@@ -1047,7 +1254,7 @@
             }
           })
            .then((data) => {
-              alert("added successfully"); // replace this with modal
+              slidingDisplay("Added successfully", 'success'); // replace this with modal
 
               // clears the value from the inputs
               named.value = "", contacted.value = "", emailed.value = "", orderTyped.value = "", orderSet.value = "", fabricType.value = "";
@@ -1059,7 +1266,8 @@
           })
 
       } catch (error) {
-        alert(error.message);
+        console.log(error.message);
+        slidingDisplay("Failed adding customer", 'error');
       } finally {
         addCustomerForm.style.display = "none";
       }
@@ -1080,11 +1288,11 @@
       if(orderPicked === "order1") {
         tempOrder1.name = typeOrderVal;
         tempOrder1.measurement = newMeasurements;
-        alert("Order 1 saved"); // replace with modal
+        slidingDisplay('Order 1 saved', 'success'); // replace with modal
       } else if(orderPicked === "order2") {
         tempOrder2.name = typeOrderVal;
         tempOrder2.measurement = newMeasurements;
-        alert("Order 2 saved"); // replace with modal
+        slidingDisplay('Order 2 saved', 'success');
       }
 
       inputs.forEach(input => input.value = "");
@@ -1245,26 +1453,83 @@
      loadSideBarCustomers();
      
     // ==== SOCKET LISTENERS ====
+     socket.on("connect", () => {
+      console.log("Connected to server");
+      socket.emit("join_room", "manager_room");
+     })
+
      socket.on("receive_message", (data) => {
-      if(Number(data.customerId) === Number(activeCustomerId)) {
+
+      const senderId = Number(data.customerId);
+      const currentActiveId = activeCustomerId ? Number(activeCustomerId) : null;
+
+      if(currentActiveId === senderId) {
         let dateObj = data.created_at ? new Date(data.created_at) : new Date();
         renderMessage(data.message, data.sender, dateObj);     
        }
-     })
+
+       const customerIndex = sidebarCache.findIndex(c => Number(c.customer_id) === senderId);
+
+       if(customerIndex > -1) {
+        const [customer] = sidebarCache.splice(customerIndex, 1);
+
+        if(currentActiveId !== senderId) {
+          customer.hasNewMessage = true;
+        }
+
+        customer.recent_message = "New Message";
+
+        sidebarCache.unshift(customer);
+
+        const searchVal = document.getElementById("customer-search").value.trim().toLowerCase();
+
+        if(searchVal === "") {
+          renderSidebarList(sidebarCache)
+        } else {
+          let filtered = sidebarCache.filter(c => c.full_name && c.full_name.toLowerCase().includes(searchVal)
+        );
+        renderSidebarList(filtered);  
+        }
+       }
+     });
 
     // side bar
-    let customerSearch = document.getElementById("customer-search");
+    let sideBarSearchInput = document.getElementById("customer-search");
     let customers = document.querySelector(".customers");
+
+    if (sideBarSearchInput) {
+      sideBarSearchInput.addEventListener("click", function(e) {
+          // This stops the click from reaching the ".side-bar" listener
+          e.stopPropagation(); 
+      });
+    }
+
+    sideBarSearchInput.addEventListener("input", function() {
+      let val = this.value.trim().toLowerCase();
+
+        // If empty, show full cache
+        if(val === "") {
+            renderSidebarList(sidebarCache);
+            return;
+        }
+
+        // Filter based on name
+        let filtered = sidebarCache.filter(c => 
+            c.full_name && c.full_name.toLowerCase().includes(val)
+        );
+
+        renderSidebarList(filtered);
+    });
 
     document.querySelector(".side-bar").addEventListener("click", function() {
       this.classList.toggle("side-bar-expand");
       customers.classList.toggle("customers-expand");
-      customerSearch.classList.toggle("customers-expand");
+      sideBarSearchInput.classList.toggle("customers-expand");
     })
 
     customers.addEventListener("click", function() {
-      chatPanel.style.display = "flex";
       chatId.style.backgroundColor = "grey";
+      chatPanel.style.display = "flex";
       customerId.style.backgroundColor = "";
       cashflowId.style.backgroundColor = ""
       customerPanel.style.display = "none";
@@ -1279,7 +1544,7 @@
         if(text === "") return;
 
         if(!activeCustomerId) {
-          alert("Please select a customer to chat with from the side bar");
+          slidingDisplay('Please select a customer on the side bar to chat', 'warning');
           return;
         };
 
@@ -1300,8 +1565,6 @@
               sender: "manager",
               created_at: new Date().toISOString()
             });
-
-            renderMessage(text, "manager", new Date());
 
             this.value = "";
 
@@ -1340,69 +1603,130 @@
       })
         .then(res => res.json())
         .then(data => {
-          console.log("API Data Sample:", data[0])
 
-          customers.innerHTML = "";
-
-          const uniqueCustomers = new Map();
-
+          const uniqueMap = new Map();
           data.forEach(order => {
             let cId = order.customer_id || order.id;
-            if (cId && !uniqueCustomers.has(cId)) {
+            if (cId && !uniqueMap.has(cId)) {
               order.customer_id = cId;
-              uniqueCustomers.set(cId, order);
+              uniqueMap.set(cId, order);
             }
           });
 
-          uniqueCustomers.forEach(c => {
-            let item = document.createElement("div");
-            item.className = "customer-profile-card";
-            item.style.cursor = "pointer";
-            item.dataset.id = c.customer_id;
-            item.dataset.name = c.full_name;
+          sidebarCache = Array.from(uniqueMap.values());
 
-            item.innerHTML = `
-              <svg class="profile-customer" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="25" cy="25" r="25" fill="#a8d8ff"/>
-                <circle cx="25" cy="18" r="8" fill="white"/>
-                <path d="M 10 40 Q 10 30 25 30 Q 40 30 40 40 Z" fill="white"/>
-              </svg>
-              <div class="customer-profile-info">
-                <h3 class="name-of-customer">${c.full_name}</h3>
-                <p class="recent-message"><!-- Empty for now --></p>
-              </div>
-            `;
+          renderSidebarList(sidebarCache);
 
-            item.addEventListener("click", function(e) {
-              e.stopPropagation();
-              activeCustomerId = this.dataset.id;
-
-              document.querySelectorAll(".customer-profile-card").forEach(el => el.style.background = "transparent");
-              this.style.background = "grey";
-
-              chatPanel.style.display = "flex";
-              customerPanel.style.display = "none";
-              cashflowPanel.style.display = "none";
-
-              console.log("Chatting with Customer: ", activeCustomerId);
-
-              socket.emit("join_room", activeCustomerId);
-              loadChatHistory(activeCustomerId);
-            });
-
-            customers.appendChild(item);
-          });
         })
           .catch(err => console.log(err));
     };
 
+    function renderSidebarList(list) {
+      let customersContainer = document.querySelector(".customers");
+      let emptyText = document.getElementById("side-initial-txt");
+
+      customersContainer.innerHTML = "";
+
+      if(list.length === 0) {
+        if(emptyText) {
+          emptyText.style.display = "flex";
+        }
+        return;
+      }
+
+      if(emptyText) emptyText.style.display = "none";
+
+      list.forEach(c => {
+        let item = document.createElement("div");
+        item.className = "customer-profile-card";
+
+        if(c.hasNewMessage) {
+          item.classList.add("unread");
+        }
+
+        item.style.cursor = "pointer";
+        item.dataset.id = c.customer_id;
+        item.dataset.name = c.full_name;
+
+        // Maintain highlight if this is the active customer
+        if(activeCustomerId && String(c.customer_id) === String(activeCustomerId)) {
+            item.style.background = "grey";
+        }
+
+        const previewText = c.recent_message || "Click to chat";
+
+        item.innerHTML = `
+          <svg class="profile-customer" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="25" cy="25" r="25" fill="#a8d8ff"/>
+            <circle cx="25" cy="18" r="8" fill="white"/>
+            <path d="M 10 40 Q 10 30 25 30 Q 40 30 40 40 Z" fill="white"/>
+            
+            ${c.hasNewMessage ? '<circle cx="42" cy="8" r="5" fill="#ff4757" stroke="white" stroke-width="2"/>' : ''}
+          </svg>
+          <div class="customer-profile-info">
+            <h3 class="name-of-customer">${c.full_name}</h3>
+            <p class="recent-message">${previewText}</p>
+          </div>
+        `;
+
+        // Add Click Listener (Logic copied from your previous code)
+        item.addEventListener("click", function(e) {
+          e.stopPropagation();
+
+          c.hasNewMessage = false;
+          c.recent_message = "Click to chat";
+
+          activeCustomerId = this.dataset.id;
+
+          chatNavigation.innerHTML = "";
+
+          let chattingWith = document.createElement("p");
+          chattingWith.className = "chat-with";
+
+          chattingWith.textContent = `Chatting with ${this.dataset.name}`;
+
+          chatNavigation.appendChild(chattingWith);
+
+          renderSidebarList(sidebarCache);
+
+          // Update styling for all cards
+          document.querySelectorAll(".customer-profile-card").forEach(el => el.style.background = "transparent");
+          this.style.background = "grey";
+
+          // Switch Panels
+          chatPanel.style.display = "flex";
+          customerPanel.style.display = "none";
+          cashflowPanel.style.display = "none";
+          searchCustomer.style.display = "none"; // Hide main search
+
+          // Update Tabs
+          chatId.style.backgroundColor = "grey";       
+          customerId.style.backgroundColor = "";      
+          cashflowId.style.backgroundColor = "";
+
+          console.log("Chatting with Customer: ", activeCustomerId);
+
+          socket.emit("join_room", activeCustomerId);
+          loadChatHistory(activeCustomerId);
+        });
+
+        customersContainer.appendChild(item);
+      })
+    }
+
 
     function loadChatHistory(customerId) {
+      const chatLoading = document.getElementById("chat-loading");
+
+      chatLoading.style.display = "flex";
+
       fetch(`/project/loadchats/${customerId}`,{
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => res.json())
         .then(data => {
+          chatLoading.style.display = "none";
+
           const container = document.querySelector(".chat-messages");
           container.innerHTML = "";
 
@@ -1450,5 +1774,70 @@
       messageWrap.append(messageBubble);
       chatMessages.appendChild(messageWrap);
     }
+
+    function slidingDisplay(content, status) {
+      let contentDisp = document.createElement("p");
+      contentDisp.className = "heading";
+
+      slidingModal.innerHTML = "";
+      slidingModal.classList.remove("fade", "success", "error", "warning");
+
+      void slidingModal.offsetWidth;
+
+      if(status === 'error') {
+        slidingModal.classList.add('error');
+      } else if (status === 'success') {
+        slidingModal.classList.add('success');
+      } else {
+        slidingModal.classList.add('warning');
+      }
+
+      contentDisp.textContent = content;
+      slidingModal.appendChild(contentDisp);
+
+      slidingModal.style.display = "flex";
+
+      setTimeout(() => {
+        close(slidingModal)
+      }, 3000)
+
+    };
+
+    function close(element) {
+      element.classList.add("fade");
+
+      setTimeout(() => {
+        element.style.display = "none";
+
+        element.classList.remove("fade");
+      }, 600)
+    } 
+
+    // Mobile Sidebar Toggle (Redeclare some elements)
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    const sideBar = document.querySelector('.side-bar');
+    const customersDiv = document.querySelector('.customers'); 
+    const searchInput = document.getElementById('customer-search');
+
+    if(menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            sideBar.classList.toggle('side-bar-expand');
+            customersDiv.classList.toggle('customers-expand');
+            if(searchInput) searchInput.classList.toggle('customers-expand');
+        });
+    }
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && 
+            sideBar.classList.contains('side-bar-expand') && 
+            !sideBar.contains(e.target) && 
+            !menuBtn.contains(e.target)) {
+
+            sideBar.classList.remove('side-bar-expand');
+            customersDiv.classList.remove('customers-expand');
+            if(searchInput) searchInput.classList.remove('customers-expand');
+        }
+    });
 
   </script>

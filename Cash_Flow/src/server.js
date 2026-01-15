@@ -54,14 +54,21 @@ io.on("connection", (socket) => {
   console.log("A user connected: ", socket.id);
 
   // joins specific rooms
-  socket.on('join_room', (customerId) => {
-    socket.join(`customer_${customerId}`);
-    console.log("Joined room: ", `customer_${customerId}`);
+  socket.on('join_room', (roomName) => {
+    if(roomName === "manager_room") {
+      socket.join("manager_room");
+      console.log(`Socket ${socket.id} joined Manager Room`);
+    } else {
+      socket.join(`customer_${roomName}`);
+      console.log("Joined room: ", `customer_${roomName}`);
+    }
   });
 
   // sends message
   socket.on('send_message', (data) => {
-    io.to(`customer_${data.customerId}`).emit("receive_message", data);
+    io.to(`customer_${data.customerId}`)
+    .to("manager_room")
+    .emit("receive_message", data);
   });
 
   // disconnects
