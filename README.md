@@ -1,5 +1,5 @@
-# Project-CashFlow
-My first project Project S
+# Threads
+My first project Threads (previously project_s)
 
 ### WEEK 1 (WEEK 3 of learning HTML & CSS) - no javascript yet - June 8, 2025
 - Started the development of the customer and manager homepage, side bar, navigation bar, and the body of the web.
@@ -75,3 +75,24 @@ My first project Project S
 - Added a clear function on cashflow tab
 - Fix the ui on manager and customer side
 - Able to change pass on customer side
+
+### WEEK 12 (WEEK 31 - 32, January 13 - 14, 2026)
+-  Fixed issue on needing to refresh for the status to reflect (confirmationModal Parameter issue)
+- Fixed the auth routing bug (back/forward access)
+    - Security + UX issue - Fixed replace the `window.location.href` with `window.location.replace()` for signup, login, manager, and customer
+- Added loading and error states
+    - Added loading/error states on login/signup
+    - Added on Manager (w/ fixes on the UI issue for chat tab)
+    - Added on Customers
+- Added a search bar for customers and add a function on the search bar for chats
+    - Done for customer tab (Manager side)
+    - Done for side bar (Manager side)
+- Added a feature where the one with recent chats on the top of the sidebar (Manager side) refactor my sidebar and loadSideBarCustomers function.
+- Fixed the side-bar issue (Manager side) where you need to refresh to be able to display the new customer
+    - Fixed (Adjusted displayData function)
+- Fixed chat duplication
+    - fixed for both manager and customer
+- Replace alerts with modals
+    - replaced for both all sides
+- Mobile UI fixes
+    - Added on manager since customer side already has it
