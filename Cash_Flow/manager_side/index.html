@@ -194,7 +194,7 @@
               Due This Week
             </h2>
           </div>
-            <p class="initial-text">No due today woohoo!</p>
+            <p class="initial-text" id="initial-dl" style="display: none;">No due today woohoo!</p>
         </div>
       </div>
     </div>
@@ -586,12 +586,17 @@
     function displayer(obj){    
       const listContainer = document.getElementById("customer-list-container");      
       listContainer.innerHTML = "";   // 🔥 ADD THIS
+      deadline.innerHTML = "";
+
       const customerInitial = document.getElementById("customer-initial-txt");
+      const deadlineInitial = document.getElementById("initial-dl");
+    
 
       if(obj.length === 0) {
         if (customerInitial) {
         customerInitial.style.display = "flex";
         customerInitial.textContent = "No customers found"; // Or "No results"
+        deadlineInitial.style.display = "block"
       }
         return;
       }
