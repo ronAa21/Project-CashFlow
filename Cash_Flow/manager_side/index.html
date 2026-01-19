@@ -194,7 +194,9 @@
               Due This Week
             </h2>
           </div>
+          <div class="deadline-content">
             <p class="initial-text" id="initial-dl" style="display: none;">No due today woohoo!</p>
+          </div>
         </div>
       </div>
     </div>
@@ -477,6 +479,7 @@
 
     // making the progress panel dynamic
     let deadline = document.querySelector(".deadlines"); // append the dueDisplay
+    let deadlineContent = document.querySelector(".deadline-content");
 
     let ordersCache = [];
     let sidebarCache = []; // Stores unique customers for the sidebar
@@ -525,7 +528,7 @@
     }
 
     customerPanel.addEventListener("click", handleCustomerClick);
-    deadline.addEventListener("click", handleCustomerClick);
+    deadlineContent.addEventListener("click", handleCustomerClick);
 
     // logout
     let logoutOverlay = document.getElementById("logout-overlay");
@@ -583,14 +586,19 @@
     // add customer form
     let addCustomerForm = document.getElementById("add-customer-form");
 
+    addCustomerForm.addEventListener("click", function(e) {
+      if (e.target === this) {
+        this.style.display = "none";
+      }
+    });
+
     function displayer(obj){    
       const listContainer = document.getElementById("customer-list-container");      
       listContainer.innerHTML = "";   // 🔥 ADD THIS
-      deadline.innerHTML = "";
+      deadlineContent.innerHTML = "";
 
       const customerInitial = document.getElementById("customer-initial-txt");
       const deadlineInitial = document.getElementById("initial-dl");
-    
 
       if(obj.length === 0) {
         if (customerInitial) {
@@ -671,7 +679,7 @@
 
         dueWrapper.appendChild(clone);
         dueDateDisplay.appendChild(dueWrapper);
-        deadline.appendChild(dueDateDisplay);
+        deadlineContent.appendChild(dueDateDisplay);
       } 
     });
     } // function closing
